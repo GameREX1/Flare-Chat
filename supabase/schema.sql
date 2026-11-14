@@ -263,3 +263,19 @@ $$;
 
 -- Important: never expose a Supabase service_role key in the browser.
 -- The frontend uses only the project's public anon/publishable key.
+
+
+-- Explicit browser-role privileges; RLS policies above still decide which rows are visible.
+grant usage on schema public to authenticated;
+grant select on public.profiles to authenticated;
+grant update on public.profiles to authenticated;
+grant select, insert, delete on public.contacts to authenticated;
+grant select on public.conversations to authenticated;
+grant select on public.conversation_members to authenticated;
+grant select, insert on public.messages to authenticated;
+
+-- Only signed-in users should invoke the app's conversation RPC and membership helper.
+revoke all on function public.get_or_create_direct_conversation(uuid) from public;
+grant execute on function public.get_or_create_direct_conversation(uuid) to authenticated;
+revoke all on function public.is_flare_conversation_member(uuid) from public;
+grant execute on function public.is_flare_conversation_member(uuid) to authenticated;
