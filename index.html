@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#080d14">
   <meta name="description" content="Flare Chat is where conversations begin. Connect with friends, discover people through unique Flare IDs, and share messages in one simple place. No phone numbers. Just conversations.">
   <title>Flare Chat — Talk your way</title>
+  <link rel="icon" type="image/png" href="https://i.ibb.co/7x93TMGd/Flare-Chat-Fiery-Neon-Emblem.png">
+  <link rel="apple-touch-icon" href="https://i.ibb.co/7x93TMGd/Flare-Chat-Fiery-Neon-Emblem.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -41,9 +43,12 @@
     .hidden { display: none !important; }
     .brand { display:flex; align-items:center; gap:11px; font-family:"Space Grotesk",sans-serif; font-size:23px; font-weight:700; letter-spacing:-1px; }
     .brand-mark {
-      width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
-      color:#061017;background:linear-gradient(135deg,#5ceaff,#00bfe8);
-      box-shadow:0 0 28px rgba(0,217,255,.2);font-size:22px;font-weight:800;
+      width:40px;height:40px;flex:0 0 auto;display:grid;place-items:center;
+      background:transparent;box-shadow:none;overflow:visible;
+    }
+    .brand-mark img {
+      display:block;width:100%;height:100%;object-fit:contain;
+      filter:drop-shadow(0 0 8px rgba(0,217,255,.27));
     }
     .brand span { color:var(--cyan); }
     .muted { color:var(--muted); }
@@ -199,7 +204,7 @@
     .side-top { padding:22px 20px 16px;border-bottom:1px solid var(--line); }
     .side-brand-row { display:flex;align-items:center;justify-content:space-between; }
     .side-brand-row .brand { font-size:20px; }
-    .side-brand-row .brand-mark { width:34px;height:34px;border-radius:11px;font-size:19px; }
+    .side-brand-row .brand-mark { width:36px;height:36px; }
     .side-sub { color:var(--muted);font-size:11px;margin:9px 0 18px 45px; }
     .search-box { position:relative; }
     .search-box input { padding-left:39px;font-size:12px; }
@@ -426,7 +431,7 @@
       </div>
 
       <div class="auth-card">
-        <div class="brand"><div class="brand-mark">ϟ</div><div>flare<span>chat</span></div></div>
+        <div class="brand"><div class="brand-mark"><img src="https://i.ibb.co/7x93TMGd/Flare-Chat-Fiery-Neon-Emblem.png" alt="Flare Chat logo"></div><div>flare<span>chat</span></div></div>
         <div class="eyebrow" id="authEyebrow">YOUR SPACE. YOUR ID.</div>
         <h1 id="authTitle">Register now</h1>
         <p class="auth-intro" id="authIntro">Create your Flare Chat account and choose the ID your friends will use to find you.</p>
@@ -461,7 +466,7 @@
     <aside class="sidebar">
       <div class="side-top">
         <div class="side-brand-row">
-          <div class="brand"><div class="brand-mark">ϟ</div><div>flare<span>chat</span></div></div>
+          <div class="brand"><div class="brand-mark"><img src="https://i.ibb.co/7x93TMGd/Flare-Chat-Fiery-Neon-Emblem.png" alt="Flare Chat logo"></div><div>flare<span>chat</span></div></div>
           <button class="btn-icon" id="newChatBtn" title="Find a Flare ID" aria-label="Find a Flare ID">＋</button>
         </div>
         <div class="side-sub">Your people. Your conversations.</div>
