@@ -551,7 +551,6 @@
 
   <div id="toast" class="toast" role="status"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
   <script>
     // Add your Supabase Project URL and public anon/publishable key here.
@@ -1300,20 +1299,45 @@
         return window.supabase;
       }
 
-      // Primary CDN may be blocked on some networks. Try the official alternate CDN.
-      await new Promise((resolve, reject) => {
-        const fallbackScript = document.createElement("script");
-        fallbackScript.src = "https://unpkg.com/@supabase/supabase-js@2";
-        fallbackScript.async = true;
-        fallbackScript.onload = resolve;
-        fallbackScript.onerror = () => reject(new Error("Both Supabase CDN scripts failed to load."));
-        document.head.appendChild(fallbackScript);
-      });
+      const errors = [];
+      const umdSources = [
+        "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js",
+        "https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"
+      ];
 
-      if (!window.supabase || typeof window.supabase.createClient !== "function") {
-        throw new Error("Supabase JavaScript library was not available after loading.");
+      for (const src of umdSources) {
+        try {
+          await new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = src;
+            script.async = true;
+            script.onload = resolve;
+            script.onerror = () => reject(new Error("Could not load " + src));
+            document.head.appendChild(script);
+          });
+          if (window.supabase && typeof window.supabase.createClient === "function") {
+            return window.supabase;
+          }
+          errors.push("Loaded script did not expose window.supabase: " + src);
+        } catch (error) {
+          errors.push(error.message || String(error));
+        }
       }
-      return window.supabase;
+
+      // ESM fallback for browsers/networks where a UMD CDN endpoint is unavailable.
+      try {
+        const moduleUrl = "https://esm.sh/@supabase/supabase-js@2?bundle";
+        const supabaseModule = await import(moduleUrl);
+        if (supabaseModule && typeof supabaseModule.createClient === "function") {
+          window.supabase = { createClient: supabaseModule.createClient };
+          return window.supabase;
+        }
+        errors.push("ES module loaded, but createClient was not exported.");
+      } catch (error) {
+        errors.push("ES module fallback: " + (error.message || String(error)));
+      }
+
+      throw new Error("Supabase SDK could not be loaded. " + errors.join(" | "));
     }
 
     async function initialize() {
@@ -1339,7 +1363,7 @@
         });
       } catch (error) {
         console.error("Flare Chat Supabase initialization failed:", error);
-        setNotice("Could not load Supabase. Refresh the page and check your internet connection. " + (error.message || ""), false);
+        setNotice("Supabase library could not load. " + (error.message || "Check your internet connection and browser extensions."), false);
       }
     }
 
