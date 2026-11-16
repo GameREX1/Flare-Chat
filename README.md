@@ -1,60 +1,62 @@
 # Flare Chat
 
-Flare Chat is a phone-number-free messaging app foundation. Users register with an email and choose their own unique **Flare ID** (for example, \`rayyan_01\`). Other users can find them by that ID and start private, real-time conversations.
+Flare Chat is a phone-number-free messaging app. Users sign up with email/password and choose a unique username that acts as their Flare ID.
 
-## Current foundation
+## Design and current implementation
 
-- Dark black + cyan responsive interface
-- Email/password sign up and sign in
-- User-selected, unique Flare IDs (3–20 characters: lowercase letters, numbers, underscores)
-- Profile creation on signup
-- Find users by exact Flare ID
-- Add contacts and open one-to-one conversations
-- Real-time private text messaging
-- Supabase Row Level Security policies for profiles, contacts, conversations, members and messages
+- Dark black + cyan visual theme
+- Responsive signup and login layout
+- Custom SVG character carrying a Flare messenger bag, with subtle idle movement and a bag-swing response when the form is focused
+- Email/password authentication through Supabase Auth
+- Signup metadata stores the chosen Flare ID as `username`
+- Profile loading targets the existing `profiles.user_id` and `profiles.username` columns
 
-Group chats, file/voice messages, message reactions, notifications, blocking/reporting and end-to-end encryption are not included in this first foundation.
+The bag graphic is an original SVG recreation inspired by the reference. The Coding Stella article loads the visible Visme form through an external embed; it does not publish the form's internal animation source. Flare Chat therefore uses its own form and keeps authentication connected to Supabase.
 
-## 1. Create a Supabase project
+## Important: this Supabase project already has a database
 
-Create a free Supabase project, then open **SQL Editor → New query**.
+The connected Supabase project already contains these tables:
 
-Copy the complete contents of \`supabase/schema.sql\` into the editor and run it.
+- `profiles`
+- `conversations`
+- `conversation_members`
+- `messages`
+- `friend_requests`
+- `blocked_users`
+- `stories`
 
-The schema creates the tables, signup trigger, direct-chat RPC, access policies and Realtime publication entry required by the app.
+**Do not run an empty-database bootstrap on this project.** The previous starter schema expected columns such as `profiles.id`, while this project's profile table uses `profiles.user_id` and `profiles.username`.
 
-## 2. Supabase browser credentials
+The file `supabase/schema.sql` is now a read-only inspection query. It does not create, update, or delete tables or data. Use it to inspect the existing columns and keys before applying any schema changes.
 
-The current `index.html` already contains this project's Supabase Project URL and the public publishable key supplied for Flare Chat. No `.env.local`, Next.js server helper, or middleware is needed for this static GitHub Pages version.
+## Supabase browser credentials
 
-The browser app uses the Supabase JavaScript client loaded from its CDN. The configured publishable key is intended for browser use when Row Level Security is correctly enabled. **Never put a service_role/secret key in browser code.**
+The current `index.html` contains the Project URL and the public publishable key supplied for this Flare Chat project. It uses the Supabase JavaScript client loaded from a CDN.
 
-## 3. Configure email authentication
+The publishable key is intended for browser use when Row Level Security is correctly configured. **Never place a service_role/secret key in browser code.**
+
+## Email authentication
 
 In Supabase, open **Authentication → Providers → Email** and make sure Email is enabled.
 
-For initial testing, you can turn email confirmation off in the Supabase Auth settings. For a public launch, keep email confirmation enabled and configure the allowed redirect/site URLs under **Authentication → URL Configuration**.
+For testing, email confirmation may be enabled or disabled according to your project settings. When confirmation is enabled, users confirm their email and then sign in. The app creates or loads the profile using the account's saved signup metadata.
 
-## 4. Run the app
+## Hosting
 
-You can open \`index.html\` with a local static server, or enable GitHub Pages:
+To enable GitHub Pages:
 
-1. Open the repository's **Settings → Pages**.
+1. Open repository **Settings → Pages**.
 2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select the \`main\` branch and \`/(root)\`, then save.
-4. Add the resulting GitHub Pages URL to Supabase's allowed redirect URLs.
-
-After configuring Supabase, create two test accounts with different Flare IDs in separate browser sessions to test private messaging.
+3. Select `main` and `/(root)`, then save.
+4. Add the GitHub Pages URL to Supabase **Authentication → URL Configuration**.
 
 ## Flare ID rules
 
-- Must be unique.
 - 3–20 characters.
 - Lowercase letters, numbers and underscores only.
-- No phone number is requested or stored by this app.
+- Unique within Flare Chat.
+- No phone number is requested or stored.
 
-## Security notes
+## Remaining work
 
-The database uses Row Level Security. A signed-in user can read profile fields for ID discovery, but can read messages only in conversations they belong to. Message inserts must use the signed-in user's own profile ID. Keep the database policies enabled.
-
-This is an initial MVP foundation, not a finished production messenger. Before a public launch, add rate limiting/anti-spam controls, abuse reporting and blocking, account recovery, monitoring, and a carefully reviewed privacy/security model. End-to-end encryption is not currently implemented; do not describe messages as end-to-end encrypted.
+The existing table constraints and Row Level Security policies must be reviewed before enabling friend requests, direct conversations, message sending, stories, and blocking. End-to-end encryption is not currently implemented; do not describe messages as end-to-end encrypted.
