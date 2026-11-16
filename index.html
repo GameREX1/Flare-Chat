@@ -64,100 +64,134 @@
     label { display:block;font-size:12px;font-weight:700;color:#b9c9d7;margin:0 0 8px; }
     .auth-wrap {
       min-height:100vh; min-height:100svh; display:grid; place-items:center;
-      padding:28px 22px; background:
-      radial-gradient(ellipse at 48% 88%, rgba(0,217,255,.10), transparent 42%),
-      radial-gradient(ellipse at 7% 10%, rgba(28,78,105,.18), transparent 38%),
-      #0b1017;
+      padding:34px 24px;
+      background:
+        radial-gradient(ellipse at 18% 52%,rgba(0,217,255,.105),transparent 42%),
+        radial-gradient(ellipse at 88% 6%,rgba(30,94,128,.15),transparent 34%),
+        #080d14;
     }
     .auth-layout {
-      width:min(100%,900px); display:grid;
-      grid-template-columns:minmax(190px,290px) minmax(360px,440px);
-      justify-content:center; align-items:end; gap:0;
+      width:min(100%,1000px); display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(360px,440px);
+      align-items:center; justify-content:center;
+      gap:clamp(26px,5vw,64px);
+    }
+    .auth-visual {
+      min-width:0; min-height:520px; display:flex; flex-direction:column;
+      justify-content:center; align-items:flex-start; padding:10px 8px;
+      position:relative;
+    }
+    .visual-kicker {
+      display:inline-flex; align-items:center; gap:9px;
+      padding:8px 12px; border:1px solid rgba(0,217,255,.2);
+      border-radius:30px; color:#b8eefa; background:rgba(0,217,255,.065);
+      font-size:9px; font-weight:800; letter-spacing:1.7px; text-transform:uppercase;
+    }
+    .visual-kicker i {
+      width:7px;height:7px;border-radius:50%;background:var(--cyan);
+      box-shadow:0 0 12px var(--cyan);
+    }
+    .auth-visual h2 {
+      max-width:440px; margin:22px 0 10px;
+      font:700 clamp(30px,4.1vw,47px)/1.05 "Space Grotesk",sans-serif;
+      letter-spacing:-2px; color:#f0f7fb;
+    }
+    .auth-visual h2 span { color:var(--cyan); }
+    .auth-visual-copy {
+      max-width:390px; margin:0; color:#91a5b5;
+      font-size:13px; line-height:1.75;
     }
     .auth-character {
-      width:100%; height:420px; align-self:end; display:flex; align-items:flex-end;
-      justify-content:center; position:relative; margin-right:-12px; z-index:1;
+      width:min(100%,440px); height:265px; display:grid; place-items:center;
+      position:relative; margin:12px 0 8px; isolation:isolate;
       pointer-events:none;
     }
+    .auth-character:before {
+      content:""; position:absolute; width:260px; height:180px; left:50%; top:50%;
+      transform:translate(-50%,-44%); border-radius:50%;
+      background:rgba(0,217,255,.14); filter:blur(54px); z-index:-2;
+    }
     .auth-character:after {
-      content:""; position:absolute; width:190px; height:28px; bottom:8px; left:50%;
-      transform:translateX(-50%); background:rgba(0,0,0,.56); filter:blur(15px);
-      border-radius:50%;
+      content:""; position:absolute; width:245px; height:1px; left:50%; bottom:17px;
+      transform:translateX(-50%); background:linear-gradient(90deg,transparent,rgba(0,217,255,.42),transparent);
+      box-shadow:0 0 22px rgba(0,217,255,.2);
     }
     .auth-character svg {
-      width:100%; max-width:285px; height:100%; overflow:visible;
-      filter:drop-shadow(0 18px 22px rgba(0,0,0,.32));
-      animation:figure-breathe 4s ease-in-out infinite;
+      width:min(100%,370px); height:100%; overflow:visible;
+      filter:drop-shadow(0 24px 25px rgba(0,0,0,.34));
     }
-    .auth-figure { transform-origin:130px 350px; }
-    .auth-figure-bag { transform-origin:157px 230px; animation:bag-rest 4s ease-in-out infinite; }
-    .auth-layout.auth-active .auth-figure-bag { animation:bag-swing .8s ease-in-out infinite alternate; }
-    .auth-layout.auth-active .auth-character svg { animation:figure-attend 1.2s ease-in-out infinite alternate; }
-    .auth-brand-caption {
-      position:absolute; left:50%; bottom:22px; transform:translateX(-50%);
-      white-space:nowrap; color:#8aa5b7; text-transform:uppercase;
-      font-size:9px; font-weight:800; letter-spacing:2px; z-index:2;
+    .bag-main { transform-origin:180px 78px; animation:bag-idle 4.2s ease-in-out infinite; }
+    .auth-layout.auth-active .bag-main { animation:bag-swing .72s ease-in-out infinite alternate; }
+    .bag-spark { transform-origin:center; animation:spark-pulse 2.8s ease-in-out infinite; }
+    .bag-spark.delay { animation-delay:1.1s; }
+    .visual-foot {
+      display:flex; flex-wrap:wrap; gap:9px; margin-top:10px;
     }
+    .visual-foot span {
+      display:inline-flex; align-items:center; gap:7px;
+      border:1px solid rgba(165,198,220,.13); border-radius:30px;
+      background:rgba(255,255,255,.025); padding:8px 11px;
+      color:#a8bdcb; font-size:9px; font-weight:800; letter-spacing:.55px;
+    }
+    .visual-foot b { color:var(--cyan); font-size:11px; }
     .auth-card {
       width:100%; max-width:440px; justify-self:end; position:relative; z-index:2;
-      padding:31px 30px 27px; overflow:hidden;
-      border:1px solid rgba(0,217,255,.20); border-radius:17px;
-      background:linear-gradient(155deg,rgba(18,32,45,.98),rgba(9,17,27,.98));
-      box-shadow:0 28px 85px rgba(0,0,0,.48),0 0 48px rgba(0,217,255,.07);
-      transition:transform .35s ease, box-shadow .35s ease;
+      padding:34px 32px 29px; overflow:hidden;
+      border:1px solid rgba(0,217,255,.17); border-radius:22px;
+      background:linear-gradient(155deg,rgba(17,29,41,.98),rgba(9,16,25,.99));
+      box-shadow:0 28px 85px rgba(0,0,0,.45),0 0 50px rgba(0,217,255,.055);
     }
     .auth-card:before {
-      content:""; position:absolute; inset:0 0 auto; height:3px;
-      background:linear-gradient(90deg,#007d9b,#00d9ff,#8beeff,#007d9b);
+      content:""; position:absolute; inset:0 0 auto; height:2px;
+      background:linear-gradient(90deg,transparent,#00b8d8,#8beeff,#00b8d8,transparent);
       background-size:200% 100%; animation:card-shimmer 5s linear infinite;
     }
     .auth-card:after {
-      content:""; position:absolute; width:190px; height:190px; right:-110px; top:-120px;
-      border:1px solid rgba(0,217,255,.12); border-radius:50%;
-      box-shadow:0 0 0 20px rgba(0,217,255,.025),0 0 0 42px rgba(0,217,255,.018);
+      content:""; position:absolute; width:175px; height:175px; right:-105px; top:-110px;
+      border:1px solid rgba(0,217,255,.10); border-radius:50%;
+      box-shadow:0 0 0 20px rgba(0,217,255,.02),0 0 0 42px rgba(0,217,255,.015);
       pointer-events:none;
     }
-    .auth-card .brand { margin-bottom:24px; font-size:20px; }
-    .auth-card .brand-mark { width:34px; height:34px; border-radius:10px; }
-    .auth-card .eyebrow { font-size:9px; letter-spacing:2.2px; }
+    .auth-card .brand { margin-bottom:29px; font-size:21px; }
+    .auth-card .brand-mark { width:36px; height:36px; border-radius:11px; }
+    .auth-card .eyebrow { font-size:9px; letter-spacing:2px; }
     .auth-card h1 {
-      font-family:"Space Grotesk",sans-serif; font-size:30px; line-height:1.08;
-      letter-spacing:-1.2px; margin:9px 0 8px; text-transform:uppercase;
+      font-family:"Space Grotesk",sans-serif; font-size:31px; line-height:1.08;
+      letter-spacing:-1.3px; margin:10px 0 9px; text-transform:uppercase;
     }
-    .auth-intro { color:#91a4b4; font-size:12px; line-height:1.65; margin:0 0 21px; max-width:340px; }
-    .form-grid { display:grid; gap:12px; }
+    .auth-intro { color:#91a4b4; font-size:12px; line-height:1.7; margin:0 0 24px; }
+    .form-grid { display:grid; gap:14px; }
     .auth-card label {
-      display:block; font-size:10px; font-weight:800; color:#bfd0dc;
-      margin:0 0 6px; letter-spacing:.35px; text-transform:uppercase;
+      display:block; font-size:10px; font-weight:800; color:#c1d0dc;
+      margin:0 0 7px; letter-spacing:.45px; text-transform:uppercase;
     }
     .auth-card .field {
-      min-height:43px; width:100%; padding:11px 13px; border-radius:8px;
+      min-height:46px; width:100%; padding:12px 14px; border-radius:10px;
       border:1px solid rgba(144,179,201,.17); background:#0a141e;
       color:#effaff; font-size:12px; outline:none; transition:.2s ease;
     }
     .auth-card .field::placeholder { color:#62798c; }
     .auth-card .field:focus {
-      border-color:rgba(0,217,255,.78); background:#0c1b28;
-      box-shadow:0 0 0 3px rgba(0,217,255,.09),0 0 22px rgba(0,217,255,.08);
+      border-color:rgba(0,217,255,.75); background:#0c1b28;
+      box-shadow:0 0 0 3px rgba(0,217,255,.085),0 0 22px rgba(0,217,255,.07);
     }
     .flare-id-hint { color:#748c9d; font-size:9px; margin-top:6px; letter-spacing:.1px; }
     .auth-card .btn-primary {
-      width:100%; min-height:46px; border-radius:8px; font-size:11px;
-      font-weight:900; letter-spacing:1px; text-transform:uppercase;
+      width:100%; min-height:48px; border-radius:10px; font-size:11px;
+      font-weight:900; letter-spacing:1.05px; text-transform:uppercase;
       color:#04131a; background:linear-gradient(100deg,#00b8dc,#54e8ff);
-      box-shadow:0 9px 22px rgba(0,217,255,.17);
+      box-shadow:0 9px 22px rgba(0,217,255,.15);
     }
     .auth-card .btn-primary:hover { background:linear-gradient(100deg,#39dcf8,#9af4ff); }
     .auth-card .btn-primary:disabled { opacity:.65; cursor:wait; transform:none; }
-    .auth-foot { margin-top:17px; text-align:center; font-size:11px; color:#849aaa; }
+    .auth-foot { margin-top:20px; text-align:center; font-size:11px; color:#849aaa; }
     .text-action { color:var(--cyan); font-weight:800; background:none; border:0; padding:0; }
-    .auth-note { font-size:9px; color:#718797; line-height:1.55; margin:14px 0 0; text-align:center; }
+    .auth-note { font-size:9px; color:#718797; line-height:1.6; margin:15px 0 0; text-align:center; }
     .notice { min-height:16px; font-size:11px; color:var(--danger); line-height:1.45; }
     .notice.success { color:var(--green); }
-    @keyframes figure-breathe { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-    @keyframes figure-attend { from{transform:translateY(0) rotate(0)} to{transform:translateY(-2px) rotate(-1deg)} }
-    @keyframes bag-rest { 0%,100%{transform:rotate(0)} 50%{transform:rotate(2deg)} }
-    @keyframes bag-swing { from{transform:rotate(-7deg)} to{transform:rotate(8deg)} }
+    @keyframes bag-idle { 0%,100%{transform:translateY(0) rotate(-1deg)} 50%{transform:translateY(-7px) rotate(1.5deg)} }
+    @keyframes bag-swing { from{transform:translateY(-2px) rotate(-6deg)} to{transform:translateY(0) rotate(7deg)} }
+    @keyframes spark-pulse { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1.16)} }
     @keyframes card-shimmer { to{background-position:200% 0} }
     .app-shell { height:100vh;min-height:560px;display:grid;grid-template-columns:340px minmax(0,1fr);max-width:1700px;margin:0 auto;padding:18px;gap:14px; }
     .sidebar,.chat-panel { min-height:0;border:1px solid var(--line);background:rgba(13,20,30,.92);border-radius:22px;overflow:hidden; }
@@ -237,13 +271,11 @@
       .composer-wrap { padding:13px; }
     }
 
-    @media (max-width:390px) {
-      .auth-wrap { padding:18px 10px; }
-      .auth-layout { grid-template-columns:70px minmax(0,1fr); }
-      .auth-character { width:96px; height:230px; margin-right:-26px; }
-      .auth-character svg { width:140px; height:230px; }
-      .auth-card { padding:19px 13px 17px; }
-      .auth-card h1 { font-size:21px; }
+    @media (max-width:850px) {
+      .auth-layout { grid-template-columns:minmax(0,1fr) minmax(350px,420px); gap:22px; }
+      .auth-visual { min-height:480px; }
+      .auth-character { height:225px; }
+      .auth-card { padding:29px 26px 25px; }
     }
     @media (max-width:650px) {
       .app-shell { display:block;height:100dvh;min-height:0;padding:0; }
@@ -256,100 +288,141 @@
       .chat-top { height:68px;padding:0 12px; }
       .secure-pill { display:none; }
       .message-row { max-width:88%; }
-      .auth-wrap { padding:22px 12px; min-height:100svh; }
-      .auth-layout { width:min(100%,560px); grid-template-columns:115px minmax(0,1fr); align-items:center; }
-      .auth-character { width:145px; height:285px; margin-right:-30px; align-self:end; }
-      .auth-character svg { width:175px; max-width:none; height:285px; }
-      .auth-brand-caption { display:none; }
-      .auth-card { max-width:none; justify-self:stretch; padding:23px 18px 20px; border-radius:14px; }
-      .auth-card .brand { margin-bottom:19px; }
-      .auth-card h1 { font-size:25px; }
-      .auth-intro { font-size:11px; margin-bottom:17px; }
-      .form-grid { gap:10px; }
-      .auth-card .field { min-height:40px; padding:10px 11px; font-size:11px; }
-      .auth-card label { font-size:9px; }
+      .auth-wrap { padding:23px 14px; min-height:100svh; }
+      .auth-layout { width:min(100%,470px); grid-template-columns:1fr; gap:13px; }
+      .auth-visual {
+        min-height:0; display:grid; grid-template-columns:116px minmax(0,1fr);
+        grid-template-rows:auto auto auto; column-gap:15px; align-items:center;
+        padding:0 4px;
+      }
+      .visual-kicker { grid-column:1 / -1; justify-self:start; margin-bottom:3px; }
+      .auth-character {
+        grid-column:1; grid-row:2 / span 2; width:130px; height:142px;
+        margin:0 0 0 -8px; align-self:center;
+      }
+      .auth-character:before { width:100px; height:100px; filter:blur(30px); }
+      .auth-character:after { width:108px; bottom:8px; }
+      .auth-character svg { width:150px; }
+      .auth-visual h2 {
+        grid-column:2; grid-row:2; align-self:end; margin:5px 0 5px;
+        font-size:23px; line-height:1.07; letter-spacing:-.9px;
+      }
+      .auth-visual-copy {
+        grid-column:2; grid-row:3; align-self:start;
+        font-size:10px; line-height:1.5;
+      }
+      .visual-foot { grid-column:1 / -1; grid-row:4; margin:4px 0 0; }
+      .visual-foot span { font-size:8px; padding:6px 8px; }
+      .auth-card {
+        max-width:none; justify-self:stretch; padding:24px 21px 21px;
+        border-radius:18px;
+      }
+      .auth-card .brand { margin-bottom:20px; }
+      .auth-card h1 { font-size:27px; }
+      .auth-intro { font-size:11px; margin-bottom:18px; }
+      .form-grid { gap:11px; }
+      .auth-card .field { min-height:43px; }
     }
+    @media (max-width:390px) {
+      .auth-wrap { padding:18px 10px; }
+      .auth-visual { grid-template-columns:96px minmax(0,1fr); column-gap:10px; }
+      .auth-character { width:108px; height:125px; margin-left:-10px; }
+      .auth-character svg { width:132px; }
+      .auth-visual h2 { font-size:20px; }
+      .auth-card { padding:21px 16px 18px; }
+      .auth-card h1 { font-size:24px; }
+    }
+
   </style>
 </head>
 <body>
   <section id="authScreen" class="auth-wrap">
     <div class="auth-layout" id="authLayout">
-      <div class="auth-character" aria-hidden="true">
-        <svg viewBox="0 0 260 390" xmlns="http://www.w3.org/2000/svg" role="img">
-          <defs>
-            <linearGradient id="coat" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#9d4760"/><stop offset=".55" stop-color="#713044"/><stop offset="1" stop-color="#482331"/>
-            </linearGradient>
-            <linearGradient id="pants" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#303c4a"/><stop offset=".55" stop-color="#1b2632"/><stop offset="1" stop-color="#101923"/>
-            </linearGradient>
-            <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#f5c9a6"/><stop offset="1" stop-color="#c98e70"/>
-            </linearGradient>
-            <linearGradient id="bag" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#1edcf2"/><stop offset=".55" stop-color="#087d9a"/><stop offset="1" stop-color="#06465d"/>
-            </linearGradient>
-            <linearGradient id="shoe" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#354556"/><stop offset="1" stop-color="#0b131c"/>
-            </linearGradient>
-          </defs>
-          <ellipse cx="130" cy="370" rx="76" ry="11" fill="#02070c" opacity=".55"/>
-          <g class="auth-figure">
-            <!-- legs and shoes -->
-            <path d="M91 257 Q88 287 84 321 L82 350 Q89 359 101 354 L112 318 L125 275Z" fill="url(#pants)"/>
-            <path d="M126 260 Q139 291 145 316 L158 346 Q165 355 177 350 L171 333 L160 300 L157 265Z" fill="url(#pants)"/>
-            <path d="M78 345 Q92 341 104 349 L111 359 Q112 366 101 367 L64 366 Q60 361 68 355Z" fill="url(#shoe)"/>
-            <path d="M153 343 Q164 339 175 345 L188 356 Q190 363 178 365 L148 363 Q143 358 153 343Z" fill="url(#shoe)"/>
-            <path d="M66 365 L109 365" stroke="#00d9ff" stroke-width="3" stroke-linecap="round"/>
-            <path d="M149 362 L187 362" stroke="#00d9ff" stroke-width="3" stroke-linecap="round"/>
-            <!-- back hair -->
-            <path d="M82 62 Q77 24 119 19 Q160 16 171 53 L164 123 Q158 154 137 160 L86 130Z" fill="#35272a"/>
-            <path d="M85 65 Q72 96 82 138 Q89 154 99 151 L104 103Z" fill="#4a3030"/>
-            <!-- neck -->
-            <path d="M111 95 L111 120 Q123 132 138 117 L136 91Z" fill="url(#skin)"/>
-            <!-- face -->
-            <path d="M91 57 Q94 29 125 31 Q153 34 151 67 L146 95 Q137 112 119 112 Q98 107 92 85Z" fill="url(#skin)"/>
-            <path d="M89 65 Q81 35 107 22 Q143 9 163 39 Q171 56 155 79 L149 54 Q139 38 119 40 Q105 53 91 75Z" fill="#302327"/>
-            <path d="M91 49 Q78 71 87 100 Q78 94 77 74 Q75 48 94 30Z" fill="#432a2d"/>
-            <path d="M146 47 Q163 53 158 92 Q155 110 143 119 L140 103 Q155 79 146 47Z" fill="#42282c"/>
-            <!-- sunglasses -->
-            <path d="M92 68 Q106 62 117 69 L115 81 Q106 88 95 80Z" fill="#131a21" stroke="#d7e6ed" stroke-width="1.4"/>
-            <path d="M122 69 Q136 62 148 68 L145 81 Q134 87 124 80Z" fill="#131a21" stroke="#d7e6ed" stroke-width="1.4"/>
-            <path d="M116 72 L123 72" stroke="#d7e6ed" stroke-width="2"/>
-            <path d="M94 72 L111 69" stroke="#8beeff" stroke-width="1.5" opacity=".7"/>
-            <path d="M126 69 L143 68" stroke="#8beeff" stroke-width="1.5" opacity=".7"/>
-            <!-- coat -->
-            <path d="M103 118 Q123 108 145 118 Q165 127 170 163 L180 252 Q157 270 120 265 Q87 268 72 249 L86 158 Q88 130 103 118Z" fill="url(#coat)"/>
-            <path d="M118 119 L129 153 L142 120 Q151 128 158 146 L142 178 L127 158 L111 179 L94 145 Q103 126 118 119Z" fill="#b45b70"/>
-            <path d="M128 157 L136 256" stroke="#e6a0a9" stroke-width="2" opacity=".38"/>
-            <path d="M98 171 L111 180 L103 243 L84 247Z" fill="#562638" opacity=".45"/>
-            <path d="M151 171 L163 177 L171 247 L151 252Z" fill="#452330" opacity=".55"/>
-            <!-- arms -->
-            <path d="M91 137 Q78 146 74 176 L65 207 Q64 217 73 220 Q82 220 84 208 L101 168Z" fill="url(#coat)"/>
-            <path d="M150 137 Q163 144 168 169 L176 191 Q179 202 171 206 Q162 208 158 196 L143 166Z" fill="url(#coat)"/>
-            <path d="M68 204 Q72 205 80 209 L78 222 Q70 226 64 218Z" fill="url(#skin)"/>
-            <path d="M165 194 Q174 193 179 201 L175 213 Q166 215 160 205Z" fill="url(#skin)"/>
-            <!-- coat hem detail -->
-            <path d="M76 249 Q120 258 176 251" stroke="#d88a9a" stroke-width="2" opacity=".45"/>
-            <!-- cross-body strap -->
-            <path d="M147 124 Q159 152 170 190" fill="none" stroke="#17232d" stroke-width="7" stroke-linecap="round"/>
-            <path d="M147 124 Q159 152 170 190" fill="none" stroke="#00d9ff" stroke-width="1.5" stroke-linecap="round" opacity=".8"/>
-            <!-- shoulder bag moves when form is focused -->
-            <g class="auth-figure-bag">
-              <path d="M153 184 Q165 178 179 186 L191 221 Q190 235 178 238 L153 233 Q146 228 148 216Z" fill="url(#bag)" stroke="#85efff" stroke-width="1.5"/>
-              <path d="M151 194 Q170 188 184 195 L188 204 Q169 210 153 204Z" fill="#0b5a75"/>
-              <path d="M156 211 Q171 217 185 209" fill="none" stroke="#83edff" stroke-width="1.4" opacity=".8"/>
-              <path d="M165 218 L175 218" stroke="#d9fcff" stroke-width="2.2" stroke-linecap="round"/>
-              <path d="M159 184 Q161 171 174 174 Q185 176 187 190" fill="none" stroke="#00d9ff" stroke-width="4" stroke-linecap="round"/>
-              <path d="M173 214 L175 226" stroke="#d9fcff" stroke-width="1.5" opacity=".5"/>
+      <div class="auth-visual">
+        <div class="visual-kicker"><i></i> FLARE CHAT · YOUR SPACE</div>
+        <h2>Your people.<br><span>Your own connection.</span></h2>
+        <p class="auth-visual-copy">A simple place for real conversations. Find friends by their unique Flare ID — no phone number needed.</p>
+        <div class="auth-character" aria-hidden="true">
+          <svg viewBox="0 0 360 310" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bagShell" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#36e8ff"/>
+                <stop offset=".34" stop-color="#0ba6c8"/>
+                <stop offset=".72" stop-color="#08718f"/>
+                <stop offset="1" stop-color="#06445d"/>
+              </linearGradient>
+              <linearGradient id="bagFlap" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#1a9db8"/>
+                <stop offset=".52" stop-color="#08708e"/>
+                <stop offset="1" stop-color="#06445c"/>
+              </linearGradient>
+              <linearGradient id="bagSide" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#06445b"/>
+                <stop offset="1" stop-color="#0b7893"/>
+              </linearGradient>
+              <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#effcff"/>
+                <stop offset="1" stop-color="#78dcec"/>
+              </linearGradient>
+              <filter id="bagShadow" x="-40%" y="-40%" width="180%" height="190%">
+                <feGaussianBlur stdDeviation="8"/>
+              </filter>
+            </defs>
+            <circle cx="180" cy="151" r="116" fill="none" stroke="#00d9ff" stroke-opacity=".10" stroke-width="1"/>
+            <circle cx="180" cy="151" r="137" fill="none" stroke="#00d9ff" stroke-opacity=".09" stroke-width="1" stroke-dasharray="3 9"/>
+            <ellipse cx="180" cy="270" rx="95" ry="16" fill="#00d9ff" opacity=".16" filter="url(#bagShadow)"/>
+            <g class="bag-spark" transform="translate(66 91)">
+              <path d="M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5Z" fill="#6ceeff"/>
             </g>
-          </g>
-          <circle cx="48" cy="109" r="3" fill="#00d9ff" opacity=".8"/>
-          <circle cx="204" cy="92" r="2" fill="#8beeff" opacity=".75"/>
-          <path d="M31 129 L42 129 M36.5 123.5 L36.5 134.5" stroke="#00d9ff" stroke-width="1.5" opacity=".6"/>
-          <path d="M205 145 L216 145 M210.5 139.5 L210.5 150.5" stroke="#00d9ff" stroke-width="1.5" opacity=".45"/>
-        </svg>
-        <div class="auth-brand-caption">A little bag of connection</div>
+            <g class="bag-spark delay" transform="translate(292 184)">
+              <path d="M0 -7 L2 -2 L7 0 L2 2 L0 7 L-2 2 L-7 0 L-2 -2Z" fill="#8ef4ff"/>
+            </g>
+            <g class="bag-main">
+              <!-- Strap behind the bag -->
+              <path d="M102 139 C92 43 132 23 179 24 C229 25 267 58 259 148"
+                    fill="none" stroke="#062f43" stroke-width="23" stroke-linecap="round"/>
+              <path d="M102 139 C92 43 132 23 179 24 C229 25 267 58 259 148"
+                    fill="none" stroke="#1ba9c4" stroke-width="4" stroke-linecap="round" opacity=".9"/>
+              <!-- Side gusset and bag shell -->
+              <path d="M91 124 Q91 108 109 105 L252 105 Q270 108 273 126 L263 250 Q261 269 242 274 L111 274 Q93 270 91 251Z"
+                    fill="url(#bagSide)" stroke="#69e8f6" stroke-width="2"/>
+              <path d="M103 119 Q104 109 117 109 L249 109 Q260 110 261 124 L252 247 Q250 259 237 262 L117 262 Q104 259 104 246Z"
+                    fill="url(#bagShell)" stroke="#8af3ff" stroke-opacity=".55" stroke-width="1.4"/>
+              <!-- Front flap -->
+              <path d="M98 126 Q177 83 266 126 L258 186 Q179 215 105 185Z"
+                    fill="url(#bagFlap)" stroke="#9bf3ff" stroke-width="1.8"/>
+              <path d="M111 130 Q179 98 252 130" fill="none" stroke="#c5fbff" stroke-opacity=".38" stroke-width="2"/>
+              <path d="M105 185 Q177 210 258 186" fill="none" stroke="#053c53" stroke-width="3" opacity=".7"/>
+              <!-- Piping and seams -->
+              <path d="M109 198 L115 247 Q116 253 124 254 L235 254 Q246 253 247 244 L252 197"
+                    fill="none" stroke="#a7f7ff" stroke-opacity=".32" stroke-width="1.5"/>
+              <path d="M116 214 L116 244 M244 214 L244 244" stroke="#d4fcff" stroke-opacity=".23" stroke-width="1.3" stroke-dasharray="3 5"/>
+              <!-- Front pocket -->
+              <path d="M132 210 Q178 199 224 210 L221 248 Q179 257 135 248Z"
+                    fill="#07516c" stroke="#69dff0" stroke-opacity=".65" stroke-width="1.5"/>
+              <path d="M144 216 Q179 210 211 216" fill="none" stroke="#a9f7ff" stroke-opacity=".36" stroke-width="1.3"/>
+              <!-- Flare mark -->
+              <path d="M181 220 L168 237 L178 237 L173 248 L194 228 L183 228 L188 220Z"
+                    fill="#c8fbff" opacity=".95"/>
+              <!-- Buckles -->
+              <g fill="#073b51" stroke="url(#metal)" stroke-width="2">
+                <rect x="125" y="177" width="17" height="21" rx="4"/>
+                <rect x="220" y="177" width="17" height="21" rx="4"/>
+              </g>
+              <path d="M133.5 181 L133.5 194 M228.5 181 L228.5 194" stroke="#8beeff" stroke-width="2"/>
+              <!-- Handle -->
+              <path d="M151 108 Q151 82 180 82 Q209 82 209 108" fill="none" stroke="#06394d" stroke-width="12" stroke-linecap="round"/>
+              <path d="M156 108 Q156 88 180 88 Q204 88 204 108" fill="none" stroke="#24b9d2" stroke-width="3" stroke-linecap="round"/>
+              <!-- Rivets -->
+              <circle cx="112" cy="135" r="3" fill="#d2fbff"/>
+              <circle cx="252" cy="135" r="3" fill="#d2fbff"/>
+            </g>
+          </svg>
+        </div>
+        <div class="visual-foot">
+          <span><b>✦</b> CUSTOM FLARE ID</span>
+          <span><b>✦</b> NO PHONE NUMBER</span>
+        </div>
       </div>
 
       <div class="auth-card">
@@ -506,10 +579,10 @@
       $("nameField").classList.toggle("hidden", !signup);
       $("flareIdField").classList.toggle("hidden", !signup);
       $("authEyebrow").textContent = signup ? "YOUR SPACE. YOUR ID." : "WELCOME BACK";
-      $("authTitle").textContent = signup ? "Register now" : "Log in";
+      $("authTitle").textContent = signup ? "Register now" : "Welcome back";
       $("authIntro").textContent = signup
         ? "Create your Flare Chat account and choose the ID your friends will use to find you."
-        : "Welcome back. Sign in and pick up your conversations.";
+        : "Log in with your email and password to continue your conversations.";
       $("authSubmit").innerHTML = signup ? "Create account <span>→</span>" : "Log in <span>→</span>";
       $("authSwitchText").textContent = signup ? "Already have an account?" : "New to Flare Chat?";
       $("authSwitch").textContent = signup ? "Sign in" : "Create account";
