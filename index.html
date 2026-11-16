@@ -62,17 +62,62 @@
     .field:focus { border-color:rgba(0,217,255,.65);box-shadow:0 0 0 3px rgba(0,217,255,.09); }
     .field::placeholder { color:#65788a; }
     label { display:block;font-size:12px;font-weight:700;color:#b9c9d7;margin:0 0 8px; }
-    .auth-wrap { min-height:100vh;display:grid;place-items:center;padding:28px; }
-    .auth-card { width:min(100%,460px);padding:34px;border:1px solid var(--line);border-radius:24px;background:rgba(13,20,30,.92);box-shadow:var(--shadow); }
-    .auth-card .brand { margin-bottom:34px; }
-    .auth-card h1 { font-family:"Space Grotesk",sans-serif;font-size:32px;line-height:1.12;letter-spacing:-1.2px;margin:10px 0; }
-    .auth-intro { color:var(--muted);font-size:14px;line-height:1.65;margin:0 0 25px; }
-    .form-grid { display:grid;gap:16px; }
-    .auth-foot { margin-top:22px;text-align:center;font-size:13px;color:var(--muted); }
+    .auth-wrap { min-height:100vh;display:grid;place-items:center;padding:34px; }
+    .auth-layout { width:min(100%,980px);display:grid;grid-template-columns:minmax(280px,.88fr) minmax(390px,1.12fr);align-items:center;gap:clamp(24px,5vw,62px); }
+    .auth-story { min-width:0;padding:10px 0; }
+    .story-chip { display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(0,217,255,.18);border-radius:30px;background:rgba(0,217,255,.07);color:#a8eefa;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase; }
+    .story-chip span { width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 13px var(--cyan); }
+    .auth-story h2 { max-width:390px;margin:23px 0 11px;font:700 clamp(29px,4vw,43px)/1.06 "Space Grotesk",sans-serif;letter-spacing:-1.8px; }
+    .auth-story h2 span { color:var(--cyan); }
+    .auth-story-copy { max-width:350px;color:var(--muted);font-size:13px;line-height:1.75;margin:0; }
+    .mascot-stage { height:260px;max-width:340px;position:relative;margin:26px 0 20px;border:1px solid rgba(0,217,255,.12);border-radius:28px;overflow:hidden;background:radial-gradient(ellipse at 50% 75%,rgba(0,217,255,.13),transparent 54%),linear-gradient(145deg,rgba(20,39,54,.86),rgba(8,15,24,.92)); }
+    .mascot-stage:before,.mascot-stage:after { content:"";position:absolute;border:1px solid rgba(0,217,255,.12);border-radius:50%; }
+    .mascot-stage:before { width:190px;height:190px;left:50%;top:30px;transform:translateX(-50%); }
+    .mascot-stage:after { width:238px;height:238px;left:50%;top:6px;transform:translateX(-50%);border-style:dashed;opacity:.48;animation:orbit-spin 24s linear infinite; }
+    .mascot-glow { position:absolute;width:180px;height:42px;left:50%;bottom:24px;transform:translateX(-50%);border-radius:50%;background:rgba(0,217,255,.16);filter:blur(20px); }
+    .mascot-character { position:absolute;width:116px;height:214px;left:50%;bottom:23px;transform:translateX(-50%);animation:mascot-float 3.2s ease-in-out infinite; }
+    .char-head { position:absolute;width:54px;height:59px;left:31px;top:9px;border-radius:48% 48% 45% 45%;background:linear-gradient(145deg,#ffd7b4,#bd8064);box-shadow:inset -7px -4px 0 rgba(80,39,30,.12);z-index:4; }
+    .char-hair { position:absolute;width:57px;height:27px;left:29px;top:5px;border-radius:50% 50% 30% 20%;background:#172331;transform:rotate(-5deg);z-index:5; }
+    .char-hair:after { content:"";position:absolute;width:19px;height:14px;right:2px;bottom:-5px;background:#172331;border-radius:0 0 70% 20%;transform:rotate(18deg); }
+    .char-eye { position:absolute;top:29px;width:4px;height:5px;border-radius:50%;background:#25303a;z-index:6; }
+    .char-eye.one { left:15px; }.char-eye.two { right:15px; }
+    .char-smile { position:absolute;width:12px;height:6px;left:21px;top:42px;border-bottom:2px solid #8b4c45;border-radius:0 0 12px 12px;z-index:6; }
+    .char-neck { position:absolute;left:49px;top:59px;width:19px;height:17px;background:#d99d7b;z-index:2; }
+    .char-body { position:absolute;left:26px;top:69px;width:65px;height:75px;border-radius:18px 18px 12px 12px;background:linear-gradient(110deg,#eaf6f8 0 42%,#b9d4db 43% 100%);z-index:3;box-shadow:inset -7px 0 rgba(34,68,82,.12); }
+    .char-body:after { content:"";position:absolute;left:27px;top:0;width:9px;height:75px;background:#00b9dc;opacity:.85; }
+    .char-arm { position:absolute;top:78px;width:17px;height:63px;border-radius:12px;background:linear-gradient(90deg,#e5b08e,#bd8064);transform-origin:top center;z-index:2; }
+    .char-arm.left { left:17px;transform:rotate(12deg);animation:arm-left 2.4s ease-in-out infinite; }
+    .char-arm.right { right:14px;transform:rotate(-27deg); }
+    .char-hand { position:absolute;width:15px;height:15px;border-radius:50%;background:#d99d7b;bottom:-8px;left:1px; }
+    .char-leg { position:absolute;top:137px;width:19px;height:57px;border-radius:8px 8px 11px 11px;background:linear-gradient(90deg,#263b4a,#142431);transform-origin:top center;z-index:2; }
+    .char-leg.left { left:37px;animation:leg-step 2.8s ease-in-out infinite; }
+    .char-leg.right { left:63px;transform:rotate(-3deg); }
+    .char-shoe { position:absolute;bottom:-5px;left:-7px;width:31px;height:12px;border-radius:10px 7px 4px 4px;background:#07131d;border-bottom:3px solid var(--cyan); }
+    .char-bag { position:absolute;z-index:5;left:12px;top:89px;width:30px;height:37px;border:2px solid #00d9ff;border-radius:8px 8px 10px 10px;background:linear-gradient(145deg,#087b96,#06465e);transform:rotate(8deg);box-shadow:0 5px 16px rgba(0,217,255,.2); }
+    .char-bag:before { content:"";position:absolute;left:7px;top:-8px;width:11px;height:8px;border:2px solid #00d9ff;border-bottom:0;border-radius:7px 7px 0 0; }
+    .char-bag:after { content:"ϟ";position:absolute;inset:8px 0 0;text-align:center;color:#b8f7ff;font-size:14px;font-weight:800; }
+    .mascot-caption { position:absolute;right:15px;bottom:15px;color:#8ba8b9;font-size:9px;letter-spacing:1px;text-transform:uppercase; }
+    .story-pills { display:flex;flex-wrap:wrap;gap:8px;margin-top:18px; }
+    .story-pills span { color:#a5b9c8;border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:30px;padding:7px 10px;font-size:9px;font-weight:700;letter-spacing:.5px; }
+    .auth-card { width:100%;max-width:490px;justify-self:end;padding:clamp(24px,3.6vw,38px);border:1px solid rgba(0,217,255,.14);border-radius:26px;background:linear-gradient(155deg,rgba(16,29,42,.98),rgba(10,16,25,.98));box-shadow:0 30px 100px rgba(0,0,0,.44),0 0 60px rgba(0,217,255,.055);position:relative;overflow:hidden; }
+    .auth-card:before { content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),#5a8bff,transparent);opacity:.85; }
+    .auth-card .brand { margin-bottom:29px; }
+    .auth-card h1 { font-family:"Space Grotesk",sans-serif;font-size:clamp(27px,3vw,34px);line-height:1.08;letter-spacing:-1.3px;margin:10px 0; }
+    .auth-intro { color:var(--muted);font-size:13px;line-height:1.65;margin:0 0 23px; }
+    .form-grid { display:grid;gap:14px; }
+    .auth-card .field { padding:14px 15px;background:rgba(5,12,19,.78);border-color:rgba(155,189,213,.14); }
+    .auth-card .field:focus { border-color:rgba(0,217,255,.72);box-shadow:0 0 0 3px rgba(0,217,255,.1),0 0 22px rgba(0,217,255,.07); }
+    .auth-card label { color:#c6d5e0;font-size:11px;letter-spacing:.2px; }
+    .auth-card .btn-primary { width:100%;min-height:48px;border-radius:13px;font-size:13px; }
+    .auth-foot { margin-top:20px;text-align:center;font-size:12px;color:var(--muted); }
     .text-action { color:var(--cyan);font-weight:700;background:none;border:0;padding:0; }
-    .auth-note { font-size:11px;color:#718497;line-height:1.6;margin:17px 0 0;text-align:center; }
+    .auth-note { font-size:10px;color:#718497;line-height:1.6;margin:15px 0 0;text-align:center; }
     .notice { min-height:18px;font-size:12px;color:var(--danger);line-height:1.5; }
     .notice.success { color:var(--green); }
+    @keyframes mascot-float { 0%,100% { translate:0 0; } 50% { translate:0 -8px; } }
+    @keyframes arm-left { 0%,100% { transform:rotate(12deg); } 50% { transform:rotate(28deg); } }
+    @keyframes leg-step { 0%,100% { transform:rotate(2deg); } 50% { transform:rotate(-5deg); } }
+    @keyframes orbit-spin { to { rotate:360deg; } }
     .app-shell { height:100vh;min-height:560px;display:grid;grid-template-columns:340px minmax(0,1fr);max-width:1700px;margin:0 auto;padding:18px;gap:14px; }
     .sidebar,.chat-panel { min-height:0;border:1px solid var(--line);background:rgba(13,20,30,.92);border-radius:22px;overflow:hidden; }
     .sidebar { display:flex;flex-direction:column; }
@@ -161,41 +206,81 @@
       .chat-top { height:68px;padding:0 12px; }
       .secure-pill { display:none; }
       .message-row { max-width:88%; }
-      .auth-wrap { padding:15px; }
-      .auth-card { padding:25px 21px; }
+      .auth-wrap { padding:22px 16px;min-height:100svh;align-items:start; }
+      .auth-layout { width:min(100%,490px);grid-template-columns:1fr;gap:13px; }
+      .auth-story { display:grid;grid-template-columns:1fr 104px;column-gap:13px;align-items:center;padding:0; }
+      .story-chip { grid-column:1 / -1;justify-self:start;font-size:9px;padding:7px 10px; }
+      .mascot-stage { grid-column:2;grid-row:2 / span 2;height:112px;width:104px;margin:7px 0 0;border-radius:19px; }
+      .mascot-stage:before { width:76px;height:76px;top:15px; }
+      .mascot-stage:after { width:94px;height:94px;top:6px; }
+      .mascot-character { transform:translateX(-50%) scale(.48);transform-origin:bottom center;bottom:4px; }
+      .mascot-caption { display:none; }
+      .auth-story h2 { grid-column:1;grid-row:2;margin:13px 0 5px;font-size:24px;letter-spacing:-1px; }
+      .auth-story-copy { grid-column:1;grid-row:3;font-size:11px;line-height:1.55; }
+      .story-pills { grid-column:1 / -1;margin-top:9px; }
+      .story-pills span { font-size:8px;padding:6px 8px; }
+      .auth-card { max-width:none;justify-self:stretch;padding:24px 20px;border-radius:21px; }
+      .auth-card .brand { margin-bottom:21px; }
+      .auth-card h1 { font-size:27px; }
+      .auth-intro { font-size:12px;margin-bottom:18px; }
+      .form-grid { gap:12px; }
     }
   </style>
 </head>
 <body>
   <section id="authScreen" class="auth-wrap">
-    <div class="auth-card">
-      <div class="brand"><div class="brand-mark">ϟ</div><div>flare<span>chat</span></div></div>
-      <div class="eyebrow" id="authEyebrow">YOUR SPACE. YOUR ID.</div>
-      <h1 id="authTitle">Conversations, without phone numbers.</h1>
-      <p class="auth-intro" id="authIntro">Create your own unique Flare ID and connect with people on your terms.</p>
-      <form id="authForm" class="form-grid">
-        <div id="nameField">
-          <label for="displayName">Display name</label>
-          <input class="field" id="displayName" maxlength="40" autocomplete="name" placeholder="Your name">
+    <div class="auth-layout">
+      <aside class="auth-story">
+        <div class="story-chip"><span></span> YOUR SPACE. YOUR ID.</div>
+        <div class="mascot-stage" aria-hidden="true">
+          <div class="mascot-glow"></div>
+          <div class="mascot-character">
+            <div class="char-bag"></div>
+            <div class="char-hair"></div>
+            <div class="char-head"><i class="char-eye one"></i><i class="char-eye two"></i><i class="char-smile"></i></div>
+            <div class="char-neck"></div>
+            <div class="char-body"></div>
+            <div class="char-arm left"><i class="char-hand"></i></div>
+            <div class="char-arm right"><i class="char-hand"></i></div>
+            <div class="char-leg left"><i class="char-shoe"></i></div>
+            <div class="char-leg right"><i class="char-shoe"></i></div>
+          </div>
+          <div class="mascot-caption">Your friendly messenger</div>
         </div>
-        <div id="flareIdField">
-          <label for="flareId">Choose your Flare ID</label>
-          <input class="field" id="flareId" maxlength="20" autocomplete="username" autocapitalize="none" placeholder="e.g. rayyan_01">
-          <div class="muted" style="font-size:10px;margin-top:7px">3–20 characters · lowercase letters, numbers and _</div>
-        </div>
-        <div>
-          <label for="email">Email address</label>
-          <input class="field" id="email" type="email" required autocomplete="email" placeholder="you@example.com">
-        </div>
-        <div>
-          <label for="password">Password</label>
-          <input class="field" id="password" type="password" required minlength="8" autocomplete="current-password" placeholder="At least 8 characters">
-        </div>
-        <div id="authNotice" class="notice" role="status"></div>
-        <button class="btn btn-primary" id="authSubmit" type="submit">Create my account <span>→</span></button>
-      </form>
-      <div class="auth-foot"><span id="authSwitchText">Already have an account?</span> <button class="text-action" id="authSwitch" type="button">Sign in</button></div>
-      <p class="auth-note">No phone number required. Your Flare ID is how people find you.</p>
+        <h2>Good conversations. <span>Great connections.</span></h2>
+        <p class="auth-story-copy">Meet your people with a unique Flare ID. No phone number needed — just you, your friends, and the conversations that matter.</p>
+        <div class="story-pills"><span>✦ NO PHONE NUMBER</span><span>✦ YOUR OWN FLARE ID</span></div>
+      </aside>
+
+      <div class="auth-card">
+        <div class="brand"><div class="brand-mark">ϟ</div><div>flare<span>chat</span></div></div>
+        <div class="eyebrow" id="authEyebrow">CREATE YOUR ACCOUNT</div>
+        <h1 id="authTitle">Welcome to your new space.</h1>
+        <p class="auth-intro" id="authIntro">Create your account and choose a Flare ID your friends can find.</p>
+        <form id="authForm" class="form-grid">
+          <div id="nameField">
+            <label for="displayName">Display name</label>
+            <input class="field" id="displayName" maxlength="40" autocomplete="name" placeholder="Your name">
+          </div>
+          <div id="flareIdField">
+            <label for="flareId">Choose your Flare ID</label>
+            <input class="field" id="flareId" maxlength="20" autocomplete="username" autocapitalize="none" placeholder="e.g. rayyan_01">
+            <div class="muted" style="font-size:10px;margin-top:7px">3–20 characters · lowercase letters, numbers and _</div>
+          </div>
+          <div>
+            <label for="email">Email address</label>
+            <input class="field" id="email" type="email" required autocomplete="email" placeholder="you@example.com">
+          </div>
+          <div>
+            <label for="password">Password</label>
+            <input class="field" id="password" type="password" required minlength="8" autocomplete="current-password" placeholder="At least 8 characters">
+          </div>
+          <div id="authNotice" class="notice" role="status"></div>
+          <button class="btn btn-primary" id="authSubmit" type="submit">Create my account <span>→</span></button>
+        </form>
+        <div class="auth-foot"><span id="authSwitchText">Already have an account?</span> <button class="text-action" id="authSwitch" type="button">Sign in</button></div>
+        <p class="auth-note">By continuing, you agree to use Flare Chat respectfully.</p>
+      </div>
     </div>
   </section>
 
