@@ -733,8 +733,8 @@
         return;
       }
       const result = await db.from("profiles")
-        .select("id, flare_id, display_name, avatar_url")
-        .eq("flare_id", id)
+        .select("user_id, username, display_name, avatar_url")
+        .eq("username", id)
         .maybeSingle();
       if (result.error) {
         showToast(result.error.message);
@@ -744,11 +744,16 @@
         showToast("No user found with @" + id);
         return;
       }
-      if (result.data.id === currentUser.id) {
+      if (result.data.user_id === currentUser.id) {
         showToast("That's your own Flare ID.");
         return;
       }
-      showSearchResult(result.data);
+      showSearchResult({
+        id: result.data.user_id,
+        flare_id: result.data.username,
+        display_name: result.data.display_name,
+        avatar_url: result.data.avatar_url
+      });
     }
 
     function showSearchResult(profile) {
