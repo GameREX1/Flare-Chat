@@ -220,6 +220,60 @@
     .side-brand-row .brand { font-size:20px; }
     .side-brand-row .brand-mark { width:36px;height:36px; }
     .side-sub { color:var(--muted);font-size:11px;margin:9px 0 18px 45px; }
+
+    /* Stories */
+    .stories-panel { padding:14px 15px 12px; border-bottom:1px solid var(--line); }
+    .stories-heading { display:flex;align-items:center;justify-content:space-between;margin-bottom:11px; }
+    .stories-heading strong { color:#c8c8ce;font-size:10px;letter-spacing:1.7px;font-weight:800; }
+    .stories-heading span { color:#85858e;font-size:10px; }
+    .stories-rail { display:flex;align-items:flex-start;gap:13px;overflow-x:auto;overflow-y:hidden;padding:2px 1px 7px;scrollbar-width:thin;scrollbar-color:rgba(255,48,56,.35) transparent; }
+    .story-item { flex:0 0 58px;width:58px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:0;border:0;background:transparent;color:#dedee2;cursor:pointer; }
+    .story-ring { width:54px;height:54px;padding:3px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ff7b48,#ff3038 48%,#8f111b); }
+    .story-ring.unseen { background:linear-gradient(135deg,#ff9a54,#ff3038 45%,#7c0711); }
+    .story-ring.own { background:#45454b; }
+    .story-avatar { width:100%;height:100%;display:grid;place-items:center;overflow:hidden;border-radius:50%;background:#201316;border:2px solid #08080a;color:#fff;font-size:13px;font-weight:800; }
+    .story-avatar img { width:100%;height:100%;object-fit:cover; }
+    .story-name { width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:10px;color:#c3c3ca; }
+    .story-add-mark { position:absolute;right:-1px;bottom:-1px;width:19px;height:19px;border:2px solid #08080a;border-radius:50%;display:grid;place-items:center;background:#ff3038;color:#fff;font-size:14px;line-height:1; }
+    .story-ring-wrap { position:relative;display:block; }
+    .stories-empty { align-self:center;color:#777780;font-size:10px;white-space:nowrap;padding:12px 0; }
+    .car-card { margin:12px 12px 2px;padding:11px 12px 8px;border:1px solid rgba(255,48,56,.22);border-radius:16px;background:linear-gradient(145deg,rgba(37,13,16,.78),rgba(12,12,14,.96));box-shadow:0 8px 28px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.025); }
+    .car-card-head { display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 3px; }
+    .car-card-title { font-family:"Space Grotesk",sans-serif;font-size:12px;font-weight:800;letter-spacing:.6px;color:#f4eeee; }
+    .car-card-hint { font-size:9px;color:#a7a0a2; }
+    .car-model-viewer { display:block;width:100%;height:176px;background:radial-gradient(ellipse at 50% 65%,rgba(255,48,56,.12),transparent 68%);--poster-color:transparent; }
+    .car-card-foot { display:flex;align-items:center;justify-content:center;gap:6px;padding:0 0 3px;color:#8e8587;font-size:9px; }
+    .car-card-foot span { color:#ff5961; }
+    /* Story viewer and text-story composer */
+    .story-overlay { position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:18px;background:rgba(0,0,0,.82);backdrop-filter:blur(12px); }
+    .story-overlay[hidden] { display:none !important; }
+    .story-view-card,.story-compose-card { position:relative;width:min(100%,390px);min-height:430px;max-height:min(760px,92vh);overflow:hidden;border:1px solid rgba(255,48,56,.28);border-radius:22px;background:linear-gradient(160deg,#211014,#09090b 65%);box-shadow:0 24px 90px rgba(0,0,0,.65); }
+    .story-view-card { display:flex;flex-direction:column; }
+    .story-view-top { display:flex;align-items:center;gap:10px;padding:17px 17px 12px; }
+    .story-view-avatar { width:36px;height:36px;border-radius:50%;object-fit:cover;background:#3a1117;border:1px solid rgba(255,48,56,.45);display:grid;place-items:center;color:#fff;font-size:12px;font-weight:800; }
+    .story-view-person { flex:1;min-width:0; }
+    .story-view-person strong { display:block;font-size:12px;color:#fff; }
+    .story-view-person span { display:block;margin-top:3px;font-size:10px;color:#9d9294; }
+    .story-close,.story-nav button { border:1px solid rgba(255,255,255,.1);background:#211719;color:#fff;border-radius:10px;padding:8px 11px; }
+    .story-view-content { flex:1;display:grid;place-items:center;min-height:300px;padding:22px;text-align:center;background:radial-gradient(ellipse at 50% 30%,rgba(255,48,56,.12),transparent 70%); }
+    .story-view-content p { margin:0;max-width:310px;color:#fff;font-size:22px;line-height:1.45;font-weight:700;overflow-wrap:anywhere; }
+    .story-view-content img,.story-view-content video { max-width:100%;max-height:520px;object-fit:contain;border-radius:13px; }
+    .story-nav { display:flex;justify-content:space-between;gap:10px;padding:12px 17px 17px; }
+    .story-nav button:disabled { opacity:.35;cursor:not-allowed; }
+    .story-compose-card { min-height:0;padding:22px;display:flex;flex-direction:column;gap:14px; }
+    .story-compose-head { display:flex;align-items:center;justify-content:space-between;gap:12px; }
+    .story-compose-head h3 { margin:0;font-family:"Space Grotesk",sans-serif;font-size:19px; }
+    .story-compose-card textarea { width:100%;min-height:210px;resize:vertical;padding:16px;border:1px solid rgba(255,48,56,.24);border-radius:14px;outline:none;background:#0b0b0d;color:#fff;font:600 16px/1.5 "DM Sans",sans-serif; }
+    .story-compose-card textarea:focus { border-color:#ff3038;box-shadow:0 0 0 3px rgba(255,48,56,.1); }
+    .story-compose-card textarea::placeholder { color:#777780; }
+    .story-compose-note { color:#969098;font-size:10px;line-height:1.5; }
+    @media (max-width:650px) {
+      .stories-panel { padding:15px 17px 12px; }
+      .car-card { margin:13px 14px 4px; }
+      .car-model-viewer { height:205px; }
+      .story-view-card { max-height:88vh; }
+    }
+
     .search-box { position:relative; }
     .search-box input { padding-left:39px;font-size:12px; }
     .search-icon { position:absolute;left:13px;top:11px;color:#898991;font-size:15px;pointer-events:none; }
@@ -368,6 +422,40 @@
           <button class="tab" data-tab="contacts" type="button">People</button>
         </div>
       </div>
+
+      <section class="stories-panel" aria-label="Stories">
+        <div class="stories-heading"><strong>STORIES</strong><span>Share a moment · 24h</span></div>
+        <div class="stories-rail" id="storiesRail">
+          <button class="story-item" id="addStoryBtn" type="button" aria-label="Add your story">
+            <span class="story-ring-wrap"><span class="story-ring own"><span class="story-avatar" id="myStoryAvatar">+</span></span><i class="story-add-mark">+</i></span>
+            <span class="story-name">Your story</span>
+          </button>
+          <span class="stories-empty">Loading stories…</span>
+        </div>
+      </section>
+      <section class="car-card" aria-label="Interactive 3D car showcase">
+        <div class="car-card-head">
+          <span class="car-card-title">FLARE GARAGE</span>
+          <span class="car-card-hint">BUGATTI DIVO</span>
+        </div>
+        <model-viewer class="car-model-viewer"
+          src="./bugati_divo.glb"
+          alt="Interactive 3D Bugatti Divo"
+          auto-rotate
+          auto-rotate-delay="0"
+          rotation-per-second="7deg"
+          camera-controls
+          interaction-prompt="none"
+          shadow-intensity="1.15"
+          exposure="1.05"
+          camera-orbit="35deg 72deg 110%"
+          field-of-view="30deg"
+          loading="eager"
+          reveal="auto">
+        </model-viewer>
+        <div class="car-card-foot"><span>●</span> Auto 360° rotation · Drag to explore</div>
+      </section>
+
       <div class="section-head"><h2 id="listHeading">Recent chats</h2><span class="eyebrow" id="listCount">0</span></div>
       <div class="list-area" id="listArea"></div>
       <div class="side-bottom">
@@ -412,9 +500,34 @@
     </div>
   </main>
 
+
+  <section class="story-overlay" id="storyViewer" hidden aria-modal="true" role="dialog" aria-label="Story viewer">
+    <div class="story-view-card">
+      <div class="story-view-top">
+        <div class="story-view-avatar" id="storyViewAvatar">F</div>
+        <div class="story-view-person"><strong id="storyViewName">Story</strong><span id="storyViewHandle">@flare_id</span></div>
+        <button class="story-close" id="storyCloseBtn" type="button" aria-label="Close story">✕</button>
+      </div>
+      <div class="story-view-content" id="storyViewContent"></div>
+      <div class="story-nav">
+        <button id="storyPrevBtn" type="button">Previous</button>
+        <button id="storyNextBtn" type="button">Next</button>
+      </div>
+    </div>
+  </section>
+  <section class="story-overlay" id="storyComposer" hidden aria-modal="true" role="dialog" aria-label="Create a story">
+    <form class="story-compose-card" id="storyComposeForm">
+      <div class="story-compose-head"><h3>Share a story</h3><button class="story-close" id="storyComposeClose" type="button" aria-label="Close composer">✕</button></div>
+      <textarea id="storyText" maxlength="350" placeholder="What would you like to share?" required></textarea>
+      <div class="story-compose-note">Your text story will be visible to signed-in Flare Chat users for 24 hours.</div>
+      <button class="btn btn-primary" id="publishStoryBtn" type="submit">Share story <span>→</span></button>
+    </form>
+  </section>
+
   <div id="toast" class="toast" role="status"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
   <script>
     // Add your Supabase Project URL and public anon/publishable key here.
     // Never put a service_role or secret key in browser code.
@@ -434,6 +547,189 @@
     let activeConversationId = null;
     let activeChannel = null;
     let toastTimer = null;
+
+
+    let storyRows = [];
+    let storyGroups = {};
+    let activeStoryUserId = null;
+    let activeStoryIndex = 0;
+
+    function storyAvatarMarkup(profile, sizeClass) {
+      const name = profile && profile.display_name ? profile.display_name : "Flare User";
+      if (profile && profile.avatar_url && /^https?:\/\//i.test(profile.avatar_url)) {
+        return '<span class="story-avatar"><img src="' + escapeHtml(profile.avatar_url) + '" alt=""></span>';
+      }
+      return '<span class="story-avatar">' + escapeHtml(initials(name)) + '</span>';
+    }
+
+    function renderStories() {
+      const rail = $("storiesRail");
+      if (!rail) return;
+      const ownStories = storyRows.filter(row => row.user_id === currentUser.id);
+      const ownHasStory = ownStories.length > 0;
+      const ownAvatar = myProfile && myProfile.avatar_url && /^https?:\/\//i.test(myProfile.avatar_url)
+        ? '<img src="' + escapeHtml(myProfile.avatar_url) + '" alt="">'
+        : escapeHtml(initials(myProfile && myProfile.display_name));
+      const ownButton = '<button class="story-item" id="addStoryBtn" type="button" aria-label="Add your story">' +
+        '<span class="story-ring-wrap"><span class="story-ring ' + (ownHasStory ? 'unseen' : 'own') + '"><span class="story-avatar">' +
+        (ownAvatar.startsWith('<img') ? ownAvatar : ownAvatar) + '</span></span><i class="story-add-mark">+</i></span>' +
+        '<span class="story-name">Your story</span></button>';
+
+      storyGroups = {};
+      storyRows.forEach(row => {
+        if (!storyGroups[row.user_id]) storyGroups[row.user_id] = [];
+        storyGroups[row.user_id].push(row);
+      });
+      const otherIds = Object.keys(storyGroups).filter(id => id !== currentUser.id);
+      const otherButtons = otherIds.map(userId => {
+        const rows = storyGroups[userId];
+        const profile = rows[0].profile || {};
+        const name = profile.display_name || profile.username || "Flare User";
+        const handle = profile.username || "user";
+        return '<button class="story-item" type="button" data-story-user="' + escapeHtml(userId) + '" aria-label="View ' + escapeHtml(name) + ' story">' +
+          '<span class="story-ring unseen">' + storyAvatarMarkup(profile) + '</span>' +
+          '<span class="story-name">' + escapeHtml(name) + '</span></button>';
+      }).join("");
+      rail.innerHTML = ownButton + (otherButtons || '<span class="stories-empty">No stories yet. Share the first one.</span>');
+    }
+
+    async function loadStories() {
+      const rail = $("storiesRail");
+      if (!db || !currentUser || !rail) return;
+      const result = await db.from("stories")
+        .select("id, user_id, body, media_url, expires_at")
+        .gt("expires_at", new Date().toISOString())
+        .order("expires_at", {ascending:true})
+        .limit(60);
+      if (result.error) {
+        storyRows = [];
+        renderStories();
+        console.warn("Stories could not be loaded:", result.error.message);
+        return;
+      }
+
+      storyRows = result.data || [];
+      const userIds = Array.from(new Set(storyRows.map(row => row.user_id).filter(Boolean)));
+      let profileMap = {};
+      if (userIds.length) {
+        const profilesResult = await db.from("profiles")
+          .select("user_id, username, display_name, avatar_url")
+          .in("user_id", userIds);
+        if (!profilesResult.error) {
+          (profilesResult.data || []).forEach(profile => { profileMap[profile.user_id] = profile; });
+        } else {
+          console.warn("Story profile names could not be loaded:", profilesResult.error.message);
+        }
+      }
+      storyRows.forEach(row => {
+        row.profile = profileMap[row.user_id] || (row.user_id === currentUser.id ? myProfile : null);
+      });
+      renderStories();
+    }
+
+    function openStory(userId, index) {
+      const rows = storyGroups[userId] || [];
+      if (!rows.length) return;
+      activeStoryUserId = userId;
+      activeStoryIndex = Math.max(0, Math.min(index || 0, rows.length - 1));
+      const row = rows[activeStoryIndex];
+      const profile = row.profile || {};
+      const name = profile.display_name || profile.username || "Flare User";
+      $("storyViewName").textContent = name;
+      $("storyViewHandle").textContent = profile.username ? "@" + profile.username : "Flare story";
+      const avatar = $("storyViewAvatar");
+      avatar.innerHTML = storyAvatarMarkup(profile);
+      const content = $("storyViewContent");
+      const media = String(row.media_url || "");
+      if (/^https?:\/\//i.test(media) && /\.(mp4|webm|ogg)(\?.*)?$/i.test(media)) {
+        content.innerHTML = '<video src="' + escapeHtml(media) + '" controls autoplay playsinline></video>' +
+          (row.body ? '<p>' + escapeHtml(row.body) + '</p>' : '');
+      } else if (/^https?:\/\//i.test(media)) {
+        content.innerHTML = '<img src="' + escapeHtml(media) + '" alt="Story media">' +
+          (row.body ? '<p>' + escapeHtml(row.body) + '</p>' : '');
+      } else {
+        content.innerHTML = '<p>' + escapeHtml(row.body || "A moment shared on Flare Chat.") + '</p>';
+      }
+      $("storyPrevBtn").disabled = activeStoryIndex <= 0;
+      $("storyNextBtn").disabled = activeStoryIndex >= rows.length - 1;
+      $("storyViewer").hidden = false;
+    }
+
+    function closeStoryViewer() {
+      $("storyViewer").hidden = true;
+      $("storyViewContent").innerHTML = "";
+      activeStoryUserId = null;
+    }
+
+    function showStoryComposer() {
+      $("storyText").value = "";
+      $("storyComposer").hidden = false;
+      $("storyText").focus();
+    }
+
+    async function publishStory(event) {
+      event.preventDefault();
+      const body = $("storyText").value.trim();
+      if (!body) {
+        showToast("Write something before sharing your story.");
+        return;
+      }
+      if (!currentUser) return;
+      const button = $("publishStoryBtn");
+      button.disabled = true;
+      button.textContent = "Sharing…";
+      try {
+        const result = await db.from("stories").insert({
+          user_id: currentUser.id,
+          body: body,
+          media_url: null,
+          expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+        });
+        if (result.error) throw result.error;
+        $("storyComposer").hidden = true;
+        showToast("Your story has been shared.");
+        await loadStories();
+      } catch (error) {
+        showToast("Story could not be shared: " + (error.message || "Please check Stories permissions."));
+      } finally {
+        button.disabled = false;
+        button.innerHTML = 'Share story <span>→</span>';
+      }
+    }
+
+    function bindStoryControls() {
+      $("storiesRail").addEventListener("click", event => {
+        const addButton = event.target.closest("#addStoryBtn");
+        if (addButton) {
+          if (storyGroups[currentUser.id] && storyGroups[currentUser.id].length) {
+            openStory(currentUser.id, 0);
+          } else {
+            showStoryComposer();
+          }
+          return;
+        }
+        const storyButton = event.target.closest("[data-story-user]");
+        if (storyButton) openStory(storyButton.dataset.storyUser, 0);
+      });
+      $("storyCloseBtn").addEventListener("click", closeStoryViewer);
+      $("storyViewer").addEventListener("click", event => {
+        if (event.target === $("storyViewer")) closeStoryViewer();
+      });
+      $("storyPrevBtn").addEventListener("click", () => openStory(activeStoryUserId, activeStoryIndex - 1));
+      $("storyNextBtn").addEventListener("click", () => openStory(activeStoryUserId, activeStoryIndex + 1));
+      $("storyComposeClose").addEventListener("click", () => { $("storyComposer").hidden = true; });
+      $("storyComposer").addEventListener("click", event => {
+        if (event.target === $("storyComposer")) $("storyComposer").hidden = true;
+      });
+      $("storyComposeForm").addEventListener("submit", publishStory);
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+          closeStoryViewer();
+          $("storyComposer").hidden = true;
+        }
+      });
+    }
+
 
     function escapeHtml(value) {
       return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
@@ -856,11 +1152,14 @@
         showApp();
         // Auth/profile is ready. Existing chat tables are being aligned in a separate schema-safe step.
         renderSidebar();
+        loadStories().catch(error => console.warn("Story startup failed:", error));
       } catch (error) {
         showAuth();
         setNotice("Could not load your Flare profile. Check that supabase/schema.sql has been run. " + (error.message || ""), false);
       }
     }
+
+    bindStoryControls();
 
     $("authSwitch").addEventListener("click", () => setAuthMode(authMode === "signup" ? "signin" : "signup"));
     $("authForm").addEventListener("submit", async event => {
