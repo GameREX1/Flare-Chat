@@ -23,23 +23,11 @@ Copy the complete contents of \`supabase/schema.sql\` into the editor and run it
 
 The schema creates the tables, signup trigger, direct-chat RPC, access policies and Realtime publication entry required by the app.
 
-## 2. Add the Supabase browser credentials
+## 2. Supabase browser credentials
 
-In Supabase, open **Project Settings → API** (or **Data API**) and copy:
+The current `index.html` already contains this project's Supabase Project URL and the public publishable key supplied for Flare Chat. No `.env.local`, Next.js server helper, or middleware is needed for this static GitHub Pages version.
 
-- Project URL
-- Public anon key / publishable key
-
-Open \`index.html\` and find the \`SUPABASE_CONFIG\` object near the top of the application script. Replace the two empty strings:
-
-\`\`\`js
-const SUPABASE_CONFIG = {
-  url: "https://YOUR-PROJECT.supabase.co",
-  anonKey: "YOUR_PUBLIC_ANON_OR_PUBLISHABLE_KEY"
-};
-\`\`\`
-
-The public anon/publishable key is intended for browser use when Row Level Security is correctly enabled. **Never use the service_role/secret key in this file.**
+The browser app uses the Supabase JavaScript client loaded from its CDN. The configured publishable key is intended for browser use when Row Level Security is correctly enabled. **Never put a service_role/secret key in browser code.**
 
 ## 3. Configure email authentication
 
