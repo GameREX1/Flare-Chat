@@ -54,4 +54,26 @@ WHERE tc.constraint_schema = 'public'
     'stories'
   )
   AND tc.constraint_type IN ('PRIMARY KEY', 'FOREIGN KEY', 'UNIQUE')
+
+UNION ALL
+
+SELECT
+    'RLS POLICY' AS item_type,
+    p.tablename AS table_name,
+    p.policyname AS column_name,
+    array_to_string(p.roles, ', ') AS data_type,
+    'command=' || p.cmd
+      || '; using=' || COALESCE(p.qual, '-')
+      || '; check=' || COALESCE(p.with_check, '-') AS details
+FROM pg_policies p
+WHERE p.schemaname = 'public'
+  AND p.tablename IN (
+    'profiles',
+    'conversations',
+    'conversation_members',
+    'messages',
+    'friend_requests',
+    'blocked_users',
+    'stories'
+  )
 ORDER BY table_name, item_type, column_name;
