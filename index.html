@@ -563,6 +563,7 @@
 
     const $ = (id) => document.getElementById(id);
     let db = null;
+    let initializationPromise = null;
     let currentUser = null;
     let myProfile = null;
     let authMode = "signup";
@@ -1190,8 +1191,12 @@
     $("authSwitch").addEventListener("click", () => setAuthMode(authMode === "signup" ? "signin" : "signup"));
     $("authForm").addEventListener("submit", async event => {
       event.preventDefault();
+      if (!db && initializationPromise) {
+        setNotice("Connecting to Flare Chat...", true);
+        await initializationPromise;
+      }
       if (!db) {
-        setNotice("Add your Supabase URL and public key in index.html first.", false);
+        setNotice("Supabase is not connected yet. Refresh the page and try again. If this continues, check whether your network blocks the Supabase CDN.", false);
         return;
       }
       const email = $("email").value.trim();
@@ -1290,26 +1295,56 @@
       }
     });
 
-    async function initialize() {
-      if (!window.supabase || !SUPABASE_CONFIG.url || !SUPABASE_CONFIG.anonKey) {
-        setNotice("Setup needed: add your Supabase Project URL and public anon/publishable key in index.html.", false);
-        return;
+    async function ensureSupabaseSdk() {
+      if (window.supabase && typeof window.supabase.createClient === "function") {
+        return window.supabase;
       }
-      db = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
-      const sessionResult = await db.auth.getSession();
-      if (sessionResult.error) {
-        setNotice(sessionResult.error.message, false);
-        return;
-      }
-      if (sessionResult.data.session) await bootApp(sessionResult.data.session.user);
-      db.auth.onAuthStateChange((event, session) => {
-        if (event === "SIGNED_OUT") showAuth();
-        if (event === "SIGNED_IN" && session && !currentUser) bootApp(session.user);
+
+      // Primary CDN may be blocked on some networks. Try the official alternate CDN.
+      await new Promise((resolve, reject) => {
+        const fallbackScript = document.createElement("script");
+        fallbackScript.src = "https://unpkg.com/@supabase/supabase-js@2";
+        fallbackScript.async = true;
+        fallbackScript.onload = resolve;
+        fallbackScript.onerror = () => reject(new Error("Both Supabase CDN scripts failed to load."));
+        document.head.appendChild(fallbackScript);
       });
+
+      if (!window.supabase || typeof window.supabase.createClient !== "function") {
+        throw new Error("Supabase JavaScript library was not available after loading.");
+      }
+      return window.supabase;
+    }
+
+    async function initialize() {
+      if (!SUPABASE_CONFIG.url || !SUPABASE_CONFIG.anonKey) {
+        setNotice("Supabase Project URL or public key is missing from index.html.", false);
+        return;
+      }
+
+      try {
+        const supabaseSdk = await ensureSupabaseSdk();
+        db = supabaseSdk.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
+
+        const sessionResult = await db.auth.getSession();
+        if (sessionResult.error) {
+          setNotice("Supabase loaded, but could not restore the session: " + sessionResult.error.message, false);
+          return;
+        }
+        if (sessionResult.data.session) await bootApp(sessionResult.data.session.user);
+
+        db.auth.onAuthStateChange((event, session) => {
+          if (event === "SIGNED_OUT") showAuth();
+          if (event === "SIGNED_IN" && session && !currentUser) bootApp(session.user);
+        });
+      } catch (error) {
+        console.error("Flare Chat Supabase initialization failed:", error);
+        setNotice("Could not load Supabase. Refresh the page and check your internet connection. " + (error.message || ""), false);
+      }
     }
 
     setAuthMode("signup");
-    initialize();
+    initializationPromise = initialize();
   </script>
 </body>
 </html>
