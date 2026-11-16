@@ -383,6 +383,20 @@
       .auth-card .brand { font-size:20px; }
     }
 
+
+    .stories-heading-actions { display:flex;align-items:center;gap:12px; }
+    .side-actions { display:flex;align-items:center;gap:8px; }
+    .mobile-open-chats,.mobile-close-sidebar { display:none; }
+    .mobile-open-chats { border:1px solid rgba(255,48,56,.32);border-radius:10px;padding:7px 10px;background:#211014;color:#fff;font-size:10px;font-weight:800; }
+    @media (max-width:650px) {
+      .sidebar { display:none;z-index:2; }
+      .chat-panel { z-index:1; }
+      body.sidebar-open .sidebar { display:flex;z-index:4; }
+      body.sidebar-open .chat-panel { z-index:1; }
+      body.chat-open .sidebar { display:none; }
+      body.chat-open .chat-panel { z-index:3; }
+      .mobile-open-chats,.mobile-close-sidebar { display:inline-flex; }
+    }
   </style>
 </head>
 <body>
@@ -425,7 +439,7 @@
       <div class="side-top">
         <div class="side-brand-row">
           <div class="brand"><div class="brand-mark"><img src="https://i.ibb.co/7x93TMGd/Flare-Chat-Fiery-Neon-Emblem.png" alt="Flare Chat logo"></div><div>flare<span>chat</span></div></div>
-          <button class="btn-icon" id="newChatBtn" title="Find a Flare ID" aria-label="Find a Flare ID">＋</button>
+          <div class="side-actions"><button class="btn-icon mobile-close-sidebar" id="closeSidebarBtn" type="button" aria-label="Close chats list">✕</button><button class="btn-icon" id="newChatBtn" title="Find a Flare ID" aria-label="Find a Flare ID">＋</button></div>
         </div>
         <div class="side-sub">Your people. Your conversations.</div>
         <div class="search-box">
@@ -452,7 +466,7 @@
     <section class="chat-panel">
       <div class="home-feed" id="homeFeed">
       <section class="stories-panel" aria-label="Stories">
-        <div class="stories-heading"><strong>STORIES</strong><span>Share a moment · 24h</span></div>
+        <div class="stories-heading"><strong>STORIES</strong><span class="stories-heading-actions"><span>Share a moment · 24h</span><button class="mobile-open-chats" id="openChatsBtn" type="button">Chats ☰</button></span></div>
         <div class="stories-rail" id="storiesRail">
           <button class="story-item" data-add-story="true" type="button" aria-label="Add your story">
             <span class="story-ring-wrap"><span class="story-ring own"><span class="story-avatar" id="myStoryAvatar">+</span></span><i class="story-add-mark">+</i></span>
@@ -1090,6 +1104,7 @@
       $("chatAvatar").textContent = initials(selected.person.display_name);
       $("chatName").textContent = selected.person.display_name;
       $("chatId").textContent = "@" + selected.person.flare_id;
+      document.body.classList.remove("sidebar-open");
       document.body.classList.add("chat-open");
       renderSidebar();
       await loadMessages();
@@ -1219,6 +1234,12 @@
       }
     });
 
+    $("openChatsBtn").addEventListener("click", () => {
+      document.body.classList.add("sidebar-open");
+    });
+    $("closeSidebarBtn").addEventListener("click", () => {
+      document.body.classList.remove("sidebar-open");
+    });
     $("newChatBtn").addEventListener("click", () => {
       $("quickSearch").focus();
       showToast("Type a person's exact Flare ID in search.");
@@ -1256,7 +1277,7 @@
       }
     });
     $("backBtn").addEventListener("click", () => {
-      document.body.classList.remove("chat-open");
+      document.body.classList.remove("chat-open", "sidebar-open");
       activeConversationId = null;
       $("chatHeader").classList.add("hidden");
       $("messages").classList.add("hidden");
