@@ -426,7 +426,7 @@
       <section class="stories-panel" aria-label="Stories">
         <div class="stories-heading"><strong>STORIES</strong><span>Share a moment · 24h</span></div>
         <div class="stories-rail" id="storiesRail">
-          <button class="story-item" id="addStoryBtn" type="button" aria-label="Add your story">
+          <button class="story-item" data-add-story="true" type="button" aria-label="Add your story">
             <span class="story-ring-wrap"><span class="story-ring own"><span class="story-avatar" id="myStoryAvatar">+</span></span><i class="story-add-mark">+</i></span>
             <span class="story-name">Your story</span>
           </button>
@@ -570,7 +570,7 @@
       const ownAvatar = myProfile && myProfile.avatar_url && /^https?:\/\//i.test(myProfile.avatar_url)
         ? '<img src="' + escapeHtml(myProfile.avatar_url) + '" alt="">'
         : escapeHtml(initials(myProfile && myProfile.display_name));
-      const ownButton = '<button class="story-item" id="addStoryBtn" type="button" aria-label="Add your story">' +
+      const ownButton = '<button class="story-item" data-add-story="true" type="button" aria-label="Add your story">' +
         '<span class="story-ring-wrap"><span class="story-ring ' + (ownHasStory ? 'unseen' : 'own') + '"><span class="story-avatar">' +
         (ownAvatar.startsWith('<img') ? ownAvatar : ownAvatar) + '</span></span><i class="story-add-mark">+</i></span>' +
         '<span class="story-name">Your story</span></button>';
@@ -699,7 +699,7 @@
 
     function bindStoryControls() {
       $("storiesRail").addEventListener("click", event => {
-        const addButton = event.target.closest("#addStoryBtn");
+        const addButton = event.target.closest("[data-add-story]");
         if (addButton) {
           if (storyGroups[currentUser.id] && storyGroups[currentUser.id].length) {
             openStory(currentUser.id, 0);
