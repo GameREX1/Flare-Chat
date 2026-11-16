@@ -62,58 +62,103 @@
     .field:focus { border-color:rgba(0,217,255,.65);box-shadow:0 0 0 3px rgba(0,217,255,.09); }
     .field::placeholder { color:#65788a; }
     label { display:block;font-size:12px;font-weight:700;color:#b9c9d7;margin:0 0 8px; }
-    .auth-wrap { min-height:100vh;display:grid;place-items:center;padding:34px; }
-    .auth-layout { width:min(100%,980px);display:grid;grid-template-columns:minmax(280px,.88fr) minmax(390px,1.12fr);align-items:center;gap:clamp(24px,5vw,62px); }
-    .auth-story { min-width:0;padding:10px 0; }
-    .story-chip { display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(0,217,255,.18);border-radius:30px;background:rgba(0,217,255,.07);color:#a8eefa;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase; }
-    .story-chip span { width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 13px var(--cyan); }
-    .auth-story h2 { max-width:390px;margin:23px 0 11px;font:700 clamp(29px,4vw,43px)/1.06 "Space Grotesk",sans-serif;letter-spacing:-1.8px; }
-    .auth-story h2 span { color:var(--cyan); }
-    .auth-story-copy { max-width:350px;color:var(--muted);font-size:13px;line-height:1.75;margin:0; }
-    .mascot-stage { height:260px;max-width:340px;position:relative;margin:26px 0 20px;border:1px solid rgba(0,217,255,.12);border-radius:28px;overflow:hidden;background:radial-gradient(ellipse at 50% 75%,rgba(0,217,255,.13),transparent 54%),linear-gradient(145deg,rgba(20,39,54,.86),rgba(8,15,24,.92)); }
-    .mascot-stage:before,.mascot-stage:after { content:"";position:absolute;border:1px solid rgba(0,217,255,.12);border-radius:50%; }
-    .mascot-stage:before { width:190px;height:190px;left:50%;top:30px;transform:translateX(-50%); }
-    .mascot-stage:after { width:238px;height:238px;left:50%;top:6px;transform:translateX(-50%);border-style:dashed;opacity:.48;animation:orbit-spin 24s linear infinite; }
-    .mascot-glow { position:absolute;width:180px;height:42px;left:50%;bottom:24px;transform:translateX(-50%);border-radius:50%;background:rgba(0,217,255,.16);filter:blur(20px); }
-    .mascot-character { position:absolute;width:116px;height:214px;left:50%;bottom:23px;transform:translateX(-50%);animation:mascot-float 3.2s ease-in-out infinite; }
-    .char-head { position:absolute;width:54px;height:59px;left:31px;top:9px;border-radius:48% 48% 45% 45%;background:linear-gradient(145deg,#ffd7b4,#bd8064);box-shadow:inset -7px -4px 0 rgba(80,39,30,.12);z-index:4; }
-    .char-hair { position:absolute;width:57px;height:27px;left:29px;top:5px;border-radius:50% 50% 30% 20%;background:#172331;transform:rotate(-5deg);z-index:5; }
-    .char-hair:after { content:"";position:absolute;width:19px;height:14px;right:2px;bottom:-5px;background:#172331;border-radius:0 0 70% 20%;transform:rotate(18deg); }
-    .char-eye { position:absolute;top:29px;width:4px;height:5px;border-radius:50%;background:#25303a;z-index:6; }
-    .char-eye.one { left:15px; }.char-eye.two { right:15px; }
-    .char-smile { position:absolute;width:12px;height:6px;left:21px;top:42px;border-bottom:2px solid #8b4c45;border-radius:0 0 12px 12px;z-index:6; }
-    .char-neck { position:absolute;left:49px;top:59px;width:19px;height:17px;background:#d99d7b;z-index:2; }
-    .char-body { position:absolute;left:26px;top:69px;width:65px;height:75px;border-radius:18px 18px 12px 12px;background:linear-gradient(110deg,#eaf6f8 0 42%,#b9d4db 43% 100%);z-index:3;box-shadow:inset -7px 0 rgba(34,68,82,.12); }
-    .char-body:after { content:"";position:absolute;left:27px;top:0;width:9px;height:75px;background:#00b9dc;opacity:.85; }
-    .char-arm { position:absolute;top:78px;width:17px;height:63px;border-radius:12px;background:linear-gradient(90deg,#e5b08e,#bd8064);transform-origin:top center;z-index:2; }
-    .char-arm.left { left:17px;transform:rotate(12deg);animation:arm-left 2.4s ease-in-out infinite; }
-    .char-arm.right { right:14px;transform:rotate(-27deg); }
-    .char-hand { position:absolute;width:15px;height:15px;border-radius:50%;background:#d99d7b;bottom:-8px;left:1px; }
-    .char-leg { position:absolute;top:137px;width:19px;height:57px;border-radius:8px 8px 11px 11px;background:linear-gradient(90deg,#263b4a,#142431);transform-origin:top center;z-index:2; }
-    .char-leg.left { left:37px;animation:leg-step 2.8s ease-in-out infinite; }
-    .char-leg.right { left:63px;transform:rotate(-3deg); }
-    .char-shoe { position:absolute;bottom:-5px;left:-7px;width:31px;height:12px;border-radius:10px 7px 4px 4px;background:#07131d;border-bottom:3px solid var(--cyan); }
-    .char-bag { position:absolute;z-index:5;left:12px;top:89px;width:30px;height:37px;border:2px solid #00d9ff;border-radius:8px 8px 10px 10px;background:linear-gradient(145deg,#087b96,#06465e);transform:rotate(8deg);box-shadow:0 5px 16px rgba(0,217,255,.2); }
-    .char-bag:before { content:"";position:absolute;left:7px;top:-8px;width:11px;height:8px;border:2px solid #00d9ff;border-bottom:0;border-radius:7px 7px 0 0; }
-    .char-bag:after { content:"ϟ";position:absolute;inset:8px 0 0;text-align:center;color:#b8f7ff;font-size:14px;font-weight:800; }
-    .mascot-caption { position:absolute;right:15px;bottom:15px;color:#8ba8b9;font-size:9px;letter-spacing:1px;text-transform:uppercase; }
-    .story-pills { display:flex;flex-wrap:wrap;gap:8px;margin-top:18px; }
-    .story-pills span { color:#a5b9c8;border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:30px;padding:7px 10px;font-size:9px;font-weight:700;letter-spacing:.5px; }
-    .auth-card { width:100%;max-width:490px;justify-self:end;padding:clamp(24px,3.6vw,38px);border:1px solid rgba(0,217,255,.14);border-radius:26px;background:linear-gradient(155deg,rgba(16,29,42,.98),rgba(10,16,25,.98));box-shadow:0 30px 100px rgba(0,0,0,.44),0 0 60px rgba(0,217,255,.055);position:relative;overflow:hidden; }
-    .auth-card:before { content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),#5a8bff,transparent);opacity:.85; }
-    .auth-card .brand { margin-bottom:29px; }
-    .auth-card h1 { font-family:"Space Grotesk",sans-serif;font-size:clamp(27px,3vw,34px);line-height:1.08;letter-spacing:-1.3px;margin:10px 0; }
-    .auth-intro { color:var(--muted);font-size:13px;line-height:1.65;margin:0 0 23px; }
-    .form-grid { display:grid;gap:14px; }
-    .auth-card .field { padding:14px 15px;background:rgba(5,12,19,.78);border-color:rgba(155,189,213,.14); }
-    .auth-card .field:focus { border-color:rgba(0,217,255,.72);box-shadow:0 0 0 3px rgba(0,217,255,.1),0 0 22px rgba(0,217,255,.07); }
-    .auth-card label { color:#c6d5e0;font-size:11px;letter-spacing:.2px; }
-    .auth-card .btn-primary { width:100%;min-height:48px;border-radius:13px;font-size:13px; }
-    .auth-foot { margin-top:20px;text-align:center;font-size:12px;color:var(--muted); }
-    .text-action { color:var(--cyan);font-weight:700;background:none;border:0;padding:0; }
-    .auth-note { font-size:10px;color:#718497;line-height:1.6;margin:15px 0 0;text-align:center; }
-    .notice { min-height:18px;font-size:12px;color:var(--danger);line-height:1.5; }
+    .auth-wrap {
+      min-height:100vh; min-height:100svh; display:grid; place-items:center;
+      padding:28px 22px; background:
+      radial-gradient(ellipse at 48% 88%, rgba(0,217,255,.10), transparent 42%),
+      radial-gradient(ellipse at 7% 10%, rgba(28,78,105,.18), transparent 38%),
+      #0b1017;
+    }
+    .auth-layout {
+      width:min(100%,900px); display:grid;
+      grid-template-columns:minmax(190px,290px) minmax(360px,440px);
+      justify-content:center; align-items:end; gap:0;
+    }
+    .auth-character {
+      width:100%; height:420px; align-self:end; display:flex; align-items:flex-end;
+      justify-content:center; position:relative; margin-right:-12px; z-index:1;
+      pointer-events:none;
+    }
+    .auth-character:after {
+      content:""; position:absolute; width:190px; height:28px; bottom:8px; left:50%;
+      transform:translateX(-50%); background:rgba(0,0,0,.56); filter:blur(15px);
+      border-radius:50%;
+    }
+    .auth-character svg {
+      width:100%; max-width:285px; height:100%; overflow:visible;
+      filter:drop-shadow(0 18px 22px rgba(0,0,0,.32));
+      animation:figure-breathe 4s ease-in-out infinite;
+    }
+    .auth-figure { transform-origin:130px 350px; }
+    .auth-figure-bag { transform-origin:157px 230px; animation:bag-rest 4s ease-in-out infinite; }
+    .auth-layout.auth-active .auth-figure-bag { animation:bag-swing .8s ease-in-out infinite alternate; }
+    .auth-layout.auth-active .auth-character svg { animation:figure-attend 1.2s ease-in-out infinite alternate; }
+    .auth-brand-caption {
+      position:absolute; left:50%; bottom:22px; transform:translateX(-50%);
+      white-space:nowrap; color:#8aa5b7; text-transform:uppercase;
+      font-size:9px; font-weight:800; letter-spacing:2px; z-index:2;
+    }
+    .auth-card {
+      width:100%; max-width:440px; justify-self:end; position:relative; z-index:2;
+      padding:31px 30px 27px; overflow:hidden;
+      border:1px solid rgba(0,217,255,.20); border-radius:17px;
+      background:linear-gradient(155deg,rgba(18,32,45,.98),rgba(9,17,27,.98));
+      box-shadow:0 28px 85px rgba(0,0,0,.48),0 0 48px rgba(0,217,255,.07);
+      transition:transform .35s ease, box-shadow .35s ease;
+    }
+    .auth-card:before {
+      content:""; position:absolute; inset:0 0 auto; height:3px;
+      background:linear-gradient(90deg,#007d9b,#00d9ff,#8beeff,#007d9b);
+      background-size:200% 100%; animation:card-shimmer 5s linear infinite;
+    }
+    .auth-card:after {
+      content:""; position:absolute; width:190px; height:190px; right:-110px; top:-120px;
+      border:1px solid rgba(0,217,255,.12); border-radius:50%;
+      box-shadow:0 0 0 20px rgba(0,217,255,.025),0 0 0 42px rgba(0,217,255,.018);
+      pointer-events:none;
+    }
+    .auth-card .brand { margin-bottom:24px; font-size:20px; }
+    .auth-card .brand-mark { width:34px; height:34px; border-radius:10px; }
+    .auth-card .eyebrow { font-size:9px; letter-spacing:2.2px; }
+    .auth-card h1 {
+      font-family:"Space Grotesk",sans-serif; font-size:30px; line-height:1.08;
+      letter-spacing:-1.2px; margin:9px 0 8px; text-transform:uppercase;
+    }
+    .auth-intro { color:#91a4b4; font-size:12px; line-height:1.65; margin:0 0 21px; max-width:340px; }
+    .form-grid { display:grid; gap:12px; }
+    .auth-card label {
+      display:block; font-size:10px; font-weight:800; color:#bfd0dc;
+      margin:0 0 6px; letter-spacing:.35px; text-transform:uppercase;
+    }
+    .auth-card .field {
+      min-height:43px; width:100%; padding:11px 13px; border-radius:8px;
+      border:1px solid rgba(144,179,201,.17); background:#0a141e;
+      color:#effaff; font-size:12px; outline:none; transition:.2s ease;
+    }
+    .auth-card .field::placeholder { color:#62798c; }
+    .auth-card .field:focus {
+      border-color:rgba(0,217,255,.78); background:#0c1b28;
+      box-shadow:0 0 0 3px rgba(0,217,255,.09),0 0 22px rgba(0,217,255,.08);
+    }
+    .flare-id-hint { color:#748c9d; font-size:9px; margin-top:6px; letter-spacing:.1px; }
+    .auth-card .btn-primary {
+      width:100%; min-height:46px; border-radius:8px; font-size:11px;
+      font-weight:900; letter-spacing:1px; text-transform:uppercase;
+      color:#04131a; background:linear-gradient(100deg,#00b8dc,#54e8ff);
+      box-shadow:0 9px 22px rgba(0,217,255,.17);
+    }
+    .auth-card .btn-primary:hover { background:linear-gradient(100deg,#39dcf8,#9af4ff); }
+    .auth-card .btn-primary:disabled { opacity:.65; cursor:wait; transform:none; }
+    .auth-foot { margin-top:17px; text-align:center; font-size:11px; color:#849aaa; }
+    .text-action { color:var(--cyan); font-weight:800; background:none; border:0; padding:0; }
+    .auth-note { font-size:9px; color:#718797; line-height:1.55; margin:14px 0 0; text-align:center; }
+    .notice { min-height:16px; font-size:11px; color:var(--danger); line-height:1.45; }
     .notice.success { color:var(--green); }
+    @keyframes figure-breathe { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+    @keyframes figure-attend { from{transform:translateY(0) rotate(0)} to{transform:translateY(-2px) rotate(-1deg)} }
+    @keyframes bag-rest { 0%,100%{transform:rotate(0)} 50%{transform:rotate(2deg)} }
+    @keyframes bag-swing { from{transform:rotate(-7deg)} to{transform:rotate(8deg)} }
+    @keyframes card-shimmer { to{background-position:200% 0} }
     @keyframes mascot-float { 0%,100% { translate:0 0; } 50% { translate:0 -8px; } }
     @keyframes arm-left { 0%,100% { transform:rotate(12deg); } 50% { transform:rotate(28deg); } }
     @keyframes leg-step { 0%,100% { transform:rotate(2deg); } 50% { transform:rotate(-5deg); } }
@@ -195,6 +240,15 @@
       .messages { padding:20px 16px; }
       .composer-wrap { padding:13px; }
     }
+
+    @media (max-width:390px) {
+      .auth-wrap { padding:18px 10px; }
+      .auth-layout { grid-template-columns:70px minmax(0,1fr); }
+      .auth-character { width:96px; height:230px; margin-right:-26px; }
+      .auth-character svg { width:140px; height:230px; }
+      .auth-card { padding:19px 13px 17px; }
+      .auth-card h1 { font-size:21px; }
+    }
     @media (max-width:650px) {
       .app-shell { display:block;height:100dvh;min-height:0;padding:0; }
       .sidebar,.chat-panel { position:absolute;inset:0;border-radius:0;border:0; }
@@ -229,43 +283,99 @@
 </head>
 <body>
   <section id="authScreen" class="auth-wrap">
-    <div class="auth-layout">
-      <aside class="auth-story">
-        <div class="story-chip"><span></span> YOUR SPACE. YOUR ID.</div>
-        <div class="mascot-stage" aria-hidden="true">
-          <div class="mascot-glow"></div>
-          <div class="mascot-character">
-            <div class="char-bag"></div>
-            <div class="char-hair"></div>
-            <div class="char-head"><i class="char-eye one"></i><i class="char-eye two"></i><i class="char-smile"></i></div>
-            <div class="char-neck"></div>
-            <div class="char-body"></div>
-            <div class="char-arm left"><i class="char-hand"></i></div>
-            <div class="char-arm right"><i class="char-hand"></i></div>
-            <div class="char-leg left"><i class="char-shoe"></i></div>
-            <div class="char-leg right"><i class="char-shoe"></i></div>
-          </div>
-          <div class="mascot-caption">Your friendly messenger</div>
-        </div>
-        <h2>Good conversations. <span>Great connections.</span></h2>
-        <p class="auth-story-copy">Meet your people with a unique Flare ID. No phone number needed — just you, your friends, and the conversations that matter.</p>
-        <div class="story-pills"><span>✦ NO PHONE NUMBER</span><span>✦ YOUR OWN FLARE ID</span></div>
-      </aside>
+    <div class="auth-layout" id="authLayout">
+      <div class="auth-character" aria-hidden="true">
+        <svg viewBox="0 0 260 390" xmlns="http://www.w3.org/2000/svg" role="img">
+          <defs>
+            <linearGradient id="coat" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#9d4760"/><stop offset=".55" stop-color="#713044"/><stop offset="1" stop-color="#482331"/>
+            </linearGradient>
+            <linearGradient id="pants" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#303c4a"/><stop offset=".55" stop-color="#1b2632"/><stop offset="1" stop-color="#101923"/>
+            </linearGradient>
+            <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#f5c9a6"/><stop offset="1" stop-color="#c98e70"/>
+            </linearGradient>
+            <linearGradient id="bag" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#1edcf2"/><stop offset=".55" stop-color="#087d9a"/><stop offset="1" stop-color="#06465d"/>
+            </linearGradient>
+            <linearGradient id="shoe" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#354556"/><stop offset="1" stop-color="#0b131c"/>
+            </linearGradient>
+          </defs>
+          <ellipse cx="130" cy="370" rx="76" ry="11" fill="#02070c" opacity=".55"/>
+          <g class="auth-figure">
+            <!-- legs and shoes -->
+            <path d="M91 257 Q88 287 84 321 L82 350 Q89 359 101 354 L112 318 L125 275Z" fill="url(#pants)"/>
+            <path d="M126 260 Q139 291 145 316 L158 346 Q165 355 177 350 L171 333 L160 300 L157 265Z" fill="url(#pants)"/>
+            <path d="M78 345 Q92 341 104 349 L111 359 Q112 366 101 367 L64 366 Q60 361 68 355Z" fill="url(#shoe)"/>
+            <path d="M153 343 Q164 339 175 345 L188 356 Q190 363 178 365 L148 363 Q143 358 153 343Z" fill="url(#shoe)"/>
+            <path d="M66 365 L109 365" stroke="#00d9ff" stroke-width="3" stroke-linecap="round"/>
+            <path d="M149 362 L187 362" stroke="#00d9ff" stroke-width="3" stroke-linecap="round"/>
+            <!-- back hair -->
+            <path d="M82 62 Q77 24 119 19 Q160 16 171 53 L164 123 Q158 154 137 160 L86 130Z" fill="#35272a"/>
+            <path d="M85 65 Q72 96 82 138 Q89 154 99 151 L104 103Z" fill="#4a3030"/>
+            <!-- neck -->
+            <path d="M111 95 L111 120 Q123 132 138 117 L136 91Z" fill="url(#skin)"/>
+            <!-- face -->
+            <path d="M91 57 Q94 29 125 31 Q153 34 151 67 L146 95 Q137 112 119 112 Q98 107 92 85Z" fill="url(#skin)"/>
+            <path d="M89 65 Q81 35 107 22 Q143 9 163 39 Q171 56 155 79 L149 54 Q139 38 119 40 Q105 53 91 75Z" fill="#302327"/>
+            <path d="M91 49 Q78 71 87 100 Q78 94 77 74 Q75 48 94 30Z" fill="#432a2d"/>
+            <path d="M146 47 Q163 53 158 92 Q155 110 143 119 L140 103 Q155 79 146 47Z" fill="#42282c"/>
+            <!-- sunglasses -->
+            <path d="M92 68 Q106 62 117 69 L115 81 Q106 88 95 80Z" fill="#131a21" stroke="#d7e6ed" stroke-width="1.4"/>
+            <path d="M122 69 Q136 62 148 68 L145 81 Q134 87 124 80Z" fill="#131a21" stroke="#d7e6ed" stroke-width="1.4"/>
+            <path d="M116 72 L123 72" stroke="#d7e6ed" stroke-width="2"/>
+            <path d="M94 72 L111 69" stroke="#8beeff" stroke-width="1.5" opacity=".7"/>
+            <path d="M126 69 L143 68" stroke="#8beeff" stroke-width="1.5" opacity=".7"/>
+            <!-- coat -->
+            <path d="M103 118 Q123 108 145 118 Q165 127 170 163 L180 252 Q157 270 120 265 Q87 268 72 249 L86 158 Q88 130 103 118Z" fill="url(#coat)"/>
+            <path d="M118 119 L129 153 L142 120 Q151 128 158 146 L142 178 L127 158 L111 179 L94 145 Q103 126 118 119Z" fill="#b45b70"/>
+            <path d="M128 157 L136 256" stroke="#e6a0a9" stroke-width="2" opacity=".38"/>
+            <path d="M98 171 L111 180 L103 243 L84 247Z" fill="#562638" opacity=".45"/>
+            <path d="M151 171 L163 177 L171 247 L151 252Z" fill="#452330" opacity=".55"/>
+            <!-- arms -->
+            <path d="M91 137 Q78 146 74 176 L65 207 Q64 217 73 220 Q82 220 84 208 L101 168Z" fill="url(#coat)"/>
+            <path d="M150 137 Q163 144 168 169 L176 191 Q179 202 171 206 Q162 208 158 196 L143 166Z" fill="url(#coat)"/>
+            <path d="M68 204 Q72 205 80 209 L78 222 Q70 226 64 218Z" fill="url(#skin)"/>
+            <path d="M165 194 Q174 193 179 201 L175 213 Q166 215 160 205Z" fill="url(#skin)"/>
+            <!-- coat hem detail -->
+            <path d="M76 249 Q120 258 176 251" stroke="#d88a9a" stroke-width="2" opacity=".45"/>
+            <!-- cross-body strap -->
+            <path d="M147 124 Q159 152 170 190" fill="none" stroke="#17232d" stroke-width="7" stroke-linecap="round"/>
+            <path d="M147 124 Q159 152 170 190" fill="none" stroke="#00d9ff" stroke-width="1.5" stroke-linecap="round" opacity=".8"/>
+            <!-- shoulder bag moves when form is focused -->
+            <g class="auth-figure-bag">
+              <path d="M153 184 Q165 178 179 186 L191 221 Q190 235 178 238 L153 233 Q146 228 148 216Z" fill="url(#bag)" stroke="#85efff" stroke-width="1.5"/>
+              <path d="M151 194 Q170 188 184 195 L188 204 Q169 210 153 204Z" fill="#0b5a75"/>
+              <path d="M156 211 Q171 217 185 209" fill="none" stroke="#83edff" stroke-width="1.4" opacity=".8"/>
+              <path d="M165 218 L175 218" stroke="#d9fcff" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M159 184 Q161 171 174 174 Q185 176 187 190" fill="none" stroke="#00d9ff" stroke-width="4" stroke-linecap="round"/>
+              <path d="M173 214 L175 226" stroke="#d9fcff" stroke-width="1.5" opacity=".5"/>
+            </g>
+          </g>
+          <circle cx="48" cy="109" r="3" fill="#00d9ff" opacity=".8"/>
+          <circle cx="204" cy="92" r="2" fill="#8beeff" opacity=".75"/>
+          <path d="M31 129 L42 129 M36.5 123.5 L36.5 134.5" stroke="#00d9ff" stroke-width="1.5" opacity=".6"/>
+          <path d="M205 145 L216 145 M210.5 139.5 L210.5 150.5" stroke="#00d9ff" stroke-width="1.5" opacity=".45"/>
+        </svg>
+        <div class="auth-brand-caption">A little bag of connection</div>
+      </div>
 
       <div class="auth-card">
         <div class="brand"><div class="brand-mark">ϟ</div><div>flare<span>chat</span></div></div>
-        <div class="eyebrow" id="authEyebrow">CREATE YOUR ACCOUNT</div>
-        <h1 id="authTitle">Welcome to your new space.</h1>
-        <p class="auth-intro" id="authIntro">Create your account and choose a Flare ID your friends can find.</p>
+        <div class="eyebrow" id="authEyebrow">YOUR SPACE. YOUR ID.</div>
+        <h1 id="authTitle">Register now</h1>
+        <p class="auth-intro" id="authIntro">Create your Flare Chat account and choose the ID your friends will use to find you.</p>
         <form id="authForm" class="form-grid">
           <div id="nameField">
-            <label for="displayName">Display name</label>
-            <input class="field" id="displayName" maxlength="40" autocomplete="name" placeholder="Your name">
+            <label for="displayName">Your name</label>
+            <input class="field" id="displayName" maxlength="40" autocomplete="name" placeholder="Enter your name">
           </div>
           <div id="flareIdField">
             <label for="flareId">Choose your Flare ID</label>
             <input class="field" id="flareId" maxlength="20" autocomplete="username" autocapitalize="none" placeholder="e.g. rayyan_01">
-            <div class="muted" style="font-size:10px;margin-top:7px">3–20 characters · lowercase letters, numbers and _</div>
+            <div class="flare-id-hint">3–20 characters · lowercase letters, numbers and underscores</div>
           </div>
           <div>
             <label for="email">Email address</label>
@@ -275,11 +385,11 @@
             <label for="password">Password</label>
             <input class="field" id="password" type="password" required minlength="8" autocomplete="current-password" placeholder="At least 8 characters">
           </div>
-          <div id="authNotice" class="notice" role="status"></div>
-          <button class="btn btn-primary" id="authSubmit" type="submit">Create my account <span>→</span></button>
+          <div id="authNotice" class="notice" role="status" aria-live="polite"></div>
+          <button class="btn btn-primary" id="authSubmit" type="submit">Create account <span>→</span></button>
         </form>
-        <div class="auth-foot"><span id="authSwitchText">Already have an account?</span> <button class="text-action" id="authSwitch" type="button">Sign in</button></div>
-        <p class="auth-note">By continuing, you agree to use Flare Chat respectfully.</p>
+        <div class="auth-foot"><span id="authSwitchText">Already have an account?</span> <button class="text-action" id="authSwitch" type="button">Log in</button></div>
+        <p class="auth-note">No phone number needed · Your Flare ID is yours</p>
       </div>
     </div>
   </section>
@@ -406,14 +516,14 @@
       $("nameField").classList.toggle("hidden", !signup);
       $("flareIdField").classList.toggle("hidden", !signup);
       $("authEyebrow").textContent = signup ? "YOUR SPACE. YOUR ID." : "WELCOME BACK";
-      $("authTitle").textContent = signup ? "Conversations, without phone numbers." : "Good to have you back.";
+      $("authTitle").textContent = signup ? "Register now" : "Log in";
       $("authIntro").textContent = signup
-        ? "Create your own unique Flare ID and connect with people on your terms."
-        : "Sign in with your email and get back to your conversations.";
-      $("authSubmit").innerHTML = signup ? "Create my account <span>→</span>" : "Sign in to Flare Chat <span>→</span>";
+        ? "Create your Flare Chat account and choose the ID your friends will use to find you."
+        : "Welcome back. Sign in and pick up your conversations.";
+      $("authSubmit").innerHTML = signup ? "Create account <span>→</span>" : "Log in <span>→</span>";
       $("authSwitchText").textContent = signup ? "Already have an account?" : "New to Flare Chat?";
       $("authSwitch").textContent = signup ? "Sign in" : "Create account";
-      $("password").autocomplete = signup ? "new-password" : "current-password";
+        $("password").autocomplete = signup ? "new-password" : "current-password";
       setNotice("", false);
     }
 
@@ -435,12 +545,49 @@
     }
 
     async function loadMyProfile() {
+      // Existing Flare Chat schema uses profiles.user_id + profiles.username.
       const result = await db.from("profiles")
-        .select("id, flare_id, display_name, avatar_url")
-        .eq("id", currentUser.id)
-        .single();
+        .select("user_id, username, display_name, avatar_url, bio")
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
       if (result.error) throw result.error;
-      myProfile = result.data;
+
+      let profile = result.data;
+      if (!profile) {
+        const metadata = currentUser.user_metadata || {};
+        const username = normalizeFlareId(metadata.username || metadata.flare_id || "");
+        const displayName = String(metadata.display_name || username || "Flare User").trim().slice(0,40);
+        if (!validFlareId(username)) {
+          throw new Error("Your Flare profile is missing. Please sign out and create your account again after the profile setup is enabled.");
+        }
+
+        const now = new Date().toISOString();
+        const insertResult = await db.from("profiles").insert({
+          user_id: currentUser.id,
+          username,
+          display_name: displayName,
+          avatar_url: null,
+          bio: "",
+          created_at: now,
+          updated_at: now
+        }).select("user_id, username, display_name, avatar_url, bio").single();
+
+        if (insertResult.error) {
+          if (insertResult.error.code === "23505") {
+            throw new Error("That Flare ID is already taken. Choose another unique ID.");
+          }
+          throw new Error("Your account is signed in, but the profile could not be created: " + insertResult.error.message);
+        }
+        profile = insertResult.data;
+      }
+
+      myProfile = {
+        id: profile.user_id,
+        flare_id: profile.username,
+        display_name: profile.display_name,
+        avatar_url: profile.avatar_url,
+        bio: profile.bio
+      };
       $("myName").textContent = myProfile.display_name;
       $("myId").textContent = "@" + myProfile.flare_id;
       $("myAvatar").textContent = initials(myProfile.display_name);
@@ -745,13 +892,20 @@
       try {
         await loadMyProfile();
         showApp();
-        await loadSidebar();
+        // Auth/profile is ready. Existing chat tables are being aligned in a separate schema-safe step.
+        renderSidebar();
       } catch (error) {
         showAuth();
         setNotice("Could not load your Flare profile. Check that supabase/schema.sql has been run. " + (error.message || ""), false);
       }
     }
 
+    $("authForm").addEventListener("focusin", () => $("authLayout").classList.add("auth-active"));
+    $("authForm").addEventListener("focusout", event => {
+      if (!event.relatedTarget || !$("authForm").contains(event.relatedTarget)) {
+        $("authLayout").classList.remove("auth-active");
+      }
+    });
     $("authSwitch").addEventListener("click", () => setAuthMode(authMode === "signup" ? "signin" : "signup"));
     $("authForm").addEventListener("submit", async event => {
       event.preventDefault();
@@ -774,7 +928,7 @@
           const result = await db.auth.signUp({
             email:email,
             password:password,
-            options:{data:{display_name:displayName, flare_id:flareId}}
+            options:{data:{display_name:displayName, username:flareId}}
           });
           if (result.error) throw result.error;
           if (result.data.session) {
@@ -789,7 +943,10 @@
           await bootApp(result.data.user);
         }
       } catch (error) {
-        setNotice(error.message || "Something went wrong. Please try again.", false);
+        const message = error && error.code === "23505"
+          ? "That Flare ID is already taken. Please choose another."
+          : (error.message || "Something went wrong. Please try again.");
+        setNotice(message, false);
       } finally {
         $("authSubmit").disabled = false;
         $("authSubmit").innerHTML = authMode === "signup" ? "Create my account <span>→</span>" : "Sign in to Flare Chat <span>→</span>";
