@@ -237,6 +237,18 @@
     .story-add-mark { position:absolute;right:-1px;bottom:-1px;width:19px;height:19px;border:2px solid #08080a;border-radius:50%;display:grid;place-items:center;background:#ff3038;color:#fff;font-size:14px;line-height:1; }
     .story-ring-wrap { position:relative;display:block; }
     .stories-empty { align-self:center;color:#777780;font-size:10px;white-space:nowrap;padding:12px 0; }
+    .home-feed { flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 0 28px;scrollbar-width:thin;scrollbar-color:rgba(255,48,56,.3) transparent; }
+    .home-feed .stories-panel { padding:22px clamp(18px,3vw,38px) 15px; }
+    .home-feed .stories-heading strong { font-size:11px; }
+    .home-feed .stories-rail { gap:17px;padding-bottom:10px; }
+    .home-feed .story-item { flex-basis:66px;width:66px; }
+    .home-feed .story-name { width:66px;font-size:11px; }
+    .home-feed .story-ring { width:60px;height:60px; }
+    .home-feed .car-card { width:min(100% - 48px,980px);margin:10px auto 20px;padding:16px 18px 12px;border-radius:20px; }
+    .home-feed .car-card-title { font-size:13px;letter-spacing:1px; }
+    .home-feed .car-card-hint { font-size:10px; }
+    .home-feed .car-model-viewer { height:clamp(280px,42vh,470px); }
+    .home-feed .car-card-foot { font-size:10px;padding:4px 0 2px; }
     .car-card { margin:12px 12px 2px;padding:11px 12px 8px;border:1px solid rgba(255,48,56,.22);border-radius:16px;background:linear-gradient(145deg,rgba(37,13,16,.78),rgba(12,12,14,.96));box-shadow:0 8px 28px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.025); }
     .car-card-head { display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 3px; }
     .car-card-title { font-family:"Space Grotesk",sans-serif;font-size:12px;font-weight:800;letter-spacing:.6px;color:#f4eeee; }
@@ -269,6 +281,9 @@
     .story-compose-note { color:#969098;font-size:10px;line-height:1.5; }
     @media (max-width:650px) {
       .stories-panel { padding:15px 17px 12px; }
+      .home-feed .stories-panel { padding:18px 16px 12px; }
+      .home-feed .car-card { width:calc(100% - 28px);margin:10px auto 18px;padding:12px 10px 9px; }
+      .home-feed .car-model-viewer { height:clamp(235px,38vh,340px); }
       .car-card { margin:13px 14px 4px; }
       .car-model-viewer { height:205px; }
       .story-view-card { max-height:88vh; }
@@ -423,6 +438,19 @@
         </div>
       </div>
 
+      <div class="section-head"><h2 id="listHeading">Recent chats</h2><span class="eyebrow" id="listCount">0</span></div>
+      <div class="list-area" id="listArea"></div>
+      <div class="side-bottom">
+        <button class="profile-button" id="profileButton" type="button">
+          <div class="avatar small" id="myAvatar">F</div>
+          <div class="profile-info"><div class="profile-name" id="myName">Your profile</div><div class="profile-id" id="myId">@your_id</div></div>
+          <span class="muted">⌄</span>
+        </button>
+      </div>
+    </aside>
+
+    <section class="chat-panel">
+      <div class="home-feed" id="homeFeed">
       <section class="stories-panel" aria-label="Stories">
         <div class="stories-heading"><strong>STORIES</strong><span>Share a moment · 24h</span></div>
         <div class="stories-rail" id="storiesRail">
@@ -456,18 +484,7 @@
         <div class="car-card-foot"><span>●</span> Auto 360° rotation · Drag to explore</div>
       </section>
 
-      <div class="section-head"><h2 id="listHeading">Recent chats</h2><span class="eyebrow" id="listCount">0</span></div>
-      <div class="list-area" id="listArea"></div>
-      <div class="side-bottom">
-        <button class="profile-button" id="profileButton" type="button">
-          <div class="avatar small" id="myAvatar">F</div>
-          <div class="profile-info"><div class="profile-name" id="myName">Your profile</div><div class="profile-id" id="myId">@your_id</div></div>
-          <span class="muted">⌄</span>
-        </button>
       </div>
-    </aside>
-
-    <section class="chat-panel">
       <header class="chat-top hidden" id="chatHeader">
         <div class="chat-person">
           <button class="btn-icon mobile-back" id="backBtn" type="button" aria-label="Back">‹</button>
@@ -484,13 +501,7 @@
         </form>
         <div class="composer-hint">Enter to send · Messages are visible only to conversation members</div>
       </div>
-      <div class="empty-state" id="welcomeState">
-        <div class="empty-orb">ϟ</div>
-        <div class="eyebrow">WELCOME TO FLARE CHAT</div>
-        <h2>Your conversations start here.</h2>
-        <p>Find someone using their unique Flare ID, add them to your people list, and start a private conversation. No phone number needed.</p>
-        <button class="btn btn-primary" id="findPeopleBtn" type="button">Find people <span>→</span></button>
-      </div>
+
     </section>
 
     <div class="profile-pop hidden" id="profilePop">
@@ -1072,7 +1083,7 @@
         return;
       }
       activeConversationId = conversationId;
-      $("welcomeState").classList.add("hidden");
+      $("homeFeed").classList.add("hidden");
       $("chatHeader").classList.remove("hidden");
       $("messages").classList.remove("hidden");
       $("composerWrap").classList.remove("hidden");
@@ -1244,7 +1255,14 @@
         setAuthMode("signin");
       }
     });
-    $("backBtn").addEventListener("click", () => document.body.classList.remove("chat-open"));
+    $("backBtn").addEventListener("click", () => {
+      document.body.classList.remove("chat-open");
+      activeConversationId = null;
+      $("chatHeader").classList.add("hidden");
+      $("messages").classList.add("hidden");
+      $("composerWrap").classList.add("hidden");
+      $("homeFeed").classList.remove("hidden");
+    });
     document.addEventListener("click", event => {
       if (!$("profilePop").contains(event.target) && !$("profileButton").contains(event.target)) {
         $("profilePop").classList.add("hidden");
