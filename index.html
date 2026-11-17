@@ -1249,11 +1249,8 @@
       $("quickSearch").focus();
       showToast("Type a person's exact Flare ID in search.");
     });
-    $("findPeopleBtn").addEventListener("click", () => {
-      setTab("contacts");
-      $("quickSearch").focus();
-      showToast("Enter a Flare ID in the search box.");
-    });
+    // The old welcome-screen Find People button was removed when Stories and the 3D car became the home feed.
+    // The sidebar's Find Flare ID (+) button now provides this entry point.
     $("quickSearch").addEventListener("input", () => renderSidebar());
     $("quickSearch").addEventListener("keydown", event => {
       if (event.key === "Enter") {
