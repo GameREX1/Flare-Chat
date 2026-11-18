@@ -292,9 +292,16 @@
     .search-box { position:relative; }
     .search-box input { padding-left:39px;font-size:12px; }
     .search-icon { position:absolute;left:13px;top:11px;color:#898991;font-size:15px;pointer-events:none; }
-    .tabs { display:grid;grid-template-columns:1fr 1fr;padding:5px;background:#101012;border-radius:12px;margin-top:14px; }
+    .tabs { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:5px;background:#101012;border-radius:12px;margin-top:14px; }
     .tab { border:0;border-radius:9px;background:transparent;color:var(--muted);padding:9px;font-size:12px;font-weight:700; }
     .tab.active { background:#321216;color:var(--cyan); }
+    .request-card { display:flex;align-items:center;gap:10px;margin:6px 2px;padding:11px 9px;border:1px solid var(--line);border-radius:13px;background:#111113; }
+    .request-copy { flex:1;min-width:0; }
+    .request-name { font-size:12px;font-weight:800;color:#f2f2f3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+    .request-handle { color:#a2a2aa;font-size:10px;margin-top:4px; }
+    .request-actions { display:flex;gap:6px;margin-top:8px; }
+    .request-actions button { min-height:30px;padding:6px 9px;border-radius:8px;font-size:10px; }
+
     .section-head { display:flex;align-items:center;justify-content:space-between;padding:20px 20px 10px; }
     .section-head h2 { margin:0;font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:#b0b0b8; }
     .list-area { overflow:auto;flex:1;padding:4px 10px 14px; }
@@ -449,6 +456,7 @@
         <div class="tabs">
           <button class="tab active" data-tab="chats" type="button">Chats</button>
           <button class="tab" data-tab="contacts" type="button">People</button>
+          <button class="tab" data-tab="requests" type="button">Requests</button>
         </div>
       </div>
 
@@ -570,6 +578,7 @@
     let activeTab = "chats";
     let allChats = [];
     let allContacts = [];
+    let incomingRequests = [];
     let activeConversationId = null;
     let activeChannel = null;
     let toastTimer = null;
@@ -886,9 +895,9 @@
       allChats = [];
       if (conversationIds.length) {
         const conversationsResult = await db.from("conversations")
-          .select("id, is_group, title, last_message_at")
+          .select("id, is_group, title, name, last_message_at")
           .in("id", conversationIds)
-          .order("last_message_at", {ascending: false});
+          .order("last_message_at", {ascending:false});
         if (conversationsResult.error) throw conversationsResult.error;
 
         const memberResult = await db.from("conversation_members")
@@ -898,19 +907,19 @@
 
         const otherIds = Array.from(new Set((memberResult.data || [])
           .filter(row => row.user_id !== currentUser.id).map(row => row.user_id)));
-        let profileMap = {};
+        const profileMap = {};
         if (otherIds.length) {
           const profilesResult = await db.from("profiles")
-            .select("id, flare_id, display_name, avatar_url")
-            .in("id", otherIds);
+            .select("id, user_id, flare_id, display_name, avatar_url")
+            .in("user_id", otherIds);
           if (profilesResult.error) throw profilesResult.error;
-          (profilesResult.data || []).forEach(profile => { profileMap[profile.id] = profile; });
+          (profilesResult.data || []).forEach(profile => { profileMap[profile.user_id] = profile; });
         }
 
         const lastMessageResult = await db.from("messages")
-          .select("conversation_id, body, sender_id, created_at")
+          .select("conversation_id, body, content_type, sender_id, created_at")
           .in("conversation_id", conversationIds)
-          .order("created_at", {ascending: false})
+          .order("created_at", {ascending:false})
           .limit(150);
         if (lastMessageResult.error) throw lastMessageResult.error;
         const lastMessages = {};
@@ -923,47 +932,108 @@
             row.conversation_id === conversation.id && row.user_id !== currentUser.id);
           const person = member ? profileMap[member.user_id] : null;
           const last = lastMessages[conversation.id];
+          const groupName = conversation.title || conversation.name || "Group conversation";
+          const preview = last
+            ? (last.sender_id === currentUser.id ? "You: " : "") +
+              (last.content_type && last.content_type !== "text" ? "Shared " + last.content_type : (last.body || "Message"))
+            : "Start the conversation";
           return {
-            id: conversation.id,
-            person: person || {display_name: conversation.title || "Group conversation", flare_id: "group"},
-            lastMessage: last ? ((last.sender_id === currentUser.id ? "You: " : "") + last.body) : "Start the conversation",
-            lastAt: last ? last.created_at : conversation.last_message_at
+            id:conversation.id,
+            person:person ? {
+              id:person.user_id,
+              flare_id:person.flare_id,
+              display_name:person.display_name,
+              avatar_url:person.avatar_url
+            } : {id:null,display_name:groupName,flare_id:"group"},
+            isGroup:!!conversation.is_group,
+            groupName,
+            lastMessage:preview,
+            lastAt:last ? last.created_at : conversation.last_message_at
           };
-        }).sort((a,b) => new Date(b.lastAt) - new Date(a.lastAt));
+        }).sort((a,b) => new Date(b.lastAt || 0) - new Date(a.lastAt || 0));
       }
 
       const contactsResult = await db.from("contacts")
         .select("contact_user_id, created_at")
         .eq("user_id", currentUser.id)
-        .order("created_at", {ascending: false});
+        .order("created_at", {ascending:false});
       if (contactsResult.error) throw contactsResult.error;
 
       allContacts = [];
       const contactIds = (contactsResult.data || []).map(row => row.contact_user_id);
       if (contactIds.length) {
         const profilesResult = await db.from("profiles")
-          .select("id, flare_id, display_name, avatar_url")
-          .in("id", contactIds);
+          .select("id, user_id, flare_id, display_name, avatar_url")
+          .in("user_id", contactIds);
         if (profilesResult.error) throw profilesResult.error;
         allContacts = profilesResult.data || [];
       }
+
+      const requestsResult = await db.from("follows")
+        .select("id, follower_id, created_at")
+        .eq("following_id", currentUser.id)
+        .eq("status", "pending")
+        .order("created_at", {ascending:false});
+      if (requestsResult.error) throw requestsResult.error;
+
+      incomingRequests = [];
+      const requestIds = (requestsResult.data || []).map(row => row.follower_id);
+      if (requestIds.length) {
+        const requestProfiles = await db.from("profiles")
+          .select("user_id, username, nickname, display_name, avatar_url")
+          .in("user_id", requestIds);
+        if (requestProfiles.error) throw requestProfiles.error;
+        const requestProfileMap = {};
+        (requestProfiles.data || []).forEach(profile => { requestProfileMap[profile.user_id] = profile; });
+        incomingRequests = (requestsResult.data || []).map(request => ({
+          ...request,
+          person:requestProfileMap[request.follower_id] || {
+            user_id:request.follower_id, username:"user", display_name:"Flare User"
+          }
+        }));
+      }
+
       renderSidebar();
     }
 
     function renderSidebar() {
       const list = $("listArea");
       const query = $("quickSearch").value.trim().toLowerCase();
-      const items = activeTab === "chats" ? allChats : allContacts;
-      $("listHeading").textContent = activeTab === "chats" ? "Recent chats" : "Your people";
+      const items = activeTab === "chats" ? allChats : activeTab === "contacts" ? allContacts : incomingRequests;
+      $("listHeading").textContent = activeTab === "chats" ? "Recent chats" : activeTab === "contacts" ? "Your people" : "Follow requests";
       const visible = items.filter(item => {
-        const person = activeTab === "chats" ? item.person : item;
-        return !query || person.display_name.toLowerCase().includes(query) || person.flare_id.toLowerCase().includes(query);
+        const person = activeTab === "chats" ? item.person : activeTab === "requests" ? item.person : item;
+        const name = String(person.display_name || "").toLowerCase();
+        const username = String(person.flare_id || person.username || "").toLowerCase();
+        return !query || name.includes(query) || username.includes(query);
       });
       $("listCount").textContent = String(visible.length).padStart(2, "0");
+
       if (!visible.length) {
-        list.innerHTML = '<div style="padding:24px 12px;text-align:center;color:#898991;font-size:12px;line-height:1.7">' +
-          (activeTab === "chats" ? "No chats yet.<br>Find someone by their Flare ID to begin." : "No people added yet.<br>Find someone by their Flare ID.") +
-          '</div>';
+        const empty = activeTab === "chats"
+          ? "No chats yet.<br>Find someone by their Flare ID to begin."
+          : activeTab === "contacts"
+            ? "No accepted follows yet.<br>Find someone by their Flare ID."
+            : "No pending follow requests.";
+        list.innerHTML = '<div style="padding:24px 12px;text-align:center;color:#898991;font-size:12px;line-height:1.7">' + empty + '</div>';
+        return;
+      }
+
+      if (activeTab === "requests") {
+        list.innerHTML = visible.map(item => {
+          const person = item.person || {};
+          return '<div class="request-card">' +
+            '<div class="avatar small">' + escapeHtml(initials(person.display_name || person.username)) + '</div>' +
+            '<div class="request-copy"><div class="request-name">' + escapeHtml(person.display_name || "Flare User") + '</div>' +
+            '<div class="request-handle">@' + escapeHtml(person.username || "user") + '</div>' +
+            '<div class="request-actions">' +
+            '<button class="btn btn-primary" type="button" data-request-action="accepted" data-request-id="' + escapeHtml(item.id) + '">Accept</button>' +
+            '<button class="btn btn-quiet" type="button" data-request-action="rejected" data-request-id="' + escapeHtml(item.id) + '">Decline</button>' +
+            '</div></div></div>';
+        }).join("");
+        list.querySelectorAll("[data-request-action]").forEach(button => {
+          button.addEventListener("click", () => updateFollowRequest(button.dataset.requestId, button.dataset.requestAction));
+        });
         return;
       }
 
@@ -971,10 +1041,11 @@
         const person = activeTab === "chats" ? item.person : item;
         const isChat = activeTab === "chats";
         const active = isChat && item.id === activeConversationId ? " active" : "";
-        const preview = isChat ? item.lastMessage : "@" + person.flare_id;
+        const preview = isChat ? item.lastMessage : "@" + (person.flare_id || person.username || "");
         const time = isChat && item.lastAt ? formatTime(item.lastAt) : "";
+        const openId = isChat ? item.id : person.user_id || person.id;
         return '<button type="button" class="list-item' + active + '" data-open-id="' +
-          escapeHtml(isChat ? item.id : person.id) + '" data-kind="' + (isChat ? "chat" : "person") + '">' +
+          escapeHtml(openId || "") + '" data-kind="' + (isChat ? "chat" : "person") + '">' +
           '<div class="avatar">' + escapeHtml(initials(person.display_name)) + '</div>' +
           '<div class="list-copy"><div class="list-title"><span>' + escapeHtml(person.display_name) +
           '</span><span class="list-time">' + escapeHtml(time) + '</span></div>' +
@@ -987,6 +1058,21 @@
           else startConversation(button.dataset.openId);
         });
       });
+    }
+
+    async function updateFollowRequest(requestId, status) {
+      if (!["accepted","rejected"].includes(status)) return;
+      const result = await db.from("follows")
+        .update({status})
+        .eq("id", requestId)
+        .eq("following_id", currentUser.id)
+        .eq("status", "pending");
+      if (result.error) {
+        showToast("Could not update request: " + result.error.message);
+        return;
+      }
+      showToast(status === "accepted" ? "Follow request accepted." : "Follow request declined.");
+      await loadSidebar();
     }
 
     function formatTime(value) {
@@ -1005,6 +1091,7 @@
     }
 
     function setTab(tab) {
+      if (!["chats","contacts","requests"].includes(tab)) return;
       activeTab = tab;
       document.querySelectorAll(".tab").forEach(button => button.classList.toggle("active", button.dataset.tab === tab));
       renderSidebar();
@@ -1021,8 +1108,9 @@
         showToast("Flare IDs use 3–20 lowercase letters, numbers or underscores.");
         return;
       }
+
       const result = await db.from("profiles")
-        .select("user_id, username, display_name, avatar_url")
+        .select("user_id, username, nickname, display_name, avatar_url, bio")
         .eq("username", id)
         .maybeSingle();
       if (result.error) {
@@ -1037,41 +1125,93 @@
         showToast("That's your own Flare ID.");
         return;
       }
+
+      const relationResult = await db.from("follows")
+        .select("id, status")
+        .eq("follower_id", currentUser.id)
+        .eq("following_id", result.data.user_id)
+        .maybeSingle();
+      if (relationResult.error) {
+        showToast(relationResult.error.message);
+        return;
+      }
+
+      const blockResult = await db.from("blocked_users")
+        .select("id, blocker_id, blocked_id")
+        .or("and(blocker_id.eq." + currentUser.id + ",blocked_id.eq." + result.data.user_id + "),and(blocker_id.eq." + result.data.user_id + ",blocked_id.eq." + currentUser.id + ")")
+        .limit(1);
+      if (blockResult.error) {
+        showToast(blockResult.error.message);
+        return;
+      }
+
       showSearchResult({
-        id: result.data.user_id,
-        flare_id: result.data.username,
-        display_name: result.data.display_name,
-        avatar_url: result.data.avatar_url
-      });
+        id:result.data.user_id,
+        flare_id:result.data.username,
+        display_name:result.data.nickname || result.data.display_name,
+        avatar_url:result.data.avatar_url,
+        bio:result.data.bio
+      }, relationResult.data || null, (blockResult.data || []).length > 0);
     }
 
-    function showSearchResult(profile) {
+    function showSearchResult(profile, relation, blocked) {
       const list = $("listArea");
-      const alreadyAdded = allContacts.some(contact => contact.id === profile.id);
-      list.innerHTML = '<div style="padding:8px 8px 14px;color:#8da2b4;font-size:11px">FLARE ID RESULT</div>' +
+      const accepted = relation && relation.status === "accepted";
+      const pending = relation && relation.status === "pending";
+      const declined = relation && relation.status === "rejected";
+      const actions = blocked
+        ? '<button class="btn btn-quiet" type="button" disabled>Unavailable</button>'
+        : accepted
+          ? '<button class="btn btn-primary" id="messageFoundBtn" type="button" style="flex:1">Message</button><span class="btn btn-quiet">Following</span>'
+          : pending
+            ? '<button class="btn btn-quiet" type="button" disabled>Request sent</button>'
+            : declined
+              ? '<button class="btn btn-quiet" type="button" disabled>Request declined</button>'
+              : '<button class="btn btn-primary" id="followFoundBtn" type="button" style="flex:1">Follow request</button>';
+
+      list.innerHTML = '<div style="padding:8px 8px 14px;color:#c1a5a7;font-size:11px">FLARE ID RESULT</div>' +
         '<div class="search-result"><div class="avatar">' + escapeHtml(initials(profile.display_name)) + '</div>' +
         '<div class="search-result-copy"><div class="search-result-name">' + escapeHtml(profile.display_name) +
-        '</div><div class="search-result-id">@' + escapeHtml(profile.flare_id) + '</div></div></div>' +
-        '<div class="result-actions" style="margin-top:12px">' +
-        '<button class="btn btn-primary" id="messageFoundBtn" type="button" style="flex:1">Message</button>' +
-        (alreadyAdded ? '<button class="btn btn-quiet" disabled type="button">Added</button>' :
-        '<button class="btn btn-quiet" id="addFoundBtn" type="button">＋ Add</button>') + '</div>' +
+        '</div><div class="search-result-id">@' + escapeHtml(profile.flare_id) + '</div>' +
+        (profile.bio ? '<div class="list-preview">' + escapeHtml(profile.bio) + '</div>' : '') +
+        '</div></div><div class="result-actions" style="margin-top:12px">' + actions + '</div>' +
         '<button class="text-action" id="clearSearchBtn" type="button" style="margin:18px 4px;font-size:11px">← Back to list</button>';
-      $("messageFoundBtn").addEventListener("click", () => startConversation(profile.id));
-      const addButton = $("addFoundBtn");
-      if (addButton) addButton.addEventListener("click", () => addContact(profile));
+
+      const messageButton = $("messageFoundBtn");
+      if (messageButton) messageButton.addEventListener("click", () => startConversation(profile.id));
+      const followButton = $("followFoundBtn");
+      if (followButton) followButton.addEventListener("click", () => sendFollowRequest(profile));
       $("clearSearchBtn").addEventListener("click", () => renderSidebar());
     }
 
-    async function addContact(profile) {
-      const result = await db.from("contacts").insert({user_id:currentUser.id, contact_user_id:profile.id});
-      if (result.error && result.error.code !== "23505") {
-        showToast(result.error.message);
+    async function sendFollowRequest(profile) {
+      const blockCheck = await db.from("blocked_users")
+        .select("id")
+        .or("and(blocker_id.eq." + currentUser.id + ",blocked_id.eq." + profile.id + "),and(blocker_id.eq." + profile.id + ",blocked_id.eq." + currentUser.id + ")")
+        .limit(1);
+      if (blockCheck.error) {
+        showToast(blockCheck.error.message);
         return;
       }
-      showToast("@" + profile.flare_id + " added to your people.");
+      if ((blockCheck.data || []).length) {
+        showToast("A follow request cannot be sent because one user has blocked the other.");
+        return;
+      }
+
+      const result = await db.from("follows").insert({
+        follower_id:currentUser.id,
+        following_id:profile.id,
+        status:"pending"
+      });
+      if (result.error) {
+        showToast(result.error.code === "23505" ? "A follow relationship already exists." : result.error.message);
+        return;
+      }
+      showToast("Follow request sent to @" + profile.flare_id + ".");
       await loadSidebar();
-      setTab("contacts");
+      const relation = await db.from("follows").select("id,status")
+        .eq("follower_id",currentUser.id).eq("following_id",profile.id).maybeSingle();
+      showSearchResult(profile, relation.data || {status:"pending"}, false);
     }
 
     async function startConversation(profileId) {
@@ -1177,8 +1317,13 @@
       try {
         await loadMyProfile();
         showApp();
-        // Auth/profile is ready. Existing chat tables are being aligned in a separate schema-safe step.
         renderSidebar();
+        try {
+          await loadSidebar();
+        } catch (sidebarError) {
+          console.error("Flare Chat sidebar load failed:", sidebarError);
+          showToast("Your account loaded, but chats could not refresh: " + (sidebarError.message || "Unknown error"));
+        }
         loadStories().catch(error => console.warn("Story startup failed:", error));
       } catch (error) {
         showAuth();
