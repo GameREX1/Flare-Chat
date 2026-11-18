@@ -407,6 +407,7 @@
 
     /* Flare Chat layout and feature additions */
     @media (min-width:651px) {
+      .mobile-back { display:inline-flex; }
       .app-shell { grid-template-columns:minmax(0,1fr) 350px; }
       .chat-panel { grid-column:1;grid-row:1;display:flex;flex-direction:column; }
       .sidebar { grid-column:2;grid-row:1; }
@@ -779,15 +780,16 @@
       const profileMap = {};
       if (userIds.length) {
         const profilesResult = await db.from("profiles")
-          .select("user_id, username, display_name, nickname, avatar_url")
+          .select("user_id, username, display_name, nickname, avatar_url, avatar_path")
           .in("user_id",userIds);
         if (!profilesResult.error) {
-          (profilesResult.data || []).forEach(profile => {
+          for (const profile of profilesResult.data || []) {
             profileMap[profile.user_id] = {
               ...profile,
-              display_name:profile.nickname || profile.display_name
+              display_name:profile.nickname || profile.display_name,
+              avatar_url:await resolveProfileAvatar(profile)
             };
-          });
+          }
         }
       }
       storyRows.forEach(row => {
@@ -1026,7 +1028,16 @@
       $("accountEmail").textContent = currentUser.email || "";
     }
 
-        async function loadSidebar() {
+        async function resolveProfileAvatar(profile) {
+      if (!profile) return "";
+      if (profile.avatar_path) {
+        const result = await db.storage.from("flare-chat-media").createSignedUrl(profile.avatar_path,3600);
+        if (!result.error && result.data && result.data.signedUrl) return result.data.signedUrl;
+      }
+      return profile.avatar_url || "";
+    }
+
+    async function loadSidebar() {
       const membershipResult = await db.from("conversation_members")
         .select("conversation_id")
         .eq("user_id", currentUser.id)
@@ -1053,10 +1064,15 @@
         const profileMap = {};
         if (otherIds.length) {
           const profilesResult = await db.from("profiles")
-            .select("user_id, username, display_name, nickname, avatar_url")
+            .select("user_id, username, display_name, nickname, avatar_url, avatar_path")
             .in("user_id", otherIds);
           if (profilesResult.error) throw profilesResult.error;
-          (profilesResult.data || []).forEach(profile => { profileMap[profile.user_id] = profile; });
+          for (const profile of profilesResult.data || []) {
+            profileMap[profile.user_id] = {
+              ...profile,
+              avatar_url:await resolveProfileAvatar(profile)
+            };
+          }
         }
 
         const lastMessageResult = await db.from("messages")
@@ -1746,9 +1762,15 @@ async function loadPendingRequests() {
       peerConnection.ontrack = event => {
         const stream = event.streams && event.streams[0];
         if (stream) {
-          $("remoteCallVideo").srcObject = stream;
-          $("remoteCallAudio").srcObject = stream;
-          $("callAudioAvatar").style.display = callType === "video" ? "none" : "grid";
+          if (callType === "video") {
+            $("remoteCallVideo").srcObject = stream;
+            $("remoteCallAudio").srcObject = null;
+            $("callAudioAvatar").style.display = "none";
+          } else {
+            $("remoteCallAudio").srcObject = stream;
+            $("remoteCallVideo").srcObject = null;
+            $("callAudioAvatar").style.display = "grid";
+          }
         }
       };
       peerConnection.onicecandidate = event => {
@@ -1821,6 +1843,7 @@ async function loadPendingRequests() {
       } catch (error) {
         console.error("Could not start call:",error);
         showToast("Call could not start: " + (error.message || "Check microphone/camera permission."));
+        if (activeCall && callSignalChannel) await insertCallSignal("end",{status:"cancelled"});
         await cleanupCall(true);
       }
     }
@@ -1861,12 +1884,21 @@ async function loadPendingRequests() {
         if (!offerResult.data) throw new Error("The caller's offer was not received. Please ask them to call again.");
         await peerConnection.setRemoteDescription(new RTCSessionDescription(offerResult.data.payload));
         await applyPendingIce();
+        const earlyCandidates = await db.from("call_signals").select("payload")
+          .eq("call_id",activeCall.id).eq("signal_type","ice_candidate")
+          .neq("sender_id",currentUser.id).order("created_at",{ascending:true});
+        if (earlyCandidates.error) throw earlyCandidates.error;
+        for (const row of earlyCandidates.data || []) {
+          try { await peerConnection.addIceCandidate(new RTCIceCandidate(row.payload)); }
+          catch (iceError) { console.warn("An earlier ICE candidate was skipped:",iceError); }
+        }
         const answer = await peerConnection.createAnswer();
         await peerConnection.setLocalDescription(answer);
         await insertCallSignal("answer",peerConnection.localDescription.toJSON());
       } catch (error) {
         showToast("Could not answer the call: " + (error.message || "Permission or connection error."));
         if (activeCall && activeCall.status === "accepted") {
+          await insertCallSignal("end",{status:"ended"});
           await db.from("calls").update({status:"ended"}).eq("id",activeCall.id);
         }
         await cleanupCall(false);
@@ -1922,6 +1954,15 @@ async function loadPendingRequests() {
         .on("postgres_changes",{
           event:"INSERT",schema:"public",table:"calls",filter:"callee_id=eq." + currentUser.id
         },event => handleIncomingCall(event.new))
+        .on("postgres_changes",{
+          event:"UPDATE",schema:"public",table:"calls",filter:"callee_id=eq." + currentUser.id
+        },event => {
+          if (activeCall && event.new.id === activeCall.id &&
+              ["rejected","cancelled","ended","missed"].includes(event.new.status)) {
+            cleanupCall(false);
+            showToast("The call was ended before you connected.");
+          }
+        })
         .subscribe();
     }
 
@@ -1933,7 +1974,6 @@ async function bootApp(sessionUser) {
         renderSidebar();
         try {
           await loadSidebar();
-          await loadPendingRequests();
           renderRequestsList();
         } catch (sidebarError) {
           console.error("Flare Chat sidebar load failed:", sidebarError);
