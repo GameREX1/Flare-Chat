@@ -428,6 +428,16 @@
     @keyframes record-pulse { 50% { box-shadow:0 0 0 5px rgba(255,48,56,.14); } }
     .upload-picker { display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 12px;border:1px dashed rgba(255,48,56,.42);border-radius:12px;color:#ffc2c5;font-size:12px;font-weight:700;cursor:pointer; }
     .upload-picker input { max-width:185px;color:#aaa;font-size:10px; }
+    .request-icon { position:relative; }
+    .request-count { position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:#ff3038;color:white;font-size:9px;font-weight:800;line-height:16px;text-align:center; }
+    .request-count:empty { display:none; }
+    .request-list-empty { padding:24px 10px;text-align:center;color:#aaa1a3;font-size:12px;line-height:1.6; }
+    .request-card { display:flex;align-items:flex-start;gap:11px;padding:13px 0;border-top:1px solid var(--line); }
+    .request-copy { flex:1;min-width:0; }
+    .request-name { font-size:12px;font-weight:700; }
+    .request-handle { margin-top:4px;color:#ff727a;font-size:10px; }
+    .request-actions { display:flex;gap:7px;margin-top:10px; }
+    .request-actions .btn { padding:8px 11px;font-size:10px; }
     .settings-overlay,.call-overlay { position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:18px;background:rgba(0,0,0,.84);backdrop-filter:blur(12px); }
     .settings-overlay[hidden],.call-overlay[hidden] { display:none !important; }
     .settings-card,.call-card { width:min(100%,480px);max-height:92vh;overflow:auto;padding:23px;border:1px solid rgba(255,48,56,.28);border-radius:22px;background:linear-gradient(155deg,#211014,#09090b 65%);box-shadow:0 24px 90px rgba(0,0,0,.7); }
@@ -503,7 +513,7 @@
       <div class="side-top">
         <div class="side-brand-row">
           <div class="brand"><div class="brand-mark"><img src="https://i.ibb.co/7x93TMGd/Flare-Chat-Fiery-Neon-Emblem.png" alt="Flare Chat logo"></div><div>flare<span>chat</span></div></div>
-          <div class="side-actions"><button class="btn-icon mobile-close-sidebar" id="closeSidebarBtn" type="button" aria-label="Close chats list">✕</button><button class="btn-icon" id="newChatBtn" title="Find a Flare ID" aria-label="Find a Flare ID">＋</button></div>
+          <div class="side-actions"><button class="btn-icon mobile-close-sidebar" id="closeSidebarBtn" type="button" aria-label="Close chats list">✕</button><button class="btn-icon request-icon" id="requestsBtn" type="button" title="Follow requests" aria-label="Follow requests">✉<span id="requestsCount" class="request-count"></span></button><button class="btn-icon" id="newChatBtn" title="Find a Flare ID" aria-label="Find a Flare ID">＋</button></div>
         </div>
         <div class="side-sub">Your people. Your conversations.</div>
         <div class="search-box">
@@ -595,9 +605,15 @@
 
     </section>
 
-  </main>    </div>
   </main>
 
+
+  <section class="settings-overlay" id="requestsOverlay" hidden aria-modal="true" role="dialog" aria-label="Follow requests">
+    <div class="settings-card">
+      <div class="settings-head"><div><span class="eyebrow">YOUR CONNECTIONS</span><h2>Follow requests</h2></div><button class="story-close" id="requestsCloseBtn" type="button" aria-label="Close requests">✕</button></div>
+      <div id="requestsList"></div>
+    </div>
+  </section>
 
   <section class="settings-overlay" id="settingsOverlay" hidden aria-modal="true" role="dialog" aria-label="Account settings">
     <form class="settings-card" id="accountSettingsForm">
@@ -1081,10 +1097,59 @@
           };
         }).sort((a,b) => new Date(b.lastAt || 0) - new Date(a.lastAt || 0));
       }
+      await loadPendingRequests();
       renderSidebar();
+      renderRequestsList();
     }
 
-        function renderSidebar() {
+async function loadPendingRequests() {
+      const result = await db.from("follows").select("id,follower_id,created_at")
+        .eq("following_id",currentUser.id).eq("status","pending")
+        .order("created_at",{ascending:false});
+      if (result.error) throw result.error;
+      incomingRequests = [];
+      const ids = (result.data || []).map(row => row.follower_id);
+      if (ids.length) {
+        const profiles = await db.from("profiles")
+          .select("user_id,username,nickname,display_name,avatar_url")
+          .in("user_id",ids);
+        if (profiles.error) throw profiles.error;
+        const profileMap = {};
+        (profiles.data || []).forEach(profile => { profileMap[profile.user_id] = profile; });
+        incomingRequests = (result.data || []).map(request => ({
+          ...request,
+          person:profileMap[request.follower_id] || {
+            user_id:request.follower_id,username:"user",display_name:"Flare User"
+          }
+        }));
+      }
+      $("requestsCount").textContent = incomingRequests.length ? String(incomingRequests.length) : "";
+    }
+
+    function renderRequestsList() {
+      const list = $("requestsList");
+      if (!list) return;
+      if (!incomingRequests.length) {
+        list.innerHTML = '<div class="request-list-empty">No pending requests right now.</div>';
+        return;
+      }
+      list.innerHTML = incomingRequests.map(item => {
+        const person = item.person || {};
+        return '<div class="request-card">' +
+          '<div class="avatar small">' + escapeHtml(initials(person.display_name || person.username)) + '</div>' +
+          '<div class="request-copy"><div class="request-name">' + escapeHtml(person.display_name || "Flare User") + '</div>' +
+          '<div class="request-handle">@' + escapeHtml(person.username || "user") + '</div>' +
+          '<div class="request-actions">' +
+          '<button class="btn btn-primary" type="button" data-request-action="accepted" data-request-id="' + escapeHtml(item.id) + '">Accept</button>' +
+          '<button class="btn btn-quiet" type="button" data-request-action="rejected" data-request-id="' + escapeHtml(item.id) + '">Decline</button>' +
+          '</div></div></div>';
+      }).join("");
+      list.querySelectorAll("[data-request-action]").forEach(button => {
+        button.addEventListener("click",() => updateFollowRequest(button.dataset.requestId,button.dataset.requestAction));
+      });
+    }
+
+            function renderSidebar() {
       const list = $("listArea");
       if (!list) return;
       const query = $("quickSearch").value.trim().toLowerCase();
@@ -1801,13 +1866,17 @@
         await insertCallSignal("answer",peerConnection.localDescription.toJSON());
       } catch (error) {
         showToast("Could not answer the call: " + (error.message || "Permission or connection error."));
-        await cleanupCall(true);
+        if (activeCall && activeCall.status === "accepted") {
+          await db.from("calls").update({status:"ended"}).eq("id",activeCall.id);
+        }
+        await cleanupCall(false);
       }
     }
 
     async function rejectIncomingCall() {
       if (!activeCall) return;
       const id = activeCall.id;
+      await insertCallSignal("end",{status:"rejected"});
       const updated = await db.from("calls").update({status:"rejected"}).eq("id",id);
       if (updated.error) showToast(updated.error.message);
       await cleanupCall(false);
@@ -1864,6 +1933,8 @@ async function bootApp(sessionUser) {
         renderSidebar();
         try {
           await loadSidebar();
+          await loadPendingRequests();
+          renderRequestsList();
         } catch (sidebarError) {
           console.error("Flare Chat sidebar load failed:", sidebarError);
           showToast("Your account loaded, but chats could not refresh: " + (sidebarError.message || "Unknown error"));
@@ -1939,6 +2010,19 @@ async function bootApp(sessionUser) {
     $("newChatBtn").addEventListener("click", () => {
       $("quickSearch").focus();
       showToast("Type a person's exact Flare ID in search.");
+    });
+    $("requestsBtn").addEventListener("click",async () => {
+      try {
+        await loadPendingRequests();
+        renderRequestsList();
+        $("requestsOverlay").hidden = false;
+      } catch (error) {
+        showToast("Could not load requests: " + (error.message || "Unknown error"));
+      }
+    });
+    $("requestsCloseBtn").addEventListener("click",() => { $("requestsOverlay").hidden = true; });
+    $("requestsOverlay").addEventListener("click",event => {
+      if (event.target === $("requestsOverlay")) $("requestsOverlay").hidden = true;
     });
     // The old welcome-screen Find People button was removed when Stories and the 3D car became the home feed.
     // The sidebar's Find Flare ID (+) button now provides this entry point.
