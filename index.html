@@ -404,6 +404,63 @@
       body.chat-open .chat-panel { z-index:3; }
       .mobile-open-chats,.mobile-close-sidebar { display:inline-flex; }
     }
+
+    /* Flare Chat layout and feature additions */
+    @media (min-width:651px) {
+      .app-shell { grid-template-columns:minmax(0,1fr) 350px; }
+      .chat-panel { grid-column:1;grid-row:1;display:flex;flex-direction:column; }
+      .sidebar { grid-column:2;grid-row:1; }
+    }
+    @media (min-width:651px) and (max-width:850px) {
+      .app-shell { grid-template-columns:minmax(0,1fr) 300px; }
+    }
+    .chats-only-label { margin-top:17px;color:#ff727a;font-size:9px;font-weight:800;letter-spacing:1.7px; }
+    .avatar img { width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block; }
+    .chat-header-actions { display:flex;align-items:center;gap:9px; }
+    .call-action { color:#ff8187;border-color:rgba(255,48,56,.22); }
+    .call-action:hover { background:rgba(255,48,56,.14); }
+    .car-paint-row { display:flex;justify-content:center;align-items:center;gap:11px;padding:4px 0 8px; }
+    .car-paint-row span { margin-right:4px;color:#9b9294;font-size:9px;font-weight:800;letter-spacing:1.4px; }
+    .paint-swatch { width:21px;height:21px;border-radius:50%;border:2px solid rgba(255,255,255,.4);background:var(--swatch);box-shadow:0 0 0 2px transparent; }
+    .paint-swatch.active { box-shadow:0 0 0 2px #ff6870; }
+    .composer-tool { flex:0 0 38px;width:38px;height:38px;border:1px solid var(--line);border-radius:11px;background:#19191d;color:#f5b4b7;font-size:18px; }
+    .composer-tool.recording { background:#8f101b;color:#fff;border-color:#ff5961;animation:record-pulse 1s infinite; }
+    @keyframes record-pulse { 50% { box-shadow:0 0 0 5px rgba(255,48,56,.14); } }
+    .upload-picker { display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 12px;border:1px dashed rgba(255,48,56,.42);border-radius:12px;color:#ffc2c5;font-size:12px;font-weight:700;cursor:pointer; }
+    .upload-picker input { max-width:185px;color:#aaa;font-size:10px; }
+    .settings-overlay,.call-overlay { position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:18px;background:rgba(0,0,0,.84);backdrop-filter:blur(12px); }
+    .settings-overlay[hidden],.call-overlay[hidden] { display:none !important; }
+    .settings-card,.call-card { width:min(100%,480px);max-height:92vh;overflow:auto;padding:23px;border:1px solid rgba(255,48,56,.28);border-radius:22px;background:linear-gradient(155deg,#211014,#09090b 65%);box-shadow:0 24px 90px rgba(0,0,0,.7); }
+    .settings-head,.call-head { display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px; }
+    .settings-head h2 { margin:5px 0 0;font-family:"Space Grotesk",sans-serif;font-size:23px; }
+    .settings-card label:not(.upload-picker) { display:grid;gap:7px;margin:13px 0;color:#d8d1d3;font-size:11px;font-weight:700; }
+    .settings-card label small { color:#8e8587;font-size:9px;font-weight:400;line-height:1.5; }
+    .settings-card .field { width:100%;padding:11px 12px;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:#0c0c0f;color:#fff;outline:0; }
+    .settings-bio { min-height:82px;resize:vertical; }
+    .settings-email-row { display:flex;justify-content:space-between;gap:12px;padding:12px;border-radius:11px;background:#101013;color:#929098;font-size:10px; }
+    .settings-email-row strong { color:#e7e2e3;font-size:11px;overflow-wrap:anywhere; }
+    .settings-note { min-height:18px;color:#b5a9ab;font-size:10px;line-height:1.5;margin:12px 0; }
+    .settings-actions { display:flex;justify-content:space-between;gap:10px;margin-top:16px; }
+    .call-card { width:min(100%,620px); }
+    .call-head strong,.call-head small { display:block; }
+    .call-head strong { margin-top:5px;font-size:16px; }
+    .call-head small { margin-top:5px;color:#a39a9c;font-size:10px; }
+    .call-video-stage { position:relative;display:grid;place-items:center;min-height:260px;overflow:hidden;border-radius:15px;background:radial-gradient(ellipse at center,rgba(255,48,56,.14),#08080a 70%); }
+    #remoteCallVideo { width:100%;max-height:55vh;object-fit:contain; }
+    #localCallVideo { position:absolute;right:12px;bottom:12px;width:26%;max-height:140px;object-fit:cover;border:1px solid rgba(255,255,255,.3);border-radius:12px;background:#111; }
+    .call-audio-avatar { width:86px;height:86px;display:grid;place-items:center;border:1px solid rgba(255,48,56,.3);border-radius:50%;background:#251014;color:#fff;font-family:"Space Grotesk",sans-serif;font-size:25px;font-weight:800; }
+    .call-actions { display:flex;justify-content:center;gap:10px;margin-top:16px; }
+    .call-footnote { color:#8f888a;font-size:9px;line-height:1.55;text-align:center;margin:13px 0 0; }
+    @media (max-width:650px) {
+      .chat-header-actions { gap:5px; }
+      .chat-header-actions .secure-pill { display:none; }
+      .car-paint-row { gap:8px; }
+      .settings-card,.call-card { padding:18px;border-radius:18px; }
+      .settings-head h2 { font-size:20px; }
+      .composer { gap:5px; }
+      .composer-tool { width:34px;height:34px;flex-basis:34px; }
+      .send-btn { width:38px;height:38px;flex:0 0 38px; }
+    }
   </style>
 </head>
 <body>
@@ -453,11 +510,7 @@
           <span class="search-icon">⌕</span>
           <input class="field" id="quickSearch" placeholder="Search chats or Flare IDs" autocomplete="off">
         </div>
-        <div class="tabs">
-          <button class="tab active" data-tab="chats" type="button">Chats</button>
-          <button class="tab" data-tab="contacts" type="button">People</button>
-          <button class="tab" data-tab="requests" type="button">Requests</button>
-        </div>
+        <div class="chats-only-label">CHATS</div>
       </div>
 
       <div class="section-head"><h2 id="listHeading">Recent chats</h2><span class="eyebrow" id="listCount">0</span></div>
@@ -503,6 +556,15 @@
           loading="eager"
           reveal="auto">
         </model-viewer>
+        <div class="car-paint-row" aria-label="Choose Bugatti paint colour">
+          <span>PAINT</span>
+          <button class="paint-swatch active" data-paint="#1677ff" style="--swatch:#1677ff" type="button" aria-label="Blue paint"></button>
+          <button class="paint-swatch" data-paint="#e8e8e8" style="--swatch:#e8e8e8" type="button" aria-label="White paint"></button>
+          <button class="paint-swatch" data-paint="#ff3038" style="--swatch:#ff3038" type="button" aria-label="Red paint"></button>
+          <button class="paint-swatch" data-paint="#111318" style="--swatch:#111318" type="button" aria-label="Black paint"></button>
+          <button class="paint-swatch" data-paint="#16a879" style="--swatch:#16a879" type="button" aria-label="Green paint"></button>
+          <button class="paint-swatch" data-paint="#d7a934" style="--swatch:#d7a934" type="button" aria-label="Gold paint"></button>
+        </div>
         <div class="car-card-foot"><span>●</span> Auto 360° rotation · Drag to explore</div>
       </section>
 
@@ -513,26 +575,61 @@
           <div class="avatar" id="chatAvatar">F</div>
           <div><div class="chat-person-name" id="chatName">Conversation</div><div class="chat-person-id" id="chatId">@flare_id</div></div>
         </div>
-        <div class="secure-pill">ϟ &nbsp; Private conversation</div>
+        <div class="chat-header-actions">
+          <span class="secure-pill">ϟ &nbsp; Private conversation</span>
+          <button class="btn-icon call-action" id="voiceCallBtn" type="button" title="Start voice call" aria-label="Start voice call">☎</button>
+          <button class="btn-icon call-action" id="videoCallBtn" type="button" title="Start video call" aria-label="Start video call">▣</button>
+        </div>
       </header>
       <div class="messages hidden" id="messages"></div>
       <div class="composer-wrap hidden" id="composerWrap">
         <form class="composer" id="messageForm">
+          <button class="composer-tool" id="attachMessageBtn" type="button" title="Attach photo or video" aria-label="Attach photo or video">＋</button>
+          <input id="messageFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" hidden>
+          <button class="composer-tool" id="voiceRecordBtn" type="button" title="Record voice message" aria-label="Record voice message">🎙</button>
           <input id="messageInput" maxlength="4000" autocomplete="off" placeholder="Write a message..." aria-label="Write a message">
           <button class="send-btn" type="submit" aria-label="Send message">➤</button>
         </form>
-        <div class="composer-hint">Enter to send · Messages are visible only to conversation members</div>
+        <div class="composer-hint" id="composerHint">Attach photos/videos · Hold no buttons: tap the microphone to start and stop a voice note</div>
       </div>
 
     </section>
 
-    <div class="profile-pop hidden" id="profilePop">
-      <div class="profile-pop-row"><div class="avatar large" id="popAvatar">F</div><div><div class="profile-name" id="popName">Your name</div><div class="muted" id="popEmail" style="font-size:10px;margin-top:4px"></div></div></div>
-      <div class="profile-id-copy"><strong id="popId">@your_id</strong><button class="text-action" id="copyIdBtn" type="button">Copy</button></div>
-      <button class="btn btn-quiet" id="signOutBtn" type="button" style="width:100%">Sign out</button>
-    </div>
+  </main>    </div>
   </main>
 
+
+  <section class="settings-overlay" id="settingsOverlay" hidden aria-modal="true" role="dialog" aria-label="Account settings">
+    <form class="settings-card" id="accountSettingsForm">
+      <div class="settings-head"><div><span class="eyebrow">YOUR ACCOUNT</span><h2>Account settings</h2></div><button class="story-close" id="settingsCloseBtn" type="button" aria-label="Close settings">✕</button></div>
+      <div class="settings-email-row"><span>Email</span><strong id="accountEmail">—</strong></div>
+      <label>Display name<input class="field" id="accountDisplayName" maxlength="40" required></label>
+      <label>Flare ID<input class="field" id="accountUsername" maxlength="20" autocapitalize="none" required><small>3–20 lowercase letters, numbers or underscores. Username can be changed once every 10 days.</small></label>
+      <label>Bio<textarea class="field settings-bio" id="accountBio" maxlength="160" placeholder="A little about you"></textarea></label>
+      <label class="upload-picker">Update profile photo<input id="accountAvatarFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></label>
+      <label>New password (optional)<input class="field" id="accountNewPassword" type="password" minlength="8" autocomplete="new-password" placeholder="Leave blank to keep current password"></label>
+      <div class="settings-note" id="settingsNotice">Your profile changes are saved to your Flare Chat account.</div>
+      <div class="settings-actions"><button class="btn btn-quiet" id="settingsSignOutBtn" type="button">Sign out</button><button class="btn btn-primary" id="saveAccountBtn" type="submit">Save changes</button></div>
+    </form>
+  </section>
+
+  <section class="call-overlay" id="callOverlay" hidden aria-modal="true" role="dialog" aria-label="Flare call">
+    <div class="call-card">
+      <div class="call-head"><div><span class="eyebrow">FLARE CALL</span><strong id="callTitle">Connecting…</strong><small id="callStatus">Waiting for the other person</small></div><button class="story-close" id="callCloseBtn" type="button" aria-label="Close call">✕</button></div>
+      <div class="call-video-stage">
+        <video id="remoteCallVideo" autoplay playsinline></video>
+        <video id="localCallVideo" autoplay muted playsinline></video>
+        <audio id="remoteCallAudio" autoplay></audio>
+        <div class="call-audio-avatar" id="callAudioAvatar">F</div>
+      </div>
+      <div class="call-actions">
+        <button class="btn btn-primary" id="acceptCallBtn" type="button" hidden>Accept</button>
+        <button class="btn btn-quiet" id="declineCallBtn" type="button" hidden>Decline</button>
+        <button class="btn btn-quiet" id="endCallBtn" type="button">End call</button>
+      </div>
+      <p class="call-footnote">Calls use your device microphone/camera and a peer-to-peer connection. Keep this page open during the call.</p>
+    </div>
+  </section>
 
   <section class="story-overlay" id="storyViewer" hidden aria-modal="true" role="dialog" aria-label="Story viewer">
     <div class="story-view-card">
@@ -551,8 +648,11 @@
   <section class="story-overlay" id="storyComposer" hidden aria-modal="true" role="dialog" aria-label="Create a story">
     <form class="story-compose-card" id="storyComposeForm">
       <div class="story-compose-head"><h3>Share a story</h3><button class="story-close" id="storyComposeClose" type="button" aria-label="Close composer">✕</button></div>
-      <textarea id="storyText" maxlength="350" placeholder="What would you like to share?" required></textarea>
-      <div class="story-compose-note">Your text story will be visible to signed-in Flare Chat users for 24 hours.</div>
+      <textarea id="storyText" maxlength="350" placeholder="Add a caption (optional)"></textarea>
+      <label class="upload-picker">Choose a photo or video
+        <input id="storyMediaFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm">
+      </label>
+      <div class="story-compose-note">Photo, video or text · visible to accepted followers for 24 hours · maximum 50 MB</div>
       <button class="btn btn-primary" id="publishStoryBtn" type="submit">Share story <span>→</span></button>
     </form>
   </section>
@@ -580,7 +680,18 @@
     let allContacts = [];
     let incomingRequests = [];
     let activeConversationId = null;
+    let activeChatUserId = null;
     let activeChannel = null;
+    let incomingCallsChannel = null;
+    let callSignalChannel = null;
+    let activeCall = null;
+    let peerConnection = null;
+    let localCallStream = null;
+    let pendingIceCandidates = [];
+    let mediaRecorder = null;
+    let mediaRecorderStream = null;
+    let mediaRecorderChunks = [];
+    let mediaRecordStartedAt = 0;
     let toastTimer = null;
 
 
@@ -632,28 +743,35 @@
       const rail = $("storiesRail");
       if (!db || !currentUser || !rail) return;
       const result = await db.from("stories")
-        .select("id, user_id, body, media_url, expires_at")
-        .gt("expires_at", new Date().toISOString())
-        .order("expires_at", {ascending:true})
-        .limit(60);
+        .select("id, user_id, body, media_url, media_path, media_type, expires_at")
+        .gt("expires_at",new Date().toISOString())
+        .order("expires_at",{ascending:true}).limit(60);
       if (result.error) {
         storyRows = [];
         renderStories();
-        console.warn("Stories could not be loaded:", result.error.message);
+        console.warn("Stories could not be loaded:",result.error.message);
         return;
       }
-
       storyRows = result.data || [];
+      for (const row of storyRows) {
+        if (row.media_path) {
+          const signed = await db.storage.from("flare-chat-media").createSignedUrl(row.media_path,86400);
+          row.media_url = !signed.error && signed.data ? signed.data.signedUrl : "";
+        }
+      }
       const userIds = Array.from(new Set(storyRows.map(row => row.user_id).filter(Boolean)));
-      let profileMap = {};
+      const profileMap = {};
       if (userIds.length) {
         const profilesResult = await db.from("profiles")
-          .select("user_id, username, display_name, avatar_url")
-          .in("user_id", userIds);
+          .select("user_id, username, display_name, nickname, avatar_url")
+          .in("user_id",userIds);
         if (!profilesResult.error) {
-          (profilesResult.data || []).forEach(profile => { profileMap[profile.user_id] = profile; });
-        } else {
-          console.warn("Story profile names could not be loaded:", profilesResult.error.message);
+          (profilesResult.data || []).forEach(profile => {
+            profileMap[profile.user_id] = {
+              ...profile,
+              display_name:profile.nickname || profile.display_name
+            };
+          });
         }
       }
       storyRows.forEach(row => {
@@ -662,26 +780,25 @@
       renderStories();
     }
 
-    function openStory(userId, index) {
+        function openStory(userId, index) {
       const rows = storyGroups[userId] || [];
       if (!rows.length) return;
       activeStoryUserId = userId;
-      activeStoryIndex = Math.max(0, Math.min(index || 0, rows.length - 1));
+      activeStoryIndex = Math.max(0,Math.min(index || 0,rows.length - 1));
       const row = rows[activeStoryIndex];
       const profile = row.profile || {};
-      const name = profile.display_name || profile.username || "Flare User";
-      $("storyViewName").textContent = name;
+      $("storyViewName").textContent = profile.display_name || profile.username || "Flare User";
       $("storyViewHandle").textContent = profile.username ? "@" + profile.username : "Flare story";
-      const avatar = $("storyViewAvatar");
-      avatar.innerHTML = storyAvatarMarkup(profile);
+      $("storyViewAvatar").innerHTML = storyAvatarMarkup(profile);
       const content = $("storyViewContent");
       const media = String(row.media_url || "");
-      if (/^https?:\/\//i.test(media) && /\.(mp4|webm|ogg)(\?.*)?$/i.test(media)) {
+      const mediaType = row.media_type || (/\.(mp4|webm|ogg)(\?.*)?$/i.test(media) ? "video" : (media ? "image" : "text"));
+      if (media && mediaType === "video") {
         content.innerHTML = '<video src="' + escapeHtml(media) + '" controls autoplay playsinline></video>' +
-          (row.body ? '<p>' + escapeHtml(row.body) + '</p>' : '');
-      } else if (/^https?:\/\//i.test(media)) {
+          (row.body ? '<p>' + escapeHtml(row.body) + '</p>' : "");
+      } else if (media && mediaType === "image") {
         content.innerHTML = '<img src="' + escapeHtml(media) + '" alt="Story media">' +
-          (row.body ? '<p>' + escapeHtml(row.body) + '</p>' : '');
+          (row.body ? '<p>' + escapeHtml(row.body) + '</p>' : "");
       } else {
         content.innerHTML = '<p>' + escapeHtml(row.body || "A moment shared on Flare Chat.") + '</p>';
       }
@@ -690,7 +807,7 @@
       $("storyViewer").hidden = false;
     }
 
-    function closeStoryViewer() {
+        function closeStoryViewer() {
       $("storyViewer").hidden = true;
       $("storyViewContent").innerHTML = "";
       activeStoryUserId = null;
@@ -705,42 +822,58 @@
     async function publishStory(event) {
       event.preventDefault();
       const body = $("storyText").value.trim();
-      if (!body) {
-        showToast("Write something before sharing your story.");
+      const file = $("storyMediaFile").files[0] || null;
+      if (!body && !file) {
+        showToast("Add a caption or choose a photo/video first.");
         return;
       }
       if (!currentUser) return;
+      if (file) {
+        const allowed = ["image/jpeg","image/png","image/webp","image/gif","video/mp4","video/webm"];
+        if (!allowed.includes(file.type)) {
+          showToast("Choose a JPG, PNG, WEBP, GIF, MP4 or WEBM file.");
+          return;
+        }
+        if (file.size > 50 * 1024 * 1024) {
+          showToast("This file is larger than the 50 MB upload limit.");
+          return;
+        }
+      }
       const button = $("publishStoryBtn");
       button.disabled = true;
       button.textContent = "Sharing…";
+      let uploadedPath = null;
       try {
+        if (file) uploadedPath = await uploadPrivateFile(file,"stories");
+        const mediaType = !file ? "text" : (file.type.startsWith("video/") ? "video" : "image");
         const result = await db.from("stories").insert({
-          user_id: currentUser.id,
-          body: body,
-          media_url: null,
-          expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+          user_id:currentUser.id,
+          body:body,
+          media_path:uploadedPath,
+          media_url:null,
+          media_type:mediaType,
+          expires_at:new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
         });
         if (result.error) throw result.error;
         $("storyComposer").hidden = true;
+        $("storyText").value = "";
+        $("storyMediaFile").value = "";
         showToast("Your story has been shared.");
         await loadStories();
       } catch (error) {
-        showToast("Story could not be shared: " + (error.message || "Please check Stories permissions."));
+        if (uploadedPath) await db.storage.from("flare-chat-media").remove([uploadedPath]);
+        showToast("Story could not be shared: " + (error.message || "Check storage permissions."));
       } finally {
         button.disabled = false;
         button.innerHTML = 'Share story <span>→</span>';
       }
     }
 
-    function bindStoryControls() {
+        function bindStoryControls() {
       $("storiesRail").addEventListener("click", event => {
         const addButton = event.target.closest("[data-add-story]");
         if (addButton) {
-          if (storyGroups[currentUser.id] && storyGroups[currentUser.id].length) {
-            openStory(currentUser.id, 0);
-          } else {
-            showStoryComposer();
-          }
+          showStoryComposer();
           return;
         }
         const storyButton = event.target.closest("[data-story-user]");
@@ -752,7 +885,10 @@
       });
       $("storyPrevBtn").addEventListener("click", () => openStory(activeStoryUserId, activeStoryIndex - 1));
       $("storyNextBtn").addEventListener("click", () => openStory(activeStoryUserId, activeStoryIndex + 1));
-      $("storyComposeClose").addEventListener("click", () => { $("storyComposer").hidden = true; });
+      $("storyComposeClose").addEventListener("click", () => {
+        $("storyComposer").hidden = true;
+        $("storyMediaFile").value = "";
+      });
       $("storyComposer").addEventListener("click", event => {
         if (event.target === $("storyComposer")) $("storyComposer").hidden = true;
       });
@@ -833,9 +969,8 @@
     }
 
     async function loadMyProfile() {
-      // Existing Flare Chat schema uses profiles.user_id + profiles.username.
       const result = await db.from("profiles")
-        .select("user_id, username, display_name, avatar_url, bio")
+        .select("user_id, username, nickname, display_name, avatar_url, avatar_path, bio")
         .eq("user_id", currentUser.id)
         .maybeSingle();
       if (result.error) throw result.error;
@@ -845,50 +980,41 @@
         const metadata = currentUser.user_metadata || {};
         const username = normalizeFlareId(metadata.username || metadata.flare_id || "");
         const displayName = String(metadata.display_name || username || "Flare User").trim().slice(0,40);
-        if (!validFlareId(username)) {
-          throw new Error("Your Flare profile is missing. Please sign out and create your account again after the profile setup is enabled.");
-        }
-
-        const now = new Date().toISOString();
+        if (!validFlareId(username)) throw new Error("Your Flare profile is missing. Sign out and create your account again after profile setup is enabled.");
         const insertResult = await db.from("profiles").insert({
-          user_id: currentUser.id,
-          username,
-          display_name: displayName,
-          avatar_url: null,
-          bio: "",
-          created_at: now,
-          updated_at: now
-        }).select("user_id, username, display_name, avatar_url, bio").single();
-
-        if (insertResult.error) {
-          if (insertResult.error.code === "23505") {
-            throw new Error("That Flare ID is already taken. Choose another unique ID.");
-          }
-          throw new Error("Your account is signed in, but the profile could not be created: " + insertResult.error.message);
-        }
+          user_id:currentUser.id, username, nickname:displayName, display_name:displayName,
+          avatar_url:null, bio:""
+        }).select("user_id, username, nickname, display_name, avatar_url, avatar_path, bio").single();
+        if (insertResult.error) throw new Error("Profile could not be created: " + insertResult.error.message);
         profile = insertResult.data;
       }
 
+      let avatarUrl = profile.avatar_url || "";
+      if (profile.avatar_path) {
+        const signed = await db.storage.from("flare-chat-media").createSignedUrl(profile.avatar_path, 3600);
+        if (!signed.error && signed.data && signed.data.signedUrl) avatarUrl = signed.data.signedUrl;
+      }
       myProfile = {
-        id: profile.user_id,
-        flare_id: profile.username,
-        display_name: profile.display_name,
-        avatar_url: profile.avatar_url,
-        bio: profile.bio
+        id:profile.user_id, flare_id:profile.username,
+        display_name:profile.nickname || profile.display_name,
+        avatar_url:avatarUrl, avatar_path:profile.avatar_path, bio:profile.bio || ""
       };
       $("myName").textContent = myProfile.display_name;
       $("myId").textContent = "@" + myProfile.flare_id;
-      $("myAvatar").textContent = initials(myProfile.display_name);
-      $("popAvatar").textContent = initials(myProfile.display_name);
-      $("popName").textContent = myProfile.display_name;
-      $("popEmail").textContent = currentUser.email || "";
-      $("popId").textContent = "@" + myProfile.flare_id;
+      $("myAvatar").innerHTML = avatarUrl
+        ? '<img src="' + escapeHtml(avatarUrl) + '" alt="">'
+        : escapeHtml(initials(myProfile.display_name));
+      $("myStoryAvatar").innerHTML = avatarUrl
+        ? '<img src="' + escapeHtml(avatarUrl) + '" alt="">'
+        : escapeHtml(initials(myProfile.display_name));
+      $("accountEmail").textContent = currentUser.email || "";
     }
 
-    async function loadSidebar() {
+        async function loadSidebar() {
       const membershipResult = await db.from("conversation_members")
         .select("conversation_id")
-        .eq("user_id", currentUser.id);
+        .eq("user_id", currentUser.id)
+        .is("left_at", null);
       if (membershipResult.error) throw membershipResult.error;
 
       const conversationIds = Array.from(new Set((membershipResult.data || []).map(row => row.conversation_id)));
@@ -902,7 +1028,8 @@
 
         const memberResult = await db.from("conversation_members")
           .select("conversation_id, user_id")
-          .in("conversation_id", conversationIds);
+          .in("conversation_id", conversationIds)
+          .is("left_at", null);
         if (memberResult.error) throw memberResult.error;
 
         const otherIds = Array.from(new Set((memberResult.data || [])
@@ -910,7 +1037,7 @@
         const profileMap = {};
         if (otherIds.length) {
           const profilesResult = await db.from("profiles")
-            .select("id, user_id, flare_id, display_name, avatar_url")
+            .select("user_id, username, display_name, nickname, avatar_url")
             .in("user_id", otherIds);
           if (profilesResult.error) throw profilesResult.error;
           (profilesResult.data || []).forEach(profile => { profileMap[profile.user_id] = profile; });
@@ -928,21 +1055,23 @@
         });
 
         allChats = (conversationsResult.data || []).map(conversation => {
-          const member = (memberResult.data || []).find(row =>
-            row.conversation_id === conversation.id && row.user_id !== currentUser.id);
+          const members = (memberResult.data || []).filter(row => row.conversation_id === conversation.id && row.user_id !== currentUser.id);
+          const member = members[0];
           const person = member ? profileMap[member.user_id] : null;
           const last = lastMessages[conversation.id];
           const groupName = conversation.title || conversation.name || "Group conversation";
           const preview = last
             ? (last.sender_id === currentUser.id ? "You: " : "") +
-              (last.content_type && last.content_type !== "text" ? "Shared " + last.content_type : (last.body || "Message"))
+              (last.content_type && last.content_type !== "text"
+                ? "Shared " + last.content_type
+                : (last.body || "Message"))
             : "Start the conversation";
           return {
             id:conversation.id,
             person:person ? {
               id:person.user_id,
-              flare_id:person.flare_id,
-              display_name:person.display_name,
+              flare_id:person.username,
+              display_name:person.nickname || person.display_name,
               avatar_url:person.avatar_url
             } : {id:null,display_name:groupName,flare_id:"group"},
             isGroup:!!conversation.is_group,
@@ -952,130 +1081,78 @@
           };
         }).sort((a,b) => new Date(b.lastAt || 0) - new Date(a.lastAt || 0));
       }
-
-      const contactsResult = await db.from("contacts")
-        .select("contact_user_id, created_at")
-        .eq("user_id", currentUser.id)
-        .order("created_at", {ascending:false});
-      if (contactsResult.error) throw contactsResult.error;
-
-      allContacts = [];
-      const contactIds = (contactsResult.data || []).map(row => row.contact_user_id);
-      if (contactIds.length) {
-        const profilesResult = await db.from("profiles")
-          .select("id, user_id, flare_id, display_name, avatar_url")
-          .in("user_id", contactIds);
-        if (profilesResult.error) throw profilesResult.error;
-        allContacts = profilesResult.data || [];
-      }
-
-      const requestsResult = await db.from("follows")
-        .select("id, follower_id, created_at")
-        .eq("following_id", currentUser.id)
-        .eq("status", "pending")
-        .order("created_at", {ascending:false});
-      if (requestsResult.error) throw requestsResult.error;
-
-      incomingRequests = [];
-      const requestIds = (requestsResult.data || []).map(row => row.follower_id);
-      if (requestIds.length) {
-        const requestProfiles = await db.from("profiles")
-          .select("user_id, username, nickname, display_name, avatar_url")
-          .in("user_id", requestIds);
-        if (requestProfiles.error) throw requestProfiles.error;
-        const requestProfileMap = {};
-        (requestProfiles.data || []).forEach(profile => { requestProfileMap[profile.user_id] = profile; });
-        incomingRequests = (requestsResult.data || []).map(request => ({
-          ...request,
-          person:requestProfileMap[request.follower_id] || {
-            user_id:request.follower_id, username:"user", display_name:"Flare User"
-          }
-        }));
-      }
-
       renderSidebar();
     }
 
-    function renderSidebar() {
+        function renderSidebar() {
       const list = $("listArea");
+      if (!list) return;
       const query = $("quickSearch").value.trim().toLowerCase();
-      const items = activeTab === "chats" ? allChats : activeTab === "contacts" ? allContacts : incomingRequests;
-      $("listHeading").textContent = activeTab === "chats" ? "Recent chats" : activeTab === "contacts" ? "Your people" : "Follow requests";
-      const visible = items.filter(item => {
-        const person = activeTab === "chats" ? item.person : activeTab === "requests" ? item.person : item;
+      const visible = allChats.filter(item => {
+        const person = item.person || {};
         const name = String(person.display_name || "").toLowerCase();
-        const username = String(person.flare_id || person.username || "").toLowerCase();
+        const username = String(person.flare_id || "").toLowerCase();
         return !query || name.includes(query) || username.includes(query);
       });
-      $("listCount").textContent = String(visible.length).padStart(2, "0");
-
+      $("listHeading").textContent = "Recent chats";
+      $("listCount").textContent = String(visible.length).padStart(2,"0");
       if (!visible.length) {
-        const empty = activeTab === "chats"
-          ? "No chats yet.<br>Find someone by their Flare ID to begin."
-          : activeTab === "contacts"
-            ? "No accepted follows yet.<br>Find someone by their Flare ID."
-            : "No pending follow requests.";
-        list.innerHTML = '<div style="padding:24px 12px;text-align:center;color:#898991;font-size:12px;line-height:1.7">' + empty + '</div>';
+        list.innerHTML = '<div style="padding:24px 12px;text-align:center;color:#898991;font-size:12px;line-height:1.7">No chats yet.<br>Tap ＋ to find someone by Flare ID.</div>';
         return;
       }
-
-      if (activeTab === "requests") {
-        list.innerHTML = visible.map(item => {
-          const person = item.person || {};
-          return '<div class="request-card">' +
-            '<div class="avatar small">' + escapeHtml(initials(person.display_name || person.username)) + '</div>' +
-            '<div class="request-copy"><div class="request-name">' + escapeHtml(person.display_name || "Flare User") + '</div>' +
-            '<div class="request-handle">@' + escapeHtml(person.username || "user") + '</div>' +
-            '<div class="request-actions">' +
-            '<button class="btn btn-primary" type="button" data-request-action="accepted" data-request-id="' + escapeHtml(item.id) + '">Accept</button>' +
-            '<button class="btn btn-quiet" type="button" data-request-action="rejected" data-request-id="' + escapeHtml(item.id) + '">Decline</button>' +
-            '</div></div></div>';
-        }).join("");
-        list.querySelectorAll("[data-request-action]").forEach(button => {
-          button.addEventListener("click", () => updateFollowRequest(button.dataset.requestId, button.dataset.requestAction));
-        });
-        return;
-      }
-
       list.innerHTML = visible.map(item => {
-        const person = activeTab === "chats" ? item.person : item;
-        const isChat = activeTab === "chats";
-        const active = isChat && item.id === activeConversationId ? " active" : "";
-        const preview = isChat ? item.lastMessage : "@" + (person.flare_id || person.username || "");
-        const time = isChat && item.lastAt ? formatTime(item.lastAt) : "";
-        const openId = isChat ? item.id : person.user_id || person.id;
-        return '<button type="button" class="list-item' + active + '" data-open-id="' +
-          escapeHtml(openId || "") + '" data-kind="' + (isChat ? "chat" : "person") + '">' +
-          '<div class="avatar">' + escapeHtml(initials(person.display_name)) + '</div>' +
-          '<div class="list-copy"><div class="list-title"><span>' + escapeHtml(person.display_name) +
-          '</span><span class="list-time">' + escapeHtml(time) + '</span></div>' +
-          '<div class="list-preview">' + escapeHtml(preview) + '</div></div></button>';
+        const person = item.person || {};
+        const active = item.id === activeConversationId ? " active" : "";
+        const avatar = person.avatar_url && /^https?:\/\//i.test(person.avatar_url)
+          ? '<img src="' + escapeHtml(person.avatar_url) + '" alt="">'
+          : escapeHtml(initials(person.display_name));
+        return '<button type="button" class="list-item' + active + '" data-open-id="' + escapeHtml(item.id) + '">' +
+          '<div class="avatar">' + avatar + '</div>' +
+          '<div class="list-copy"><div class="list-title"><span>' + escapeHtml(person.display_name || item.groupName) +
+          '</span><span class="list-time">' + escapeHtml(item.lastAt ? formatTime(item.lastAt) : "") + '</span></div>' +
+          '<div class="list-preview">' + escapeHtml(item.lastMessage) + '</div></div></button>';
       }).join("");
-
       list.querySelectorAll("[data-open-id]").forEach(button => {
-        button.addEventListener("click", () => {
-          if (button.dataset.kind === "chat") openConversation(button.dataset.openId);
-          else startConversation(button.dataset.openId);
-        });
+        button.addEventListener("click", () => openConversation(button.dataset.openId));
       });
     }
 
-    async function updateFollowRequest(requestId, status) {
+        async function updateFollowRequest(requestId, status) {
       if (!["accepted","rejected"].includes(status)) return;
-      const result = await db.from("follows")
-        .update({status})
-        .eq("id", requestId)
-        .eq("following_id", currentUser.id)
-        .eq("status", "pending");
+      const requestInfo = await db.from("follows").select("follower_id")
+        .eq("id",requestId).eq("following_id",currentUser.id).eq("status","pending").maybeSingle();
+      if (requestInfo.error) {
+        showToast("Could not load request: " + requestInfo.error.message);
+        return;
+      }
+      if (!requestInfo.data) {
+        showToast("This follow request is no longer pending.");
+        await loadSidebar();
+        return;
+      }
+      const result = await db.from("follows").update({status})
+        .eq("id",requestId).eq("following_id",currentUser.id).eq("status","pending");
       if (result.error) {
         showToast("Could not update request: " + result.error.message);
         return;
       }
-      showToast(status === "accepted" ? "Follow request accepted." : "Follow request declined.");
+      if (status === "accepted") {
+        const conversation = await db.rpc("get_or_create_direct_conversation", {
+          target_user_id:requestInfo.data.follower_id
+        });
+        if (conversation.error) {
+          showToast("Request accepted, but the chat could not be created: " + conversation.error.message);
+          await loadSidebar();
+          return;
+        }
+        showToast("Request accepted. Your new chat is ready.");
+      } else {
+        showToast("Follow request declined.");
+      }
       await loadSidebar();
     }
 
-    function formatTime(value) {
+        function formatTime(value) {
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return "";
       const today = new Date();
@@ -1238,6 +1315,9 @@
         return;
       }
       activeConversationId = conversationId;
+      activeChatUserId = selected.person.id || null;
+      $("voiceCallBtn").disabled = !activeChatUserId || selected.isGroup;
+      $("videoCallBtn").disabled = !activeChatUserId || selected.isGroup;
       $("homeFeed").classList.add("hidden");
       $("chatHeader").classList.remove("hidden");
       $("messages").classList.remove("hidden");
@@ -1264,40 +1344,54 @@
       if (!activeConversationId) return;
       const conversationAtRequest = activeConversationId;
       const result = await db.from("messages")
-        .select("id, conversation_id, sender_id, body, created_at")
-        .eq("conversation_id", conversationAtRequest)
-        .order("created_at", {ascending:false})
-        .limit(100);
+        .select("id, conversation_id, sender_id, body, content_type, media_path, media_url, media_mime_type, duration_seconds, created_at")
+        .eq("conversation_id",conversationAtRequest)
+        .order("created_at",{ascending:false}).limit(100);
       if (result.error) {
         showToast(result.error.message);
         return;
       }
       if (conversationAtRequest !== activeConversationId) return;
       const messages = (result.data || []).reverse();
+      const rendered = await Promise.all(messages.map(async message => {
+        let mediaUrl = message.media_url || "";
+        if (message.media_path) {
+          const signed = await db.storage.from("flare-chat-media").createSignedUrl(message.media_path,3600);
+          if (!signed.error && signed.data) mediaUrl = signed.data.signedUrl;
+        }
+        let bodyHtml = escapeHtml(message.body || "").replace(/\n/g,"<br>");
+        if (mediaUrl && /^https?:\/\//i.test(mediaUrl)) {
+          const safeUrl = escapeHtml(mediaUrl);
+          if (message.content_type === "image") {
+            bodyHtml += '<img class="message-media" src="' + safeUrl + '" alt="Shared image" loading="lazy">';
+          } else if (message.content_type === "video") {
+            bodyHtml += '<video class="message-media" src="' + safeUrl + '" controls playsinline></video>';
+          } else if (message.content_type === "voice") {
+            bodyHtml += '<audio class="message-audio" src="' + safeUrl + '" controls></audio>';
+          }
+        }
+        const mine = message.sender_id === currentUser.id;
+        return '<div class="message-row' + (mine ? " mine" : "") + '"><div class="bubble">' +
+          bodyHtml +
+          '<div class="message-meta"><span>' + escapeHtml(formatMessageTime(message.created_at)) + '</span>' +
+          (message.duration_seconds ? '<span>' + escapeHtml(String(Math.round(Number(message.duration_seconds)))) + 's</span>' : '') +
+          (mine ? '<span>✓</span>' : '') + '</div></div></div>';
+      }));
       const container = $("messages");
-      if (!messages.length) {
-        container.innerHTML = '<div class="day-label">This is the beginning of your conversation</div>';
-      } else {
-        container.innerHTML = '<div class="day-label">Your private conversation</div>' + messages.map(message => {
-          const mine = message.sender_id === currentUser.id;
-          return '<div class="message-row' + (mine ? " mine" : "") + '">' +
-            '<div class="bubble">' + escapeHtml(message.body).replace(/\n/g, "<br>") +
-            '<div class="message-meta"><span>' + escapeHtml(formatMessageTime(message.created_at)) + '</span>' +
-            (mine ? '<span>✓</span>' : '') + '</div></div></div>';
-        }).join("");
-      }
+      container.innerHTML = messages.length
+        ? '<div class="day-label">Your private conversation</div>' + rendered.join("")
+        : '<div class="day-label">This is the beginning of your conversation</div>';
       container.scrollTop = container.scrollHeight;
     }
 
-    async function sendMessage(event) {
+        async function sendMessage(event) {
       event.preventDefault();
       const body = $("messageInput").value.trim();
       if (!body || !activeConversationId) return;
       $("messageInput").value = "";
       const result = await db.from("messages").insert({
-        conversation_id:activeConversationId,
-        sender_id:currentUser.id,
-        body:body
+        conversation_id:activeConversationId, sender_id:currentUser.id,
+        body:body, content_type:"text"
       });
       if (result.error) {
         $("messageInput").value = body;
@@ -1308,11 +1402,461 @@
       await loadSidebar();
     }
 
-    async function openProfile() {
-      $("profilePop").classList.toggle("hidden");
+        async function openProfile() {
+      $("accountDisplayName").value = myProfile.display_name || "";
+      $("accountUsername").value = myProfile.flare_id || "";
+      $("accountBio").value = myProfile.bio || "";
+      $("accountNewPassword").value = "";
+      $("accountAvatarFile").value = "";
+      $("settingsNotice").textContent = "Username changes are limited by the 10-day account rule.";
+      $("settingsOverlay").hidden = false;
     }
 
-    async function bootApp(sessionUser) {
+        
+    async function uploadPrivateFile(file, folder) {
+      const safeType = file.type || "application/octet-stream";
+      const extensionByType = {
+        "image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/gif":"gif",
+        "video/mp4":"mp4","video/webm":"webm","audio/webm":"webm","audio/ogg":"ogg",
+        "audio/mp4":"m4a","audio/mpeg":"mp3"
+      };
+      const extension = extensionByType[safeType];
+      if (!extension) throw new Error("This file format is not supported.");
+      const unique = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + "-" + Math.random().toString(16).slice(2));
+      const path = currentUser.id + "/" + folder + "/" + unique + "." + extension;
+      const upload = await db.storage.from("flare-chat-media").upload(path,file,{
+        contentType:safeType,cacheControl:"3600",upsert:false
+      });
+      if (upload.error) throw upload.error;
+      return path;
+    }
+
+    async function saveAccountSettings(event) {
+      event.preventDefault();
+      const displayName = $("accountDisplayName").value.trim();
+      const username = normalizeFlareId($("accountUsername").value);
+      const bio = $("accountBio").value.trim();
+      const newPassword = $("accountNewPassword").value;
+      const avatarFile = $("accountAvatarFile").files[0] || null;
+      if (!displayName || displayName.length > 40) {
+        showToast("Display name must be 1–40 characters.");
+        return;
+      }
+      if (!validFlareId(username)) {
+        showToast("Flare ID must be 3–20 lowercase letters, numbers or underscores.");
+        return;
+      }
+      if (bio.length > 160) {
+        showToast("Bio cannot exceed 160 characters.");
+        return;
+      }
+      if (newPassword && newPassword.length < 8) {
+        showToast("New password must be at least 8 characters.");
+        return;
+      }
+      if (avatarFile) {
+        const allowed = ["image/jpeg","image/png","image/webp","image/gif"];
+        if (!allowed.includes(avatarFile.type) || avatarFile.size > 10 * 1024 * 1024) {
+          showToast("Choose a JPG, PNG, WEBP or GIF photo under 10 MB.");
+          return;
+        }
+      }
+      const button = $("saveAccountBtn");
+      button.disabled = true;
+      button.textContent = "Saving…";
+      let uploadedAvatar = null;
+      try {
+        if (avatarFile) uploadedAvatar = await uploadPrivateFile(avatarFile,"avatars");
+        const changes = {
+          username:username,
+          nickname:displayName,
+          display_name:displayName,
+          bio:bio
+        };
+        if (uploadedAvatar) {
+          changes.avatar_path = uploadedAvatar;
+          changes.avatar_url = null;
+        }
+        const updated = await db.from("profiles").update(changes)
+          .eq("user_id",currentUser.id)
+          .select("user_id,username,nickname,display_name,avatar_url,avatar_path,bio")
+          .single();
+        if (updated.error) throw updated.error;
+        if (newPassword) {
+          const passwordUpdate = await db.auth.updateUser({password:newPassword});
+          if (passwordUpdate.error) throw passwordUpdate.error;
+        }
+        await loadMyProfile();
+        await loadSidebar();
+        $("settingsOverlay").hidden = true;
+        showToast("Account settings saved.");
+      } catch (error) {
+        if (uploadedAvatar) await db.storage.from("flare-chat-media").remove([uploadedAvatar]);
+        const message = error.message || "Could not save account settings.";
+        $("settingsNotice").textContent = message;
+        showToast(message);
+      } finally {
+        button.disabled = false;
+        button.textContent = "Save changes";
+      }
+    }
+
+    async function sendMediaMessage(file, contentType, durationSeconds) {
+      if (!file || !activeConversationId) return;
+      if (file.size > 50 * 1024 * 1024) {
+        showToast("This file is larger than the 50 MB upload limit.");
+        return;
+      }
+      const allowed = contentType === "image"
+        ? ["image/jpeg","image/png","image/webp","image/gif"]
+        : contentType === "video"
+          ? ["video/mp4","video/webm"]
+          : ["audio/webm","audio/ogg","audio/mp4","audio/mpeg"];
+      if (!allowed.includes(file.type)) {
+        showToast("This " + contentType + " file format is not supported.");
+        return;
+      }
+      let path = null;
+      try {
+        path = await uploadPrivateFile(file,activeConversationId);
+        const inserted = await db.from("messages").insert({
+          conversation_id:activeConversationId,
+          sender_id:currentUser.id,
+          body:"",
+          content_type:contentType,
+          media_path:path,
+          media_mime_type:file.type,
+          media_size_bytes:file.size,
+          duration_seconds:durationSeconds || null
+        });
+        if (inserted.error) throw inserted.error;
+        await loadMessages();
+        await loadSidebar();
+      } catch (error) {
+        if (path) await db.storage.from("flare-chat-media").remove([path]);
+        showToast("Media could not be sent: " + (error.message || "Storage error."));
+      }
+    }
+
+    async function toggleVoiceRecording() {
+      const button = $("voiceRecordBtn");
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+        button.classList.remove("recording");
+        button.textContent = "🎙";
+        button.title = "Record voice message";
+        $("composerHint").textContent = "Saving voice message…";
+        return;
+      }
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
+        showToast("Voice recording is not supported by this browser.");
+        return;
+      }
+      try {
+        mediaRecorderStream = await navigator.mediaDevices.getUserMedia({audio:true});
+        const preferred = ["audio/webm;codecs=opus","audio/webm","audio/mp4"].find(type => MediaRecorder.isTypeSupported(type));
+        mediaRecorder = preferred ? new MediaRecorder(mediaRecorderStream,{mimeType:preferred}) : new MediaRecorder(mediaRecorderStream);
+        mediaRecorderChunks = [];
+        mediaRecordStartedAt = Date.now();
+        mediaRecorder.ondataavailable = event => { if (event.data && event.data.size) mediaRecorderChunks.push(event.data); };
+        mediaRecorder.onerror = event => showToast("Recorder error: " + (event.error && event.error.message || "Unknown error"));
+        mediaRecorder.onstop = async () => {
+          const mime = mediaRecorder.mimeType || "audio/webm";
+          const blob = new Blob(mediaRecorderChunks,{type:mime});
+          const duration = Math.max(1,(Date.now() - mediaRecordStartedAt) / 1000);
+          if (blob.size) {
+            const extension = mime.includes("mp4") ? "m4a" : (mime.includes("ogg") ? "ogg" : "webm");
+            const file = new File([blob],"voice-note." + extension,{type:mime.split(";")[0]});
+            await sendMediaMessage(file,"voice",duration);
+          }
+          if (mediaRecorderStream) mediaRecorderStream.getTracks().forEach(track => track.stop());
+          mediaRecorderStream = null;
+          mediaRecorder = null;
+          $("composerHint").textContent = "Attach photos/videos · tap the microphone to start and stop a voice note";
+        };
+        mediaRecorder.start();
+        button.classList.add("recording");
+        button.textContent = "■";
+        button.title = "Stop recording and send voice note";
+        $("composerHint").textContent = "Recording… tap the red button to stop and send";
+      } catch (error) {
+        showToast("Microphone permission was not granted: " + (error.message || "Unavailable"));
+      }
+    }
+
+    function paintBugatti(hex) {
+      const viewer = document.querySelector(".car-model-viewer");
+      if (!viewer || !viewer.model || !viewer.model.materials) return;
+      const color = hex.replace("#","");
+      const rgba = [
+        parseInt(color.slice(0,2),16)/255,
+        parseInt(color.slice(2,4),16)/255,
+        parseInt(color.slice(4,6),16)/255,
+        1
+      ];
+      const materials = viewer.model.materials;
+      let targets = materials.filter(material => /paint|body|exterior|car.?color/i.test(material.name || ""));
+      if (!targets.length) {
+        targets = materials.filter(material => !/glass|tire|rubber|wheel|chrome|metal|light|lamp|interior|carbon|plastic/i.test(material.name || ""));
+      }
+      targets.forEach(material => {
+        try {
+          const pbr = material.pbrMetallicRoughness;
+          if (pbr && pbr.setBaseColorFactor) pbr.setBaseColorFactor(rgba);
+        } catch (error) {
+          console.warn("Could not recolour one Bugatti material:",error);
+        }
+      });
+    }
+
+    function bindPaintControls() {
+      const viewer = document.querySelector(".car-model-viewer");
+      if (viewer) {
+        viewer.addEventListener("load",() => {
+          const selected = document.querySelector(".paint-swatch.active");
+          paintBugatti(selected ? selected.dataset.paint : "#1677ff");
+        });
+      }
+      document.querySelectorAll(".paint-swatch").forEach(button => {
+        button.addEventListener("click",() => {
+          document.querySelectorAll(".paint-swatch").forEach(swatch => swatch.classList.toggle("active",swatch === button));
+          paintBugatti(button.dataset.paint);
+        });
+      });
+    }
+
+    function updateCallStatus(text) {
+      $("callStatus").textContent = text;
+    }
+
+    function showCallOverlay(title,status,audioOnly) {
+      $("callTitle").textContent = title;
+      updateCallStatus(status);
+      $("callOverlay").hidden = false;
+      $("remoteCallVideo").style.display = audioOnly ? "none" : "block";
+      $("localCallVideo").style.display = audioOnly ? "none" : "block";
+      $("callAudioAvatar").style.display = audioOnly ? "grid" : "none";
+      $("acceptCallBtn").hidden = true;
+      $("declineCallBtn").hidden = true;
+      $("endCallBtn").hidden = false;
+    }
+
+    async function insertCallSignal(signalType,payload) {
+      if (!activeCall) return;
+      const other = currentUser.id === activeCall.caller_id ? activeCall.callee_id : activeCall.caller_id;
+      const result = await db.from("call_signals").insert({
+        call_id:activeCall.id,
+        sender_id:currentUser.id,
+        recipient_id:other,
+        signal_type:signalType,
+        payload:payload || {}
+      });
+      if (result.error) console.warn("Call signal could not be delivered:",result.error.message);
+    }
+
+    function subscribeToCallSignals(callId) {
+      if (callSignalChannel) db.removeChannel(callSignalChannel);
+      return new Promise((resolve,reject) => {
+        callSignalChannel = db.channel("flare-call-signals-" + callId)
+          .on("postgres_changes",{
+            event:"INSERT",schema:"public",table:"call_signals",filter:"call_id=eq." + callId
+          },event => handleCallSignal(event.new))
+          .subscribe(status => {
+            if (status === "SUBSCRIBED") resolve();
+            else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") reject(new Error("Call signalling connection failed."));
+          });
+      });
+    }
+
+    async function preparePeerConnection(callType) {
+      if (peerConnection) peerConnection.close();
+      peerConnection = new RTCPeerConnection({
+        iceServers:[{urls:"stun:stun.l.google.com:19302"}]
+      });
+      pendingIceCandidates = [];
+      const constraints = callType === "video" ? {audio:true,video:true} : {audio:true};
+      localCallStream = await navigator.mediaDevices.getUserMedia(constraints);
+      localCallStream.getTracks().forEach(track => peerConnection.addTrack(track,localCallStream));
+      $("localCallVideo").srcObject = localCallStream;
+      peerConnection.ontrack = event => {
+        const stream = event.streams && event.streams[0];
+        if (stream) {
+          $("remoteCallVideo").srcObject = stream;
+          $("remoteCallAudio").srcObject = stream;
+          $("callAudioAvatar").style.display = callType === "video" ? "none" : "grid";
+        }
+      };
+      peerConnection.onicecandidate = event => {
+        if (event.candidate) insertCallSignal("ice_candidate",event.candidate.toJSON());
+      };
+      peerConnection.onconnectionstatechange = () => {
+        if (!peerConnection) return;
+        if (peerConnection.connectionState === "connected") updateCallStatus("Connected");
+        if (peerConnection.connectionState === "failed") updateCallStatus("Connection failed. Try again on another network.");
+        if (peerConnection.connectionState === "disconnected") updateCallStatus("Connection interrupted…");
+      };
+    }
+
+    async function applyPendingIce() {
+      if (!peerConnection || !peerConnection.remoteDescription) return;
+      const candidates = pendingIceCandidates.splice(0);
+      for (const candidate of candidates) {
+        try { await peerConnection.addIceCandidate(new RTCIceCandidate(candidate)); }
+        catch (error) { console.warn("ICE candidate could not be applied:",error); }
+      }
+    }
+
+    async function handleCallSignal(signal) {
+      if (!signal || !activeCall || signal.call_id !== activeCall.id || signal.sender_id === currentUser.id) return;
+      try {
+        if (signal.signal_type === "answer" && peerConnection && !peerConnection.remoteDescription) {
+          await peerConnection.setRemoteDescription(new RTCSessionDescription(signal.payload));
+          await applyPendingIce();
+        } else if (signal.signal_type === "ice_candidate" && signal.payload) {
+          if (peerConnection && peerConnection.remoteDescription) {
+            await peerConnection.addIceCandidate(new RTCIceCandidate(signal.payload));
+          } else {
+            pendingIceCandidates.push(signal.payload);
+          }
+        } else if (signal.signal_type === "end") {
+          cleanupCall(false);
+          showToast("The other person ended the call.");
+        }
+      } catch (error) {
+        console.error("Call signal handling error:",error);
+        updateCallStatus(error.message || "Could not process call signal.");
+      }
+    }
+
+    async function startCall(callType) {
+      if (!activeConversationId || !activeChatUserId || !["voice","video"].includes(callType)) {
+        showToast("Open a one-to-one chat before starting a call.");
+        return;
+      }
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.RTCPeerConnection) {
+        showToast("Calling is not supported in this browser.");
+        return;
+      }
+      try {
+        const inserted = await db.from("calls").insert({
+          conversation_id:activeConversationId,
+          caller_id:currentUser.id,
+          callee_id:activeChatUserId,
+          call_type:callType
+        }).select("*").single();
+        if (inserted.error) throw inserted.error;
+        activeCall = inserted.data;
+        showCallOverlay(callType === "video" ? "Video call" : "Voice call","Calling…",callType === "voice");
+        $("callAudioAvatar").textContent = initials((allChats.find(item => item.id === activeConversationId) || {}).person?.display_name);
+        await subscribeToCallSignals(activeCall.id);
+        await preparePeerConnection(callType);
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        await insertCallSignal("offer",peerConnection.localDescription.toJSON());
+      } catch (error) {
+        console.error("Could not start call:",error);
+        showToast("Call could not start: " + (error.message || "Check microphone/camera permission."));
+        await cleanupCall(true);
+      }
+    }
+
+    async function handleIncomingCall(call) {
+      if (!call || call.callee_id !== currentUser.id || call.status !== "ringing" || activeCall) return;
+      activeCall = call;
+      const chat = allChats.find(item => item.id === call.conversation_id);
+      const callerName = chat && chat.person ? chat.person.display_name : "Flare contact";
+      showCallOverlay((call.call_type === "video" ? "Video call from " : "Voice call from ") + callerName,"Incoming call…",call.call_type === "voice");
+      $("callAudioAvatar").textContent = initials(callerName);
+      $("acceptCallBtn").hidden = false;
+      $("declineCallBtn").hidden = false;
+      $("endCallBtn").hidden = true;
+      $("callCloseBtn").disabled = true;
+    }
+
+    async function acceptIncomingCall() {
+      if (!activeCall || activeCall.callee_id !== currentUser.id) return;
+      try {
+        const updated = await db.from("calls").update({status:"accepted"}).eq("id",activeCall.id).select("*").single();
+        if (updated.error) throw updated.error;
+        activeCall = updated.data;
+        $("acceptCallBtn").hidden = true;
+        $("declineCallBtn").hidden = true;
+        $("endCallBtn").hidden = false;
+        updateCallStatus("Connecting…");
+        await subscribeToCallSignals(activeCall.id);
+        await preparePeerConnection(activeCall.call_type);
+        let offerResult = {data:null,error:null};
+        for (let attempt = 0; attempt < 8 && !offerResult.data; attempt++) {
+          offerResult = await db.from("call_signals").select("payload")
+            .eq("call_id",activeCall.id).eq("signal_type","offer")
+            .order("created_at",{ascending:false}).limit(1).maybeSingle();
+          if (offerResult.error) throw offerResult.error;
+          if (!offerResult.data) await new Promise(resolve => setTimeout(resolve,350));
+        }
+        if (!offerResult.data) throw new Error("The caller's offer was not received. Please ask them to call again.");
+        await peerConnection.setRemoteDescription(new RTCSessionDescription(offerResult.data.payload));
+        await applyPendingIce();
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        await insertCallSignal("answer",peerConnection.localDescription.toJSON());
+      } catch (error) {
+        showToast("Could not answer the call: " + (error.message || "Permission or connection error."));
+        await cleanupCall(true);
+      }
+    }
+
+    async function rejectIncomingCall() {
+      if (!activeCall) return;
+      const id = activeCall.id;
+      const updated = await db.from("calls").update({status:"rejected"}).eq("id",id);
+      if (updated.error) showToast(updated.error.message);
+      await cleanupCall(false);
+    }
+
+    async function endActiveCall() {
+      if (!activeCall) return;
+      const id = activeCall.id;
+      const status = activeCall.status === "ringing"
+        ? (activeCall.caller_id === currentUser.id ? "cancelled" : "rejected")
+        : "ended";
+      await insertCallSignal("end",{});
+      const updated = await db.from("calls").update({status}).eq("id",id);
+      if (updated.error) showToast(updated.error.message);
+      await cleanupCall(false);
+    }
+
+    async function cleanupCall(updateDatabase) {
+      const call = activeCall;
+      if (updateDatabase && call && call.caller_id === currentUser.id && call.status === "ringing") {
+        await db.from("calls").update({status:"cancelled"}).eq("id",call.id);
+      }
+      if (callSignalChannel && db) db.removeChannel(callSignalChannel);
+      callSignalChannel = null;
+      if (peerConnection) peerConnection.close();
+      peerConnection = null;
+      if (localCallStream) localCallStream.getTracks().forEach(track => track.stop());
+      localCallStream = null;
+      if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop();
+      if (mediaRecorderStream) mediaRecorderStream.getTracks().forEach(track => track.stop());
+      $("localCallVideo").srcObject = null;
+      $("remoteCallVideo").srcObject = null;
+      $("remoteCallAudio").srcObject = null;
+      $("callOverlay").hidden = true;
+      $("callCloseBtn").disabled = false;
+      activeCall = null;
+      pendingIceCandidates = [];
+    }
+
+    function subscribeForIncomingCalls() {
+      if (incomingCallsChannel) db.removeChannel(incomingCallsChannel);
+      incomingCallsChannel = db.channel("flare-incoming-calls-" + currentUser.id)
+        .on("postgres_changes",{
+          event:"INSERT",schema:"public",table:"calls",filter:"callee_id=eq." + currentUser.id
+        },event => handleIncomingCall(event.new))
+        .subscribe();
+    }
+
+async function bootApp(sessionUser) {
       currentUser = sessionUser;
       try {
         await loadMyProfile();
@@ -1325,6 +1869,7 @@
           showToast("Your account loaded, but chats could not refresh: " + (sidebarError.message || "Unknown error"));
         }
         loadStories().catch(error => console.warn("Story startup failed:", error));
+        subscribeForIncomingCalls();
       } catch (error) {
         showAuth();
         setNotice("Could not load your Flare profile. Check that supabase/schema.sql has been run. " + (error.message || ""), false);
@@ -1332,6 +1877,7 @@
     }
 
     bindStoryControls();
+    bindPaintControls();
 
     $("authSwitch").addEventListener("click", () => setAuthMode(authMode === "signup" ? "signin" : "signup"));
     $("authForm").addEventListener("submit", async event => {
@@ -1405,38 +1951,52 @@
     });
     document.querySelectorAll(".tab").forEach(button => button.addEventListener("click", () => setTab(button.dataset.tab)));
     $("messageForm").addEventListener("submit", sendMessage);
-    $("profileButton").addEventListener("click", openProfile);
-    $("copyIdBtn").addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(myProfile.flare_id);
-        showToast("Flare ID copied.");
-      } catch (_) {
-        showToast("Your Flare ID is @" + myProfile.flare_id);
+    $("attachMessageBtn").addEventListener("click", () => $("messageFile").click());
+    $("messageFile").addEventListener("change", async () => {
+      const file = $("messageFile").files[0];
+      $("messageFile").value = "";
+      if (!file) return;
+      const type = file.type.startsWith("image/") ? "image" : (file.type.startsWith("video/") ? "video" : "");
+      if (!type) {
+        showToast("Choose an image or video file.");
+        return;
       }
+      await sendMediaMessage(file,type,null);
     });
-    $("signOutBtn").addEventListener("click", async () => {
+    $("voiceRecordBtn").addEventListener("click",toggleVoiceRecording);
+    $("profileButton").addEventListener("click",openProfile);
+    $("accountSettingsForm").addEventListener("submit",saveAccountSettings);
+    $("settingsCloseBtn").addEventListener("click",() => { $("settingsOverlay").hidden = true; });
+    $("settingsOverlay").addEventListener("click",event => {
+      if (event.target === $("settingsOverlay")) $("settingsOverlay").hidden = true;
+    });
+    $("settingsSignOutBtn").addEventListener("click",async () => {
       const result = await db.auth.signOut();
       if (result.error) showToast(result.error.message);
       else {
-        $("profilePop").classList.add("hidden");
+        $("settingsOverlay").hidden = true;
         showAuth();
         setAuthMode("signin");
       }
     });
+    $("voiceCallBtn").addEventListener("click",() => startCall("voice"));
+    $("videoCallBtn").addEventListener("click",() => startCall("video"));
+    $("acceptCallBtn").addEventListener("click",acceptIncomingCall);
+    $("declineCallBtn").addEventListener("click",rejectIncomingCall);
+    $("endCallBtn").addEventListener("click",endActiveCall);
+    $("callCloseBtn").addEventListener("click",() => {
+      if (activeCall && activeCall.status === "ringing" && activeCall.callee_id === currentUser.id) return;
+      endActiveCall();
+    });
     $("backBtn").addEventListener("click", () => {
       document.body.classList.remove("chat-open", "sidebar-open");
       activeConversationId = null;
+      activeChatUserId = null;
       $("chatHeader").classList.add("hidden");
       $("messages").classList.add("hidden");
       $("composerWrap").classList.add("hidden");
       $("homeFeed").classList.remove("hidden");
     });
-    document.addEventListener("click", event => {
-      if (!$("profilePop").contains(event.target) && !$("profileButton").contains(event.target)) {
-        $("profilePop").classList.add("hidden");
-      }
-    });
-
     async function ensureSupabaseSdk() {
       if (window.supabase && typeof window.supabase.createClient === "function") {
         return window.supabase;
