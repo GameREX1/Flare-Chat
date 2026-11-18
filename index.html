@@ -1495,7 +1495,7 @@ async function loadPendingRequests() {
 
         
     async function uploadPrivateFile(file, folder) {
-      const safeType = file.type || "application/octet-stream";
+      const safeType = String(file.type || "application/octet-stream").split(";")[0].trim().toLowerCase();
       const extensionByType = {
         "image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/gif":"gif",
         "video/mp4":"mp4","video/webm":"webm","audio/webm":"webm","audio/ogg":"ogg",
@@ -1629,43 +1629,93 @@ async function loadPendingRequests() {
         $("composerHint").textContent = "Saving voice message…";
         return;
       }
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
-        showToast("Voice recording is not supported by this browser.");
+      if (!window.isSecureContext || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        showToast("Microphone access requires HTTPS. Open Flare Chat using its secure https:// address.");
+        return;
+      }
+      if (!window.MediaRecorder) {
+        showToast("This browser does not support voice recording. Try an updated Chrome or Edge.");
+        return;
+      }
+      if (!activeConversationId) {
+        showToast("Open a conversation before recording a voice note.");
         return;
       }
       try {
         mediaRecorderStream = await navigator.mediaDevices.getUserMedia({audio:true});
-        const preferred = ["audio/webm;codecs=opus","audio/webm","audio/mp4"].find(type => MediaRecorder.isTypeSupported(type));
-        mediaRecorder = preferred ? new MediaRecorder(mediaRecorderStream,{mimeType:preferred}) : new MediaRecorder(mediaRecorderStream);
+        const recorderTypes = [
+          "audio/webm;codecs=opus",
+          "audio/webm",
+          "audio/ogg;codecs=opus",
+          "audio/ogg",
+          "audio/mp4"
+        ];
+        const selectedMime = recorderTypes.find(type => MediaRecorder.isTypeSupported(type)) || "";
+        const recorder = selectedMime
+          ? new MediaRecorder(mediaRecorderStream,{mimeType:selectedMime})
+          : new MediaRecorder(mediaRecorderStream);
+        mediaRecorder = recorder;
         mediaRecorderChunks = [];
         mediaRecordStartedAt = Date.now();
-        mediaRecorder.ondataavailable = event => { if (event.data && event.data.size) mediaRecorderChunks.push(event.data); };
-        mediaRecorder.onerror = event => showToast("Recorder error: " + (event.error && event.error.message || "Unknown error"));
-        mediaRecorder.onstop = async () => {
-          const mime = mediaRecorder.mimeType || "audio/webm";
-          const blob = new Blob(mediaRecorderChunks,{type:mime});
-          const duration = Math.max(1,(Date.now() - mediaRecordStartedAt) / 1000);
-          if (blob.size) {
-            const extension = mime.includes("mp4") ? "m4a" : (mime.includes("ogg") ? "ogg" : "webm");
-            const file = new File([blob],"voice-note." + extension,{type:mime.split(";")[0]});
-            await sendMediaMessage(file,"voice",duration);
-          }
-          if (mediaRecorderStream) mediaRecorderStream.getTracks().forEach(track => track.stop());
-          mediaRecorderStream = null;
-          mediaRecorder = null;
-          $("composerHint").textContent = "Attach photos/videos · tap the microphone to start and stop a voice note";
+
+        recorder.ondataavailable = event => {
+          if (event.data && event.data.size) mediaRecorderChunks.push(event.data);
         };
-        mediaRecorder.start();
+        recorder.onerror = event => {
+          const error = event.error;
+          showToast("Voice recorder error: " + (error && error.message ? error.message : "The browser could not record audio."));
+        };
+        recorder.onstop = async () => {
+          try {
+            const rawMime = recorder.mimeType ||
+              selectedMime ||
+              (mediaRecorderChunks[0] && mediaRecorderChunks[0].type) ||
+              "audio/webm";
+            const contentType = rawMime.split(";")[0].trim().toLowerCase();
+            const blob = new Blob(mediaRecorderChunks,{type:contentType});
+            const duration = Math.max(1,(Date.now() - mediaRecordStartedAt) / 1000);
+            if (!blob.size) {
+              showToast("No audio was recorded. Check microphone permission and try again.");
+            } else if (!["audio/webm","audio/ogg","audio/mp4","audio/mpeg"].includes(contentType)) {
+              showToast("This device recorded an unsupported audio format: " + contentType);
+            } else {
+              await sendMediaMessage(blob,"voice",duration);
+            }
+          } catch (error) {
+            showToast("Voice note could not be saved: " + (error.message || "Unknown error."));
+          } finally {
+            if (mediaRecorderStream) mediaRecorderStream.getTracks().forEach(track => track.stop());
+            mediaRecorderStream = null;
+            if (mediaRecorder === recorder) mediaRecorder = null;
+            mediaRecorderChunks = [];
+            button.classList.remove("recording");
+            button.textContent = "🎙";
+            button.title = "Record voice message";
+            $("composerHint").textContent = "Attach photos/videos · tap the microphone to start and stop a voice note";
+          }
+        };
+
+        recorder.start(250);
         button.classList.add("recording");
         button.textContent = "■";
         button.title = "Stop recording and send voice note";
         $("composerHint").textContent = "Recording… tap the red button to stop and send";
       } catch (error) {
-        showToast("Microphone permission was not granted: " + (error.message || "Unavailable"));
+        if (mediaRecorderStream) mediaRecorderStream.getTracks().forEach(track => track.stop());
+        mediaRecorderStream = null;
+        mediaRecorder = null;
+        const reason = error && error.name === "NotAllowedError"
+          ? "Microphone permission was blocked. Allow microphone access for flarechat.qd.je in your browser."
+          : error && error.name === "NotFoundError"
+            ? "No microphone was found on this device."
+            : error && error.name === "NotReadableError"
+              ? "The microphone is busy in another app."
+              : (error.message || "Microphone could not be opened.");
+        showToast(reason);
       }
     }
 
-    function paintBugatti(hex) {
+        function paintBugatti(hex) {
       const viewer = document.querySelector(".car-model-viewer");
       if (!viewer || !viewer.model || !viewer.model.materials) return;
       const color = hex.replace("#","");
@@ -1732,7 +1782,10 @@ async function loadPendingRequests() {
         signal_type:signalType,
         payload:payload || {}
       });
-      if (result.error) console.warn("Call signal could not be delivered:",result.error.message);
+      if (result.error) {
+        console.error("Call signal could not be delivered:",result.error);
+        if (signalType !== "ice_candidate") throw result.error;
+      }
     }
 
     function subscribeToCallSignals(callId) {
@@ -1744,7 +1797,9 @@ async function loadPendingRequests() {
           },event => handleCallSignal(event.new))
           .subscribe(status => {
             if (status === "SUBSCRIBED") resolve();
-            else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") reject(new Error("Call signalling connection failed."));
+            else if (status === "CHANNEL_ERROR" || status === "TIMED_OUT" || status === "CLOSED") {
+              reject(new Error("Call signalling realtime failed (" + status + "). Run the Realtime enablement SQL from supabase/enable_realtime.sql."));
+            }
           });
       });
     }
@@ -1752,7 +1807,11 @@ async function loadPendingRequests() {
     async function preparePeerConnection(callType) {
       if (peerConnection) peerConnection.close();
       peerConnection = new RTCPeerConnection({
-        iceServers:[{urls:"stun:stun.l.google.com:19302"}]
+        iceServers:[
+          {urls:"stun:stun.l.google.com:19302"},
+          {urls:"stun:stun1.l.google.com:19302"},
+          {urls:"stun:stun2.l.google.com:19302"}
+        ]
       });
       pendingIceCandidates = [];
       const constraints = callType === "video" ? {audio:true,video:true} : {audio:true};
@@ -1774,12 +1833,15 @@ async function loadPendingRequests() {
         }
       };
       peerConnection.onicecandidate = event => {
-        if (event.candidate) insertCallSignal("ice_candidate",event.candidate.toJSON());
+        if (event.candidate) {
+          insertCallSignal("ice_candidate",event.candidate.toJSON())
+            .catch(error => console.warn("ICE candidate send failed:",error));
+        }
       };
       peerConnection.onconnectionstatechange = () => {
         if (!peerConnection) return;
         if (peerConnection.connectionState === "connected") updateCallStatus("Connected");
-        if (peerConnection.connectionState === "failed") updateCallStatus("Connection failed. Try again on another network.");
+        if (peerConnection.connectionState === "failed") updateCallStatus("Direct connection failed. This network may require a TURN relay server.");
         if (peerConnection.connectionState === "disconnected") updateCallStatus("Connection interrupted…");
       };
     }
@@ -1963,7 +2025,12 @@ async function loadPendingRequests() {
             showToast("The call was ended before you connected.");
           }
         })
-        .subscribe();
+        .subscribe(status => {
+          if (status === "CHANNEL_ERROR" || status === "TIMED_OUT") {
+            console.error("Incoming call subscription failed:",status);
+            showToast("Incoming calls realtime failed. Run supabase/enable_realtime.sql in Supabase SQL Editor.");
+          }
+        });
     }
 
 async function bootApp(sessionUser) {
@@ -2095,7 +2162,7 @@ async function bootApp(sessionUser) {
       if (event.target === $("settingsOverlay")) $("settingsOverlay").hidden = true;
     });
     $("settingsSignOutBtn").addEventListener("click",async () => {
-      const result = await db.auth.signOut();
+      const result = await db.auth.signOut({scope:"local"});
       if (result.error) showToast(result.error.message);
       else {
         $("settingsOverlay").hidden = true;
@@ -2186,8 +2253,14 @@ async function bootApp(sessionUser) {
         if (sessionResult.data.session) await bootApp(sessionResult.data.session.user);
 
         db.auth.onAuthStateChange((event, session) => {
-          if (event === "SIGNED_OUT") showAuth();
-          if (event === "SIGNED_IN" && session && !currentUser) bootApp(session.user);
+          if (event === "SIGNED_OUT") {
+            showAuth();
+            return;
+          }
+          if (event === "SIGNED_IN" && session &&
+              (!currentUser || currentUser.id !== session.user.id)) {
+            bootApp(session.user);
+          }
         });
       } catch (error) {
         console.error("Flare Chat Supabase initialization failed:", error);
